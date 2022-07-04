@@ -1,0 +1,23 @@
+<h1>Show Parcel</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @parcel.name %>
+  </li>
+
+  <li>
+    <strong>From:</strong>
+    <%= @parcel.from %>
+  </li>
+
+  <li>
+    <strong>To:</strong>
+    <%= @parcel.to %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.parcel_path(@conn, :edit, @parcel) %></span> |
+<span><%= link "Back", to: Routes.parcel_path(@conn, :index) %></span>
