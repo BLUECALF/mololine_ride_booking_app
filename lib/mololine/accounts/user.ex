@@ -3,11 +3,15 @@ defmodule Mololine.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
+    field :firstname, :string
+    field :lastname, :string
     field :email, :string
+    field :phone, :string
+    field :gender, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
-    field :is_admin, :boolean
+    field :role, :string
 
     timestamps()
   end
@@ -31,7 +35,7 @@ defmodule Mololine.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :is_admin])
+    |> cast(attrs, [:firstname,:lastname,:phone,:gender,:email,:role, :password])
     |> validate_email()
     |> validate_password(opts)
   end
@@ -48,7 +52,7 @@ defmodule Mololine.Accounts.User do
   defp validate_password(changeset, opts) do
     changeset
     |> validate_required([:password])
-    |> validate_length(:password, min: 12, max: 72)
+    |> validate_length(:password, min: 8, max: 72)
     # |> validate_format(:password, ~r/[a-z]/, message: "at least one lower case character")
     # |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
     # |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")

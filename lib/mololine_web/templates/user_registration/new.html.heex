@@ -7,6 +7,26 @@
     </div>
   <% end %>
 
+  <%= label f, :firstname %>
+   <%= text_input f, :firstname, required: true %>
+   <%= error_tag f, :firstname %>
+
+   <%= label f, :lastname %>
+   <%= text_input f, :lastname, required: true %>
+   <%= error_tag f, :lastname %>
+
+   <%= label f, :phone %>
+   <%= number_input f, :phone, required: true %>
+   <%= error_tag f, :phone %>
+
+   <%= label f, :gender %>
+   <%= select f, :gender, ["male","female"],required: true %>
+   <%= error_tag f, :gender %>
+
+   <%= label f, :role %>
+   <%= select f, :role, ["customer"],required: true %>
+   <%= error_tag f, :role %>
+
   <%= label f, :email %>
   <%= email_input f, :email, required: true %>
   <%= error_tag f, :email %>
@@ -14,9 +34,6 @@
   <%= label f, :password %>
   <%= password_input f, :password, required: true %>
   <%= error_tag f, :password %>
-
-  <%= label f, :is_admin, "Admin?" %>
-<%= checkbox f, :is_admin %>
 
   <div>
     <%= submit "Register" %>

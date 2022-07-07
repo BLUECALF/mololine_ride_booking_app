@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="bodyguard" type="mix">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/_build/dev/lib/bodyguard/ebin" />
+      <root url="file://$PROJECT_DIR$/_build/dev/lib/bodyguard/ebin" />
+      <root url="file://$PROJECT_DIR$/_build/dev/lib/bodyguard/ebin" />
+      <root url="file://$PROJECT_DIR$/_build/dev/lib/bodyguard/ebin" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/deps/bodyguard/lib" />
+      <root url="file://$PROJECT_DIR$/deps/bodyguard/lib" />
+    </SOURCES>
+  </library>
+</component>

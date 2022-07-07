@@ -5,13 +5,18 @@ defmodule Mololine.Repo.Migrations.CreateUsersAuthTables do
     execute "CREATE EXTENSION IF NOT EXISTS citext", ""
 
     create table(:users) do
+      add :firstname, :string, null: false
+      add :lastname, :string, null: false
+      add :phone, :string, null: false
+      add :gender, :string, null: false
+      add :role, :string, null: false
       add :email, :citext, null: false
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime
       timestamps()
     end
 
-    create unique_index(:users, [:email])
+    create unique_index(:users, [:email,:phone])
 
     create table(:users_tokens) do
       add :user_id, references(:users, on_delete: :delete_all), null: false
