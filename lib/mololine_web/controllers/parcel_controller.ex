@@ -17,14 +17,14 @@ defmodule MololineWeb.ParcelController do
   end
 
   def create(conn, %{"parcel" => parcel_params}) do
-    case Resources.create_parcel(parcel_params) do
-      {:ok, parcel} ->
-        conn
-        |> put_flash(:info, "Parcel created successfully.")
-        |> redirect(to: Routes.parcel_path(conn, :show, parcel))
-
+    user = conn.assigns.current_user
+    case Resources.create_parcel(parcel_params,user) do
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
+      _parcel ->
+        conn
+        |> put_flash(:info, "Parcel created successfully.")
+        |> redirect(to: Routes.parcel_path(conn, :show, _parcel))
     end
   end
 

@@ -3,9 +3,10 @@ defmodule Mololine.Repo.Migrations.CreateParcels do
 
   def change do
     create table(:parcels) do
-      add :name, :string
-      add :from, :string
-      add :to, :string
+      add :recipient_name, :string
+      add :recipient_phone, :string
+      add :weight, :integer
+      add :pin, :string
 
       timestamps()
     end

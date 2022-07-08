@@ -5,17 +5,22 @@
     </div>
   <% end %>
 
-  <%= label f, :name %>
-  <%= text_input f, :name %>
-  <%= error_tag f, :name %>
+  <%= label f, :recipient_name %>
+  <%= text_input f, :recipient_name %>
+  <%= error_tag f, :recipient_name %>
 
-  <%= label f, :from %>
-  <%= text_input f, :from %>
-  <%= error_tag f, :from %>
+   <%= label f, :recipient_phone %>
+  <%= number_input f, :recipient_phone %>
+  <%= error_tag f, :recipient_phone %>
 
-  <%= label f, :to %>
-  <%= text_input f, :to %>
-  <%= error_tag f, :to %>
+  <%= label f, :"Weight in Grams" %>
+  <%= number_input f, :weight %>
+  <%= error_tag f, :weight %>
+
+
+  <%= label f, :"PIN secret" %>
+  <%= text_input f, :pin %>
+  <%= error_tag f, :pin %>
 
   <div>
     <%= submit "Save" %>

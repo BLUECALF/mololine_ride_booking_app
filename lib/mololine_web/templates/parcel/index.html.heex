@@ -3,9 +3,10 @@
 <table>
   <thead>
     <tr>
-      <th>Name</th>
-      <th>From</th>
-      <th>To</th>
+      <th>Recipient Name</th>
+      <th>Recipient Phone</th>
+      <th>Weight</th>
+      <th>PIN secret</th>
 
       <th></th>
     </tr>
@@ -13,9 +14,10 @@
   <tbody>
 <%= for parcel <- @parcels do %>
     <tr>
-      <td><%= parcel.name %></td>
-      <td><%= parcel.from %></td>
-      <td><%= parcel.to %></td>
+      <td><%= parcel.recipient_name %></td>
+      <td><%= parcel.recipient_phone %></td>
+      <td><%= parcel.weight %></td>
+      <td><%= parcel.pin %></td>
 
       <td>
         <span><%= link "Show", to: Routes.parcel_path(@conn, :show, parcel) %></span>

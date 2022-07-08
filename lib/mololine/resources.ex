@@ -52,10 +52,11 @@ defmodule Mololine.Resources do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_parcel(attrs \\ %{}) do
+  def create_parcel(attrs \\ %{},user) do
     %Parcel{}
     |> Parcel.changeset(attrs)
-    |> Repo.insert()
+    |> Ecto.Changeset.put_assoc(:user,user)
+    |> Repo.insert!()
   end
 
   @doc """

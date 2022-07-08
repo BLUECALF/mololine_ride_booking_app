@@ -13,6 +13,9 @@ defmodule Mololine.Accounts.User do
     field :confirmed_at, :naive_datetime
     field :role, :string
 
+    # resources that he has
+    has_many :parcels, Mololine.Resources.Parcel # this was added
+
     timestamps()
   end
 
