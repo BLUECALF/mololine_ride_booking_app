@@ -21,10 +21,10 @@ defmodule MololineWeb.ParcelController do
     case Resources.create_parcel(parcel_params,user) do
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
-      _parcel ->
+      parcel ->
         conn
         |> put_flash(:info, "Parcel created successfully.")
-        |> redirect(to: Routes.parcel_path(conn, :show, _parcel))
+        |> redirect(to: Routes.parcel_path(conn, :show, parcel))
     end
   end
 

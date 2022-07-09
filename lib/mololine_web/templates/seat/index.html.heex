@@ -1,0 +1,32 @@
+<h1>Listing Seats</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Column</th>
+      <th>Row</th>
+      <th>Booked</th>
+      <th>Selected</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for seat <- @seats do %>
+    <tr>
+      <td><%= seat.column %></td>
+      <td><%= seat.row %></td>
+      <td><%= seat.booked %></td>
+      <td><%= seat.selected %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.seat_path(@conn, :show, seat) %></span>
+        <span><%= link "Edit", to: Routes.seat_path(@conn, :edit, seat) %></span>
+        <span><%= link "Delete", to: Routes.seat_path(@conn, :delete, seat), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Seat", to: Routes.seat_path(@conn, :new) %></span>

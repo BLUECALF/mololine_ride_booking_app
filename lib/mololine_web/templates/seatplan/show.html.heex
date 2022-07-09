@@ -1,0 +1,13 @@
+<h1>Show Seatplan</h1>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @seatplan.name %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.seatplan_path(@conn, :edit, @seatplan) %></span> |
+<span><%= link "Back", to: Routes.seatplan_path(@conn, :index) %></span>

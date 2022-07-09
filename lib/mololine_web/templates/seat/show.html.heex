@@ -1,0 +1,28 @@
+<h1>Show Seat</h1>
+
+<ul>
+
+  <li>
+    <strong>Column:</strong>
+    <%= @seat.column %>
+  </li>
+
+  <li>
+    <strong>Row:</strong>
+    <%= @seat.row %>
+  </li>
+
+  <li>
+    <strong>Booked:</strong>
+    <%= @seat.booked %>
+  </li>
+
+  <li>
+    <strong>Selected:</strong>
+    <%= @seat.selected %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.seat_path(@conn, :edit, @seat) %></span> |
+<span><%= link "Back", to: Routes.seat_path(@conn, :index) %></span>

@@ -1,0 +1,5 @@
+<h1>Edit Seat</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.seat_path(@conn, :update, @seat)) %>
+
+<span><%= link "Back", to: Routes.seat_path(@conn, :index) %></span>
