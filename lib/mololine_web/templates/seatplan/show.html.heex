@@ -5,7 +5,40 @@
   <li>
     <strong>Name:</strong>
     <%= @seatplan.name %>
-  </li>
+      </li>
+   <li> <strong>Seat Plan:</strong>
+        <% seats = @seatplan.seats %>
+        </li>
+     <% columns = ["A","B","C","D","E"]%>
+       <% rows = ["1","2","3","4","5","6","7","8","9"] %>
+       <br>
+       <%= for row <- rows do %>
+       <%= for column <- columns do %>
+
+
+
+       <%=if Enum.member?(seats,row<>column)   do %>
+           <tr>
+             <td>
+                <button style= "background-color:green"><%= row %><%= column %></button>
+             </td>
+           </tr>
+
+          <% else %>
+          <tr>
+                       <td>
+                          <button style= "background-color:blue"><%= row %><%= column %></button>
+
+                       </td>
+                     </tr>
+
+
+       <% end %>
+       <% end %>
+        <br>
+       <% end %>
+
+
 
 </ul>
 

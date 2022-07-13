@@ -4,14 +4,15 @@ defmodule Mololine.Seatplans.Seatplan do
 
   schema "seatplans" do
     field :name, :string
-    has_many :seats, Mololine.Seats.Seat # this was added
+    field :seats, {:array,:string}
+
     timestamps()
   end
 
   @doc false
   def changeset(seatplan, attrs) do
     seatplan
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
+    |> cast(attrs, [:name,:seats])
+    |> validate_required([:name,:seats])
   end
 end

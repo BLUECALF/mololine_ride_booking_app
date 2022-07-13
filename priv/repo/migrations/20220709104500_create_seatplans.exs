@@ -4,6 +4,7 @@ defmodule Mololine.Repo.Migrations.CreateSeatplans do
   def change do
     create table(:seatplans) do
       add :name, :string
+      add :seats, {:array, :string}
 
       timestamps()
     end
