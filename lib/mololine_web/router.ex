@@ -22,6 +22,8 @@ defmodule MololineWeb.Router do
 
     get "/", PageController, :index
     resources "/seatplans", SeatplanController
+    resources "/travelnotices", TravelNoticeController
+    resources "/towns", TownController
   end
 
   # Other scopes may use custom stacks.
