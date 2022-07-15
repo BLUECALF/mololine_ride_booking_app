@@ -1,0 +1,30 @@
+<h1>Listing Travelnotices</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>From</th>
+      <th>To</th>
+      <th>Price</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for travel_notice <- @travelnotices do %>
+    <tr>
+      <td><%= travel_notice.from %></td>
+      <td><%= travel_notice.to %></td>
+      <td><%= travel_notice.price %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.travel_notice_path(@conn, :show, travel_notice) %></span>
+        <span><%= link "Edit", to: Routes.travel_notice_path(@conn, :edit, travel_notice) %></span>
+        <span><%= link "Delete", to: Routes.travel_notice_path(@conn, :delete, travel_notice), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Travel notice", to: Routes.travel_notice_path(@conn, :new) %></span>

@@ -1,0 +1,24 @@
+<h1>Show Travel notice</h1>
+
+<ul>
+  <li>
+    <strong>From:</strong>
+    <%= @travel_notice.from %>
+  </li>
+
+  <li>
+    <strong>To:</strong>
+    <%= @travel_notice.to %>
+  </li>
+
+
+
+  <li>
+    <strong>Price:</strong>
+    <%= @travel_notice.price %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.travel_notice_path(@conn, :edit, @travel_notice) %></span> |
+<span><%= link "Back", to: Routes.travel_notice_path(@conn, :index) %></span>
