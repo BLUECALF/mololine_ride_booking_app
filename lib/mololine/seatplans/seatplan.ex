@@ -5,6 +5,7 @@ defmodule Mololine.Seatplans.Seatplan do
   schema "seatplans" do
     field :name, :string
     field :seats, {:array,:string}
+    belongs_to :vehicle, Mololine.Vehicles.Vehicle # this was added
 
     timestamps()
   end
@@ -14,5 +15,6 @@ defmodule Mololine.Seatplans.Seatplan do
     seatplan
     |> cast(attrs, [:name,:seats])
     |> validate_required([:name,:seats])
+    |>unsafe_validate_unique(:name,Mololine.Repo)
   end
 end

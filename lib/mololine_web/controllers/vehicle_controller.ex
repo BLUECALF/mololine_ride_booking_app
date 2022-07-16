@@ -3,6 +3,8 @@ defmodule MololineWeb.VehicleController do
 
   alias Mololine.Vehicles
   alias Mololine.Vehicles.Vehicle
+  alias Mololine.Seatplans.Seatplan
+  alias Mololine.Repo
 
   def index(conn, _params) do
     vehicles = Vehicles.list_vehicles()
@@ -11,7 +13,8 @@ defmodule MololineWeb.VehicleController do
 
   def new(conn, _params) do
     changeset = Vehicles.change_vehicle(%Vehicle{})
-    render(conn, "new.html", changeset: changeset)
+    seatplans = Repo.all(Seatplan)
+    render(conn, "new.html", [changeset: changeset, seatplans: seatplans])
   end
 
   def create(conn, %{"vehicle" => vehicle_params}) do
@@ -27,7 +30,7 @@ defmodule MololineWeb.VehicleController do
   end
 
   def show(conn, %{"id" => id}) do
-    vehicle = Vehicles.get_vehicle!(id)
+    vehicle = Vehicles.get_vehicle!(id) |> Repo.preload(:seatplan)
     render(conn, "show.html", vehicle: vehicle)
   end
 

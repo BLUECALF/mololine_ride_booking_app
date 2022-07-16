@@ -24,6 +24,7 @@ defmodule MololineWeb.Router do
     resources "/seatplans", SeatplanController
     resources "/travelnotices", TravelNoticeController
     resources "/towns", TownController
+    resources "/vehicles", VehicleController
   end
 
   # Other scopes may use custom stacks.
@@ -79,7 +80,7 @@ defmodule MololineWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     resources "/parcels", ParcelController
-    resources "/vehicles", VehicleController
+
 
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update

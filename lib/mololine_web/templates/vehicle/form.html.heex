@@ -4,11 +4,21 @@
       <p>Oops, something went wrong! Please check the errors below.</p>
     </div>
   <% end %>
+<% IO.inspect(@seatplans) %>
+<% seatplans = @seatplans %>
+<% seatplans_list = [] %>
+<%seatplans_list = for seatplan <- seatplans do
+  seatplan.name
+end %>
+
 
   <%= label f, :plate %>
   <%= text_input f, :plate %>
   <%= error_tag f, :plate %>
 
+  <%= label f, :seatplanname %>
+   <%= select f, :seatplanname, seatplans_list,required: true %>
+   <%= error_tag f, :seatplanname %>
   <div>
     <%= submit "Save" %>
   </div>

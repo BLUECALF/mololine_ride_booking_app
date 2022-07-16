@@ -6,6 +6,37 @@
     <strong>Plate:</strong>
     <%= @vehicle.plate %>
   </li>
+   <li> <strong>Seat Plan:</strong>
+          <% seats = @vehicle.seatplan.seats %>
+          </li>
+       <% columns = ["A","B","C","D","E"]%>
+         <% rows = ["1","2","3","4","5","6","7","8","9"] %>
+         <br>
+         <%= for row <- rows do %>
+         <%= for column <- columns do %>
+
+
+
+         <%=if Enum.member?(seats,row<>column)   do %>
+             <tr>
+               <td>
+                  <button style= "background-color:green; width: 50px;height: 50px"><%= row %><%= column %></button>
+               </td>
+             </tr>
+
+            <% else %>
+            <tr>
+                         <td>
+                            <button style= "background-color:white ; width: 50px;height: 50px"><%= row %><%= column %></button>
+
+                         </td>
+            </tr>
+
+
+         <% end %>
+         <% end %>
+          <br>
+         <% end %>
 
 </ul>
 

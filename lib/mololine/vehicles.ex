@@ -7,6 +7,7 @@ defmodule Mololine.Vehicles do
   alias Mololine.Repo
 
   alias Mololine.Vehicles.Vehicle
+  alias Mololine.Seatplans.Seatplan
 
   @doc """
   Returns the list of vehicles.
@@ -50,9 +51,16 @@ defmodule Mololine.Vehicles do
 
   """
   def create_vehicle(attrs \\ %{}) do
+    IO.puts attrs["seatplanname"]
+    seatplanname = attrs["seatplanname"]
+    seatplan  = Repo.get_by(Seatplan,name: seatplanname)
+    IO.puts "seatplan is ...."
+    IO.inspect seatplan
     %Vehicle{}
     |> Vehicle.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:seatplan,seatplan)
     |> Repo.insert()
+
   end
 
   @doc """
