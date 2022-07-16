@@ -29,7 +29,8 @@ end %>
   <%= error_tag f, :date %>
 
    <%= label f, :time %>
-  <%= text_input f, :time %>
+   <p>Enter time in 12 hour format .eg 12:30:PM , please include PM or AM also the minutes </p>
+  <%= time_input f, :time %>
   <%= error_tag f, :time %>
 
 

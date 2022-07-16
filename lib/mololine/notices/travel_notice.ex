@@ -17,5 +17,7 @@ defmodule Mololine.Notices.TravelNotice do
     travel_notice
     |> cast(attrs, [:to, :from, :price, :date, :time])
     |> validate_required([:to, :from, :price,:date,:time])
+
   end
+
 end
