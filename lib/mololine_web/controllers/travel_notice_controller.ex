@@ -5,6 +5,7 @@ defmodule MololineWeb.TravelNoticeController do
   alias Mololine.Repo
   alias Mololine.Notices.TravelNotice
   alias Mololine.Towns.Town
+  alias Mololine.Vehicles.Vehicle
 
   def index(conn, _params) do
     travelnotices = Notices.list_travelnotices()
@@ -14,11 +15,15 @@ defmodule MololineWeb.TravelNoticeController do
   def new(conn, _params) do
     changeset = Notices.change_travel_notice(%TravelNotice{})
     towns = Repo.all(Town)
-    render(conn, "new.html", [changeset: changeset, towns: towns])
+    user = conn.assigns.current_user
+    vehicle = Repo.get_by(Vehicle,driveremail: user.email) |>Repo.preload(:driver)
+    render(conn, "new.html", [changeset: changeset, towns: towns,vehicle: vehicle])
   end
 
   def create(conn, %{"travel_notice" => travel_notice_params}) do
-    case Notices.create_travel_notice(travel_notice_params) do
+    user = conn.assigns.current_user
+    vehicle = Repo.get_by(Vehicle,driveremail: user.email)
+    case Notices.create_travel_notice(travel_notice_params,vehicle) do
       {:ok, travel_notice} ->
         conn
         |> put_flash(:info, "Travel notice created successfully.")

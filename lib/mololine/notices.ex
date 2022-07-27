@@ -49,9 +49,10 @@ defmodule Mololine.Notices do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_travel_notice(attrs \\ %{}) do
+  def create_travel_notice(attrs \\ %{},vehicle) do
     %TravelNotice{}
     |> TravelNotice.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:vehicle,vehicle)
     |> Repo.insert()
   end
 

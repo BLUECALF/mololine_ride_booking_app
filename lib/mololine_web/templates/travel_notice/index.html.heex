@@ -3,6 +3,7 @@
 <table>
   <thead>
     <tr>
+      <th>Vehicle Plate</th>
       <th>From</th>
       <th>To</th>
       <th>Price</th>
@@ -15,6 +16,7 @@
   <tbody>
 <%= for travel_notice <- @travelnotices do %>
     <tr>
+      <td><%= travel_notice.plate %></td>
       <td><%= travel_notice.from %></td>
       <td><%= travel_notice.to %></td>
       <td><%= travel_notice.price %></td>

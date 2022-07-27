@@ -7,11 +7,17 @@
 
 <% IO.inspect(@towns) %>
 <% towns = @towns %>
+<% vehicle = @vehicle %>
 <% towns_list = [] %>
 <%towns_list = for town <- towns do
   town.name
 end %>
- <%= label f, :from %>
+
+   <%= label f, "Vehicle Plate" %>
+   <%= select f, :plate, [vehicle.plate],required: true %>
+   <%= error_tag f, :plate %>
+
+   <%= label f, :from %>
    <%= select f, :from, towns_list,required: true %>
    <%= error_tag f, :from %>
 
