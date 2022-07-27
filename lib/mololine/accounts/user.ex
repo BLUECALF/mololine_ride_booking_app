@@ -16,6 +16,10 @@ defmodule Mololine.Accounts.User do
     # resources that he has
     has_many :parcels, Mololine.Resources.Parcel # this was added
 
+   # resources that he belong to eg
+   # driver belongs to a vehicle.
+   # conductor belongs to a vehicle.
+    belongs_to :vehicle, Mololine.Vehicles.Vehicle # this was added
     timestamps()
   end
 

@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th>Plate</th>
+      <th>Driver's Email</th>
 
       <th></th>
     </tr>
@@ -12,6 +13,7 @@
 <%= for vehicle <- @vehicles do %>
     <tr>
       <td><%= vehicle.plate %></td>
+      <td><%= vehicle.driveremail %></td>
 
       <td>
         <span><%= link "Show", to: Routes.vehicle_path(@conn, :show, vehicle) %></span>

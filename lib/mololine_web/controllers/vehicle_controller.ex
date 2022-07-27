@@ -18,6 +18,7 @@ defmodule MololineWeb.VehicleController do
   end
 
   def create(conn, %{"vehicle" => vehicle_params}) do
+    seatplans = Repo.all(Seatplan)
     case Vehicles.create_vehicle(vehicle_params) do
       {:ok, vehicle} ->
         conn
@@ -25,7 +26,7 @@ defmodule MololineWeb.VehicleController do
         |> redirect(to: Routes.vehicle_path(conn, :show, vehicle))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", [changeset: changeset, seatplans: seatplans])
     end
   end
 

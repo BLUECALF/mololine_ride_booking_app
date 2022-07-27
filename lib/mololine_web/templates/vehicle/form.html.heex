@@ -16,7 +16,11 @@ end %>
   <%= text_input f, :plate %>
   <%= error_tag f, :plate %>
 
-  <%= label f, :seatplanname %>
+  <%= label f, "Driver's Email" %>
+  <%= email_input f, :driveremail %>
+  <%= error_tag f, :driveremail %>
+
+  <%= label f, "SeatPlan Name" %>
    <%= select f, :seatplanname, seatplans_list,required: true %>
    <%= error_tag f, :seatplanname %>
   <div>

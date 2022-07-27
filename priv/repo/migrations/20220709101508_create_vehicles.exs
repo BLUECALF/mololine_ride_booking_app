@@ -5,6 +5,7 @@ defmodule Mololine.Repo.Migrations.CreateVehicles do
     create table(:vehicles) do
       add :plate, :string
       add :seatplanname, :string
+      add :driveremail, :string
 
       timestamps()
     end
