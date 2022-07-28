@@ -22,7 +22,6 @@ defmodule MololineWeb.Router do
 
     get "/", PageController, :index
     resources "/seatplans", SeatplanController
-    resources "/travelnotices", TravelNoticeController
     resources "/towns", TownController
     resources "/vehicles", VehicleController
   end
@@ -80,6 +79,8 @@ defmodule MololineWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     resources "/parcels", ParcelController
+    resources "/travelnotices", TravelNoticeController
+    resources "/bookings", BookingController
 
 
     get "/users/settings", UserSettingsController, :edit
