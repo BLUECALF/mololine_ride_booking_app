@@ -5,9 +5,13 @@
     </div>
   <% end %>
 
+   <%= label f, "Travel Notice Id"%>
+   <%= select f, :travelnotice_id, [@travelnotice_id],required: true %>
+
   <%= label f, :seat %>
   <%= text_input f, :seat %>
   <%= error_tag f, :seat %>
+
 
   <div>
     <%= submit "Save" %>

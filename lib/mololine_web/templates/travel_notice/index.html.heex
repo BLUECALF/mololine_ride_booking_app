@@ -24,6 +24,9 @@
       <td><%= travel_notice.time %></td>
 
       <td>
+
+        <span><%= link "Book", to: Routes.booking_path(@conn, :new, %{travelnotice_id: travel_notice.id}) %></span>
+        <span><%= link("Book live", to: URI.parse("http://localhost:4000/bookinglive/#{travel_notice.id}")) %></span>
         <span><%= link "Show", to: Routes.travel_notice_path(@conn, :show, travel_notice) %></span>
         <span><%= link "Edit", to: Routes.travel_notice_path(@conn, :edit, travel_notice) %></span>
         <span><%= link "Delete", to: Routes.travel_notice_path(@conn, :delete, travel_notice), method: :delete, data: [confirm: "Are you sure?"] %></span>

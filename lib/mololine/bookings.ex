@@ -49,9 +49,11 @@ defmodule Mololine.Bookings do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_booking(attrs \\ %{}) do
+  def create_booking(attrs \\ %{},user,travelnotice) do
     %Booking{}
     |> Booking.changeset(attrs)
+    |>Ecto.Changeset.put_assoc(:travelnotice,travelnotice)
+    |>Ecto.Changeset.put_assoc(:user,user)
     |> Repo.insert()
   end
 

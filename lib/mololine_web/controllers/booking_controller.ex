@@ -9,13 +9,17 @@ defmodule MololineWeb.BookingController do
     render(conn, "index.html", bookings: bookings)
   end
 
-  def new(conn, _params) do
+  def new(conn, %{"travelnotice_id" => travelnotice_id}) do
+    IO.puts "TRAVEL NOTICE ID IN THIS BOOKING IS #{travelnotice_id}"
     changeset = Bookings.change_booking(%Booking{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", [changeset: changeset, travelnotice_id: travelnotice_id])
   end
 
   def create(conn, %{"booking" => booking_params}) do
-    case Bookings.create_booking(booking_params) do
+    user = conn.assigns.current_user
+    travelnotice_id = booking_params["travelnotice_id"]
+    travelnotice = Mololine.Notices.get_travel_notice!(travelnotice_id)
+    case Bookings.create_booking(booking_params,user,travelnotice) do
       {:ok, booking} ->
       IO.inspect booking
         conn
