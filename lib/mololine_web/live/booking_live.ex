@@ -1,12 +1,16 @@
 defmodule MololineWeb.BookingLive do
   use Phoenix.LiveView
 
+
   alias Mololine.Repo
   alias Mololine.Notices
   alias Mololine.Notices.TravelNotice
   alias Mololine.Bookings.Booking
+  alias MololineWeb.Router.Helpers, as: Routes
 
-  def mount((%{"travelnotice_id" => travelnotice_id}),_session,socket) do
+  def mount((%{"travelnotice_id" => travelnotice_id}),session,socket) do
+    IO.puts "data in session is"
+    IO.inspect session
     IO.inspect (%{"travelnotice_id" => travelnotice_id})
     travelnotice = Repo.get_by(TravelNotice,id: travelnotice_id) |>Repo.preload(:vehicle)
     vehicle = travelnotice.vehicle |> Repo.preload(:seatplan)
@@ -31,6 +35,18 @@ defmodule MololineWeb.BookingLive do
   def handle_info({:update_booking, bookings},socket) do
     socket = assign(socket,:bookings,bookings)
     {:noreply,socket}
+  end
+
+  def handle_event("book", _payload,socket) do
+    selected_seats = socket.assigns.selectedseats
+    travelnotice_id = socket.assigns.travelnotice.id
+    booking_params = %{"seat" => selected_seats,"travelnotice_id" => "#{travelnotice_id}"}
+
+    IO.puts "BOOKING PARAMS IN Live are "
+    IO.inspect booking_params
+
+    selectedseats = socket.assigns.selectedseats
+    {:noreply,push_redirect(socket, to: Routes.booking_path(socket, :new, booking_params))}
   end
 
   def handle_event("select", payload,socket) do

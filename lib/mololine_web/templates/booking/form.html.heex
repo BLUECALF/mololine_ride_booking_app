@@ -6,20 +6,25 @@
   <% end %>
 
    <%= label f, "Travel Notice Id"%>
-   <%= select f, :travelnotice_id, [@travelnotice_id],required: true %>
+   <%= select f, :travelnotice_id, [@booking_params["travelnotice_id"]],required: true %>
 
+<% selectedseats = @booking_params["seat"] %>
   <% columns = ["A","B","C","D","E"]%>
     <% rows = ["1","2","3","4","5","6","7","8","9"] %>
     <br>
     <%= label f, "Seats" %>
-    <p> please select the required seats </p>
+    <p> please Confirm Your Seats </p>
     <%= for row <- rows do %>
     <%= for column <- columns do %>
 
         <tr>
           <td>
           <%= row %><%= column %>
-             <input type="checkbox" name= "booking[seat][]" id="" value={row<>column}/>
+          <%=if Enum.member?(selectedseats,row<>column) do %>
+             <input type="checkbox" name= "booking[seat][]" id="" value={row<>column} checked disabled="disabled"/>
+             <% else%>
+             <input type="checkbox" name= "booking[seat][]" id="" value={row<>column} disabled="disabled"/>
+             <% end %>
 
           </td>
         </tr>
