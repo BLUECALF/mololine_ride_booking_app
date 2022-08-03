@@ -21,7 +21,7 @@
           <td>
           <%= row %><%= column %>
           <%=if Enum.member?(selectedseats,row<>column) do %>
-             <input type="checkbox" name= "booking[seat][]" id="" value={row<>column} checked disabled="disabled"/>
+             <input type="checkbox" name= "booking[seat][]" id="" value={row<>column} checked style = "pointer-events: none;"/>
              <% else%>
              <input type="checkbox" name= "booking[seat][]" id="" value={row<>column} disabled="disabled"/>
              <% end %>
