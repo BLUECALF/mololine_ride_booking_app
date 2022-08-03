@@ -2,6 +2,7 @@ defmodule MololineWeb.BookingController do
   use MololineWeb, :controller
 
   alias Mololine.Bookings
+  alias Mololine.Repo
   alias Mololine.Bookings.Booking
 
   def index(conn, _params) do
@@ -22,6 +23,9 @@ defmodule MololineWeb.BookingController do
     case Bookings.create_booking(booking_params,user,travelnotice) do
       {:ok, booking} ->
       IO.inspect booking
+      #booking succeded
+      bookings = Repo.all(Booking,travelnotice_id: travelnotice_id)
+      Phoenix.PubSub.broadcast(Mololine.PubSub,"bookinglive#{travelnotice_id}",{:update_booking, bookings})
         conn
         |> put_flash(:info, "Booking created successfully.")
         |> redirect(to: Routes.booking_path(conn, :show, booking))

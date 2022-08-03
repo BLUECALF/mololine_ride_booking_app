@@ -11,14 +11,14 @@
 <label> Info </label>
 
  <li>
-         <button style= "background-color:black; width: 50px;height: 50px"></button>Booked
+         <button style= "background-color:gray; width: 50px;height: 50px"></button>Booked
  </li>
  <li>
          <button style= "background-color:skyblue; width: 50px;height: 50px"> </button>Selected
  </li>
 
   <li>
-         <button style= "background-color:gray; width: 50px;height: 50px"> </button>Bookable
+         <button style= "background-color:lightgreen; width: 50px;height: 50px"> </button>Bookable
  </li>
 
  <li>
@@ -27,10 +27,11 @@
 
 
 
-  <%booked_seat_list = for booking<- @bookings do
-    booking.seat
-  end %>
+  <%booked_seat_list = @bookings%>
 
+  <% IO.puts "The value in booked_seat_list is"%>
+  <% IO.inspect booked_seat_list %>
+  <% selectedseats = @selectedseats %>
   <li> <strong>Seat Plan:</strong>
             <% seats = @seats %>
             </li>
@@ -46,17 +47,32 @@
            <%=if Enum.member?(booked_seat_list,row<>column) do %>
                <tr>
                  <td>
-                    <button style= "background-color:black; width: 50px;height: 50px"><%= row %><%= column %></button>
+                    <button style= "background-color:gray; width: 50px;height: 50px"><%= row %><%= column %></button>
                  </td>
                </tr>
               <% else %>
+               <%=if Enum.member?(selectedseats,row<>column) do %>
+               <tr>
+                                          <td>
+                                             <button
+                                             phx-click="select"
+                                             value = {row<>column}
+                                             style= "background-color:skyblue ; width: 50px;height: 50px"><%= row %><%= column %></button>
+
+                                          </td>
+                             </tr>
+               <%else%>
               <tr>
                            <td>
-                              <button style= "background-color:gray ; width: 50px;height: 50px"><%= row %><%= column %></button>
+                              <button
+                              phx-click="select"
+                              value = {row<>column}
+                              style= "background-color:lightgreen ; width: 50px;height: 50px"><%= row %><%= column %></button>
 
                            </td>
               </tr>
 
+           <% end %>
            <% end %>
            <% else %>
             <tr>
@@ -67,5 +83,6 @@
                          </tr>
            <% end %>
            <% end %>
-            <br>
-           <% end %>
+           <br>
+        <% end %>
+

@@ -7,55 +7,75 @@ defmodule MololineWeb.BookingLive do
   alias Mololine.Bookings.Booking
 
   def mount((%{"travelnotice_id" => travelnotice_id}),_session,socket) do
-    IO.puts("PARAMETER PASSED TO BOOKINGLIVE")
     IO.inspect (%{"travelnotice_id" => travelnotice_id})
     travelnotice = Repo.get_by(TravelNotice,id: travelnotice_id) |>Repo.preload(:vehicle)
     vehicle = travelnotice.vehicle |> Repo.preload(:seatplan)
     seats = vehicle.seatplan.seats
     bookings = Repo.all(Booking,travelnotice_id: travelnotice_id)
-    IO.puts " Travel notice is  "
-    IO.inspect travelnotice
-    IO.puts "Seats is "
-    IO.inspect seats
-    IO.puts "Bookings are "
-    IO.inspect bookings
     case connected?(socket) do
       true ->
-        Phoenix.PubSub.subscribe(Mololine.PubSub,"update_count")
+      #subscribe to the channel
+        Phoenix.PubSub.subscribe(Mololine.PubSub,"bookinglive#{travelnotice_id}")
       false ->
         # Only subscribes when Live View is connected via socket
         IO.puts("socket is not connected.")
     end
-    socket = assign(socket,:count,0)
+
     socket = assign(socket,:travelnotice,travelnotice)
     socket = assign(socket,:seats,seats)
-    socket = assign(socket,:bookings,bookings)
+    socket = assign(socket,:selectedseats,[])
+    socket = assign(socket,:bookings,make_booked_list(bookings))
     {:ok, socket}
   end
 
-
-  def handle_event("add", payload, socket) do
-    count = socket.assigns.count + 1
-    #socket = assign(socket,:count,count)
-    broadcast_count(count)
-    IO.puts "add happend"
-    {:noreply, socket}
-  end
-  def handle_event("minus", payload, socket) do
-    count = socket.assigns.count - 1
-    #socket = assign(socket,:count,count)
-    broadcast_count(count)
-    IO.puts "minus happended"
-    {:noreply, socket}
-  end
-
-  def handle_info({:update_count, count},socket) do
-    socket = assign(socket,:count,count)
+  def handle_info({:update_booking, bookings},socket) do
+    socket = assign(socket,:bookings,bookings)
     {:noreply,socket}
   end
 
-  defp broadcast_count(count) do
-    Phoenix.PubSub.broadcast(Mololine.PubSub,"update_count",{:update_count, count})
+  def handle_event("select", payload,socket) do
+    seat  = payload["value"]
+    selectedseats = socket.assigns.selectedseats
+    if(Enum.member?(selectedseats,seat)) do
+      c= selectedseats
+      selectedseats = c -- [seat]
+      socket = assign(socket,:selectedseats,selectedseats)
+      {:noreply,socket}
+      else
+      c= selectedseats
+      selectedseats = c ++ [seat]
+      socket = assign(socket,:selectedseats,selectedseats)
+      {:noreply,socket}
+      end
+    # get seat , add to selected seats and re render.
+  end
+
+  defp broadcast(topic,event,payload) do
+    Phoenix.PubSub.broadcast(Mololine.PubSub,topic,{event, payload})
+  end
+ # need to check if has the seat,whcih is booked%>
+defp isbooked(list,seat) do
+    for item <- list do
+        if Enum.member?(item,seat) do
+          true
+        else
+          false
+        end
+   end
+   end
+   defp make_booked_list(bookings) do
+    booked_seat_list = for booking<- bookings do
+        booking.seat
+    end
+     sum_list(booked_seat_list)
+  end
+  def sum_list([]) do
+    []
+  end
+
+
+  def sum_list([h|t]) do
+    h ++ sum_list(t)
   end
 
 end

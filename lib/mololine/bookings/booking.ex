@@ -3,7 +3,7 @@ defmodule Mololine.Bookings.Booking do
   import Ecto.Changeset
 
   schema "bookings" do
-    field :seat, :string
+    field :seat, {:array,:string}
 
     #assosiations
     belongs_to :travelnotice, Mololine.Notices.TravelNotice # this was added

@@ -3,7 +3,7 @@ defmodule Mololine.Repo.Migrations.CreateBookings do
 
   def change do
     create table(:bookings) do
-      add :seat, :string
+      add :seat, {:array, :string}
 
       timestamps()
     end
