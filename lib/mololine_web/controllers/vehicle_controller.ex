@@ -36,9 +36,10 @@ defmodule MololineWeb.VehicleController do
   end
 
   def edit(conn, %{"id" => id}) do
+    seatplans = Repo.all(Seatplan)
     vehicle = Vehicles.get_vehicle!(id)
     changeset = Vehicles.change_vehicle(vehicle)
-    render(conn, "edit.html", vehicle: vehicle, changeset: changeset)
+    render(conn, "edit.html", [vehicle: vehicle, changeset: changeset, seatplans: seatplans])
   end
 
   def update(conn, %{"id" => id, "vehicle" => vehicle_params}) do

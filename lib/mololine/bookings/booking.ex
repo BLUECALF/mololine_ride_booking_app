@@ -4,6 +4,8 @@ defmodule Mololine.Bookings.Booking do
 
   schema "bookings" do
     field :seat, {:array,:string}
+    field :checked_in, :boolean, default: false
+    field :booking_id, :integer
 
     #assosiations
     belongs_to :travelnotice, Mololine.Notices.TravelNotice # this was added
@@ -14,7 +16,7 @@ defmodule Mololine.Bookings.Booking do
   @doc false
   def changeset(booking, attrs) do
     booking
-    |> cast(attrs, [:seat])
-    |> validate_required([:seat])
+    |> cast(attrs, [:seat,:booking_id])
+    |> validate_required([:seat,:booking_id])
   end
 end

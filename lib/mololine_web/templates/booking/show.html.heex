@@ -7,6 +7,16 @@
     <%= @booking.seat %>
   </li>
 
+  <li>
+      <strong>Checked in :</strong>
+      <%= @booking.checked_in %>
+  </li>
+
+  <li>
+        <strong> Booking ID :</strong>
+        <%= @booking.booking_id %>
+    </li>
+
 </ul>
 
 <span><%= link "Edit", to: Routes.booking_path(@conn, :edit, @booking) %></span> |

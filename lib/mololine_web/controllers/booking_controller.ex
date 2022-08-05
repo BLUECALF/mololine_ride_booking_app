@@ -17,6 +17,11 @@ defmodule MololineWeb.BookingController do
   end
 
   def create(conn, %{"booking" => booking_params}) do
+    {booking_id} = make_random_booking_id()
+    IO.puts "BOOKING PARAMS ARE"
+    IO.inspect booking_params
+    # adding booking_id to the booking params
+    booking_params = Map.put(booking_params, "booking_id",booking_id)
     IO.puts "BOOKING PARAMS ARE"
     IO.inspect booking_params
     user = conn.assigns.current_user
@@ -69,5 +74,21 @@ defmodule MololineWeb.BookingController do
     conn
     |> put_flash(:info, "Booking deleted successfully.")
     |> redirect(to: Routes.booking_path(conn, :index))
+  end
+  defp make_random_booking_id() do
+    random_number = :rand.uniform(999999999)
+    # find booking with this no
+    booking_with_no = Repo.get_by(Booking, booking_id: random_number)
+    if(booking_with_no != nil) do
+    {
+     # call itself
+     make_random_booking_id()
+    }
+    else
+    {
+     random_number
+    }
+    end
+    ## we need to make random booking ids for the bookings that will be used in checkins and ticket validations
   end
 end
