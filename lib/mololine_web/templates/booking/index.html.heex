@@ -3,7 +3,13 @@
 <table>
   <thead>
     <tr>
+      <th>Car Plate</th>
+      <th>From</th>
+      <th>To</th>
+      <th>Date</th>
+      <th>Time</th>
       <th>Seat</th>
+      <th>Price</th>
       <th>Checked In</th>
       <th>Booking Id</th>
 
@@ -13,7 +19,13 @@
   <tbody>
 <%= for booking <- @bookings do %>
     <tr>
+      <td><%= booking.travelnotice.plate %></td>
+      <td><%= booking.travelnotice.from %></td>
+      <td><%= booking.travelnotice.to %></td>
+      <td><%= booking.travelnotice.date %></td>
+      <td><%= booking.travelnotice.time %></td>
       <td><%= booking.seat %></td>
+     <td><%= booking.travelnotice.price %></td>
       <td><%= booking.checked_in %></td>
       <td><%= booking.booking_id %></td>
 

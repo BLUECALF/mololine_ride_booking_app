@@ -6,7 +6,7 @@ defmodule MololineWeb.BookingController do
   alias Mololine.Bookings.Booking
 
   def index(conn, _params) do
-    bookings = Bookings.list_bookings()
+    bookings = Repo.all(Booking) |> Repo.preload(:travelnotice)
     render(conn, "index.html", bookings: bookings)
   end
 
@@ -43,7 +43,7 @@ defmodule MololineWeb.BookingController do
   end
 
   def show(conn, %{"id" => id}) do
-    booking = Bookings.get_booking!(id)
+    booking = Repo.get(Booking,id) |> Repo.preload(:travelnotice)
     render(conn, "show.html", booking: booking)
   end
 
