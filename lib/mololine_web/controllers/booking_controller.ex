@@ -65,8 +65,11 @@ defmodule MololineWeb.BookingController do
 
   def delete(conn, %{"id" => id}) do
     booking = Bookings.get_booking!(id)
+    travelnotice_id = booking.travelnotice_id
     {:ok, _booking} = Bookings.delete_booking(booking)
-
+    bookings = Repo.all(Booking,travelnotice_id: travelnotice_id)
+    # broadcast the change in the bookings.
+    Phoenix.PubSub.broadcast(Mololine.PubSub,"bookinglive#{travelnotice_id}",{:update_booking, bookings})
     conn
     |> put_flash(:info, "Booking deleted successfully.")
     |> redirect(to: Routes.booking_path(conn, :index))
