@@ -6,6 +6,7 @@ defmodule Mololine.Repo.Migrations.CreateBookings do
       add :seat, {:array, :string}
       add :checked_in, :boolean
       add :booking_id, :integer
+      add :total_price, :integer
 
       timestamps()
     end

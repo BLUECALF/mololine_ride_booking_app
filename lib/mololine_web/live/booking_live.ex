@@ -93,5 +93,4 @@ defp isbooked(list,seat) do
   def sum_list([h|t]) do
     h ++ sum_list(t)
   end
-
 end

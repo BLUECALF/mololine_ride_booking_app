@@ -17,25 +17,21 @@ defmodule MololineWeb.BookingController do
   end
 
   def create(conn, %{"booking" => booking_params}) do
-    {booking_id} = make_random_booking_id()
-    IO.puts "BOOKING PARAMS ARE"
-    IO.inspect booking_params
-    # adding booking_id to the booking params
-    booking_params = Map.put(booking_params, "booking_id",booking_id)
-    IO.puts "BOOKING PARAMS ARE"
-    IO.inspect booking_params
     user = conn.assigns.current_user
     travelnotice_id = booking_params["travelnotice_id"]
     travelnotice = Mololine.Notices.get_travel_notice!(travelnotice_id)
+    total_price = length(booking_params["seat"]) * travelnotice.price
+    {booking_id} = make_random_booking_id()
+    # adding booking_id and totalprice to the booking params
+    booking_params = Map.put(booking_params, "booking_id",booking_id)
+    booking_params = Map.put(booking_params, "total_price",total_price)
     case Bookings.create_booking(booking_params,user,travelnotice) do
       {:ok, booking} ->
-      IO.inspect booking
-      #booking succeded
       bookings = Repo.all(Booking,travelnotice_id: travelnotice_id)
       Phoenix.PubSub.broadcast(Mololine.PubSub,"bookinglive#{travelnotice_id}",{:update_booking, bookings})
         conn
         |> put_flash(:info, "Booking created successfully.")
-        |> redirect(to: Routes.booking_path(conn, :show, booking))
+        |> redirect(to: Routes.booking_path(conn, :index))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
