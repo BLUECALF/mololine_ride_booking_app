@@ -1,0 +1,5 @@
+<h1>Edit Parcel delivery booking</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.parcel_delivery_booking_path(@conn, :update, @parcel_delivery_booking)) %>
+
+<span><%= link "Back", to: Routes.parcel_delivery_booking_path(@conn, :index) %></span>

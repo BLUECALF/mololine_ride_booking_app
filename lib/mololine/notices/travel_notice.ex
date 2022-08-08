@@ -14,8 +14,9 @@ defmodule Mololine.Notices.TravelNotice do
     # associations
     belongs_to :vehicle, Mololine.Vehicles.Vehicle # this was added
 
-   #travel notice has many bookings.
+   #travel notice has many bookings and many parceldeliverybookings.
     has_many :bookings, Mololine.Bookings.Booking # this was added
+    has_many :parceldeliverybookings, Mololine.ParcelBookings.ParcelDeliveryBooking # this was added
 
     timestamps()
   end

@@ -1,0 +1,38 @@
+<h1>Show Parcel delivery booking</h1>
+
+<ul>
+
+  <li>
+    <strong>Parcel:</strong>
+    <%= @parcel_delivery_booking.parcel_id %>
+  </li>
+
+  <li>
+    <strong>Pickuppoint:</strong>
+    <%= @parcel_delivery_booking.pickuppoint %>
+  </li>
+
+  <li>
+    <strong>Droppoint:</strong>
+    <%= @parcel_delivery_booking.droppoint %>
+  </li>
+
+  <li>
+    <strong>Checked in:</strong>
+    <%= @parcel_delivery_booking.checked_in %>
+  </li>
+
+  <li>
+    <strong>Checked out:</strong>
+    <%= @parcel_delivery_booking.checked_out %>
+  </li>
+
+  <li>
+    <strong>Delivered:</strong>
+    <%= @parcel_delivery_booking.delivered %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.parcel_delivery_booking_path(@conn, :edit, @parcel_delivery_booking) %></span> |
+<span><%= link "Back", to: Routes.parcel_delivery_booking_path(@conn, :index) %></span>

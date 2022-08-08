@@ -79,9 +79,10 @@ defmodule MololineWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     resources "/parcels", ParcelController
+    resources "/parceldeliverybookings", ParcelDeliveryBookingController
     resources "/travelnotices", TravelNoticeController
     resources "/bookings", BookingController
-    live "bookinglive/:travelnotice_id", BookingLive
+    live "/bookinglive/:travelnotice_id", BookingLive
 
 
     get "/users/settings", UserSettingsController, :edit
