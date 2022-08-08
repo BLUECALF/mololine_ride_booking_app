@@ -3,7 +3,7 @@
 <table>
   <thead>
     <tr>
-      <th>Parcel</th>
+      <th>Parcel Unique Id</th>
       <th>Pickuppoint</th>
       <th>Droppoint</th>
       <th>Checked in</th>
@@ -16,7 +16,7 @@
   <tbody>
 <%= for parcel_delivery_booking <- @parceldeliverybooking do %>
     <tr>
-      <td><%= parcel_delivery_booking.parcel_id %></td>
+      <td><%= parcel_delivery_booking.parcel_unique_id %></td>
       <td><%= parcel_delivery_booking.pickuppoint %></td>
       <td><%= parcel_delivery_booking.droppoint %></td>
       <td><%= parcel_delivery_booking.checked_in %></td>
