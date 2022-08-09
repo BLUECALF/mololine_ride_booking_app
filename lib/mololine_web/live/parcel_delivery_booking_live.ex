@@ -3,31 +3,33 @@ defmodule MololineWeb.ParcelDeliveryBookingLive do
 
   alias Mololine.Repo
   alias Mololine.Notices
+  alias Mololine.Towns.Town
+  alias Mololine.Accounts.User
   alias Mololine.Notices.TravelNotice
+  alias Mololine.Resources.Parcel
   alias Mololine.Bookings.Booking
   alias MololineWeb.Router.Helpers, as: Routes
 
-  def mount((%{"travelnotice_id" => travelnotice_id}),session,socket) do
-    IO.puts "data in session is"
-    IO.inspect session
-    IO.inspect (%{"travelnotice_id" => travelnotice_id})
+  def mount((%{"travelnotice_id" => travelnotice_id,"user_id" => user_id}),session,socket) do
+
     travelnotice = Repo.get_by(TravelNotice,id: travelnotice_id) |>Repo.preload(:vehicle)
-    vehicle = travelnotice.vehicle |> Repo.preload(:seatplan)
-    seats = vehicle.seatplan.seats
-    bookings = Repo.all(Booking,travelnotice_id: travelnotice_id)
+    vehicle = travelnotice.vehicle
+    user = Repo.get_by(User, id: user_id) |> Repo.preload(:parcels)
+    parcel_list = user.parcels
+    town_list = Repo.all(Town)
     case connected?(socket) do
       true ->
       #subscribe to the channel
-        Phoenix.PubSub.subscribe(Mololine.PubSub,"bookinglive#{travelnotice_id}")
+        Phoenix.PubSub.subscribe(Mololine.PubSub,"parceldeliverybookinglive#{travelnotice_id}")
       false ->
         # Only subscribes when Live View is connected via socket
         IO.puts("socket is not connected.")
     end
 
+    # we need parcel information and towns information.
     socket = assign(socket,:travelnotice,travelnotice)
-    socket = assign(socket,:seats,seats)
-    socket = assign(socket,:selectedseats,[])
-    socket = assign(socket,:bookings,make_booked_list(bookings))
+    socket = assign(socket,:parcel_list,parcel_list)
+    socket = assign(socket,:town_list,town_list)
     {:ok, socket}
   end
 
@@ -37,59 +39,16 @@ defmodule MololineWeb.ParcelDeliveryBookingLive do
   end
 
   def handle_event("book", _payload,socket) do
-    selected_seats = socket.assigns.selectedseats
-    travelnotice_id = socket.assigns.travelnotice.id
-    booking_params = %{"seat" => selected_seats,"travelnotice_id" => "#{travelnotice_id}"}
-
-    IO.puts "BOOKING PARAMS IN Live are "
-    IO.inspect booking_params
-
-    selectedseats = socket.assigns.selectedseats
-    {:noreply,push_redirect(socket, to: Routes.booking_path(socket, :new, booking_params))}
+    {:noreply,push_redirect(socket, to: Routes.parcel_delivery_booking_path(socket, :new, "booking_params"))}
   end
 
   def handle_event("select", payload,socket) do
-    seat  = payload["value"]
-    selectedseats = socket.assigns.selectedseats
-    if(Enum.member?(selectedseats,seat)) do
-      c= selectedseats
-      selectedseats = c -- [seat]
-      socket = assign(socket,:selectedseats,selectedseats)
-      {:noreply,socket}
-      else
-      c= selectedseats
-      selectedseats = c ++ [seat]
-      socket = assign(socket,:selectedseats,selectedseats)
-      {:noreply,socket}
-      end
-    # get seat , add to selected seats and re render.
+    IO.puts "THE PAYLOAD IX"
+    IO.inspect payload
   end
 
   defp broadcast(topic,event,payload) do
     Phoenix.PubSub.broadcast(Mololine.PubSub,topic,{event, payload})
   end
- # need to check if has the seat,whcih is booked%>
-defp isbooked(list,seat) do
-    for item <- list do
-        if Enum.member?(item,seat) do
-          true
-        else
-          false
-        end
-   end
-   end
-   defp make_booked_list(bookings) do
-    booked_seat_list = for booking<- bookings do
-        booking.seat
-    end
-     sum_list(booked_seat_list)
-  end
-  def sum_list([]) do
-    []
-  end
 
-
-  def sum_list([h|t]) do
-    h ++ sum_list(t)
-  end
 end

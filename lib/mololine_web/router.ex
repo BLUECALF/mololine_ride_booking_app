@@ -83,7 +83,7 @@ defmodule MololineWeb.Router do
     resources "/travelnotices", TravelNoticeController
     resources "/bookings", BookingController
     live "/bookinglive/:travelnotice_id", BookingLive
-    live "/parceldeliverybookinglive/:travelnotice_id", ParcelDeliveryBookingLive
+    live "/parceldeliverybookinglive/:travelnotice_id/:user_id", ParcelDeliveryBookingLive
 
 
     get "/users/settings", UserSettingsController, :edit

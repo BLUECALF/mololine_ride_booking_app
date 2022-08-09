@@ -9,68 +9,43 @@
         Drivers Email :<%= @travelnotice.vehicle.driveremail %>
     </li>
     <li>
-        Vehicle Plate: <%= @travelnotice.vehicle.plate%>
+        Vehicle Plate: <%= @travelnotice.plate%>
     </li>
      </strong>
  </ul>
+<table>
+  <thead>
+    <tr>
+      <th>Parcel ID</th>
+      <th>Recipient Name</th>
+      <th>Recipient Phone</th>
+      <th>Weight</th>
+      <th>PIN secret</th>
 
-  <%booked_seat_list = @bookings%>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for parcel <- @parcel_list do %>
+    <tr>
+      <td><%= parcel.id %></td>
+      <td><%= parcel.recipient_name %></td>
+      <td><%= parcel.recipient_phone %></td>
+      <td><%= parcel.weight %></td>
+      <td><%= parcel.pin %></td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+<%towns_list = for town <- @town_list do
+  town.name
+end %>
+<%= towns_list = towns_list ++ ["Custom location"] %>
 
-  <% IO.puts "The value in booked_seat_list is"%>
-  <% IO.inspect booked_seat_list %>
-  <% selectedseats = @selectedseats %>
-  <li> <strong>Seat Plan:</strong>
-            <% seats = @seats %>
-            </li>
-         <% columns = ["A","B","C","D","E"]%>
-           <% rows = ["1","2","3","4","5","6","7","8","9"] %>
-           <br>
-           <%= for row <- rows do %>
-           <%= for column <- columns do %>
+<% # inputs for the parcel booking %>
 
 
-
-           <%=if Enum.member?(seats,row<>column) do %>
-           <%=if Enum.member?(booked_seat_list,row<>column) do %>
-               <tr>
-                 <td>
-                    <button style= "background-color:gray; width: 50px;height: 50px"><%= row %><%= column %></button>
-                 </td>
-               </tr>
-              <% else %>
-               <%=if Enum.member?(selectedseats,row<>column) do %>
-               <tr>
-                                          <td>
-                                             <button
-                                             phx-click="select"
-                                             value = {row<>column}
-                                             style= "background-color:skyblue ; width: 50px;height: 50px"><%= row %><%= column %></button>
-
-                                          </td>
-                             </tr>
-               <%else%>
-              <tr>
-                           <td>
-                              <button
-                              phx-click="select"
-                              value = {row<>column}
-                              style= "background-color:lightgreen ; width: 50px;height: 50px"><%= row %><%= column %></button>
-
-                           </td>
-              </tr>
-
-           <% end %>
-           <% end %>
-           <% else %>
-            <tr>
-                                      <td>
-                                         <button style= "background-color:white ; width: 50px;height: 50px"><%= row %><%= column %></button>
-
-                                      </td>
-                         </tr>
-           <% end %>
-           <% end %>
-           <br>
-        <% end %>
-<li> <strong>Total Price: <%= length(selectedseats) * @travelnotice.price%> Ksh </strong></li>
 <button phx-click= "book"> Book </button>
