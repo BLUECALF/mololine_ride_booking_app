@@ -30,6 +30,8 @@ defmodule MololineWeb.ParcelDeliveryBookingLive do
     socket = assign(socket,:travelnotice,travelnotice)
     socket = assign(socket,:parcel_list,parcel_list)
     socket = assign(socket,:town_list,town_list)
+    socket = assign(socket,:custom_pickuppoint,false)
+    socket = assign(socket,:custom_droppoint,false)
     {:ok, socket}
   end
 
@@ -42,9 +44,44 @@ defmodule MololineWeb.ParcelDeliveryBookingLive do
     {:noreply,push_redirect(socket, to: Routes.parcel_delivery_booking_path(socket, :new, "booking_params"))}
   end
 
-  def handle_event("select", payload,socket) do
-    IO.puts "THE PAYLOAD IX"
+  def handle_event("select_parcel", payload,socket) do
+    socket = assign(socket,:parcel_unique_id,payload["value"])
+    {:noreply,socket}
+  end
+
+  def handle_event("submit", payload,socket) do
+    IO.puts "The  liveview Form was submitted "
     IO.inspect payload
+    {:noreply,socket}
+  end
+  def handle_event("select_pickuppoint", payload,socket) do
+    IO.puts "THE PAYLOAD in pickup point is"
+    IO.inspect payload
+    socket = assign(socket,:pickuppoint,payload["value"])
+    # if i have selected custom_pickup point make , it true in assigns
+    if(payload["value"] == "Custom Location") do
+      socket = assign(socket,:custom_pickuppoint,true)
+      {:noreply,socket}
+      else
+      socket = assign(socket,:custom_pickuppoint,false)
+      {:noreply,socket}
+    end
+
+  end
+
+
+  def handle_event("select_droppoint", payload,socket) do
+    IO.puts "THE PAYLOAD in drop point is"
+    IO.inspect payload
+    socket = assign(socket,:droppoint,payload["value"])
+    # if i have selected custom_droppoint make , it true in assigns
+    if(payload["value"] == "Custom Location") do
+      socket = assign(socket,:custom_droppoint,true)
+      {:noreply,socket}
+    else
+      socket = assign(socket,:custom_droppoint,false)
+      {:noreply,socket}
+    end
   end
 
   defp broadcast(topic,event,payload) do

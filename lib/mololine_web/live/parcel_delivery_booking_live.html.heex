@@ -43,9 +43,60 @@
 <%towns_list = for town <- @town_list do
   town.name
 end %>
-<%= towns_list = towns_list ++ ["Custom location"] %>
+<%towns_list = towns_list ++ ["Custom Location"] %>
+
+<form phx-submit="submit" >
 
 <% # inputs for the parcel booking %>
+<label>Parcel ID </label>
+<select name="parcel_unique_id">
+<%= for parcel <- @parcel_list do %>
+<option value = {parcel.id} phx-click = "select_parcel">
+<%=parcel.id %> </option>
+<% end %>
+</select>
 
+<label>Pick Up point</label>
+<select name="pickuppoint">
+<%= for town <- towns_list do %>
+<option value = {town} phx-click="select_pickuppoint">
+<%=town %>
+</option>
+<% end %>
+</select>
 
-<button phx-click= "book"> Book </button>
+<% # if we have custom pickup point, add phone and email , else dont add details%>
+<%= if @custom_pickuppoint do%>
+<label> Enter Your Phone Number</label>
+<input type ="text" name ="pickuppoint_phone">
+
+<label> Enter Pick Up Location</label>
+<input type ="text" name ="pickuppoint_location">
+
+<label> Enter Your Email Address </label>
+<input type ="text" name ="pickuppoint_email">
+<% end %>
+
+<label>Drop Point</label>
+<select name="droppoint">
+<%= for town <- towns_list do %>
+<option value = {town} phx-click="select_droppoint">
+<%=town %> </option>
+<% end %>
+</select>
+
+<% # if we have custom Drop point, add phone and email , else don't add details%>
+<%= if @custom_droppoint do%>
+<label> Enter Your Phone Number</label>
+<input type ="text" name ="droppoint_phone">
+
+<label> Enter Pick Up Location</label>
+<input type ="text" name ="droppoint_location">
+
+<label> Enter Your Email Address </label>
+<input type ="text" name ="droppoint_email">
+<% end %>
+<br>
+<br>
+<button type="submit" > Book Parcel Delivery</button>
+</form>
