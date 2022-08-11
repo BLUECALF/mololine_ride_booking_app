@@ -5,7 +5,13 @@
     <tr>
       <th>Parcel Unique Id</th>
       <th>Pickuppoint</th>
+      <th>Pickuppoint Email</th>
+      <th>Pickuppoint Location</th>
+      <th>Pickuppoint Phone</th>
       <th>Droppoint</th>
+      <th>Droppoint Email</th>
+      <th>Droppoint Location</th>
+      <th>Droppoint Phone</th>
       <th>Checked in</th>
       <th>Checked out</th>
       <th>Delivered</th>
@@ -18,14 +24,20 @@
     <tr>
       <td><%= parcel_delivery_booking.parcel_unique_id %></td>
       <td><%= parcel_delivery_booking.pickuppoint %></td>
+      <td><%= parcel_delivery_booking.pickuppoint_email %></td>
+      <td><%= parcel_delivery_booking.pickuppoint_location %></td>
+      <td><%= parcel_delivery_booking.pickuppoint_phone %></td>
       <td><%= parcel_delivery_booking.droppoint %></td>
+      <td><%= parcel_delivery_booking.droppoint_email %></td>
+      <td><%= parcel_delivery_booking.droppoint_location %></td>
+      <td><%= parcel_delivery_booking.droppoint_phone %></td>
       <td><%= parcel_delivery_booking.checked_in %></td>
       <td><%= parcel_delivery_booking.checked_out %></td>
       <td><%= parcel_delivery_booking.delivered %></td>
 
       <td>
-        <span><%= link "Show", to: Routes.parcel_delivery_booking_path(@conn, :show, parcel_delivery_booking) %></span>
-        <span><%= link "Edit", to: Routes.parcel_delivery_booking_path(@conn, :edit, parcel_delivery_booking) %></span>
+        <span><% link "Show", to: Routes.parcel_delivery_booking_path(@conn, :show, parcel_delivery_booking) %></span>
+        <span><% link "Edit", to: Routes.parcel_delivery_booking_path(@conn, :edit, parcel_delivery_booking) %></span>
         <span><%= link "Delete", to: Routes.parcel_delivery_booking_path(@conn, :delete, parcel_delivery_booking), method: :delete, data: [confirm: "Are you sure?"] %></span>
       </td>
     </tr>

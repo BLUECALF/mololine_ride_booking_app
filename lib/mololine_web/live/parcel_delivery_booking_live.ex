@@ -32,6 +32,7 @@ defmodule MololineWeb.ParcelDeliveryBookingLive do
     socket = assign(socket,:town_list,town_list)
     socket = assign(socket,:custom_pickuppoint,false)
     socket = assign(socket,:custom_droppoint,false)
+    socket = assign(socket,:user,user)
     {:ok, socket}
   end
 
@@ -40,9 +41,6 @@ defmodule MololineWeb.ParcelDeliveryBookingLive do
     {:noreply,socket}
   end
 
-  def handle_event("book", _payload,socket) do
-    {:noreply,push_redirect(socket, to: Routes.parcel_delivery_booking_path(socket, :new, "booking_params"))}
-  end
 
   def handle_event("select_parcel", payload,socket) do
     socket = assign(socket,:parcel_unique_id,payload["value"])
@@ -52,7 +50,7 @@ defmodule MololineWeb.ParcelDeliveryBookingLive do
   def handle_event("submit", payload,socket) do
     IO.puts "The  liveview Form was submitted "
     IO.inspect payload
-    {:noreply,socket}
+    {:noreply,push_redirect(socket, to: Routes.parcel_delivery_booking_path(socket, :new, payload))}
   end
   def handle_event("select_pickuppoint", payload,socket) do
     IO.puts "THE PAYLOAD in pickup point is"
@@ -66,7 +64,6 @@ defmodule MololineWeb.ParcelDeliveryBookingLive do
       socket = assign(socket,:custom_pickuppoint,false)
       {:noreply,socket}
     end
-
   end
 
 

@@ -9,9 +9,11 @@ defmodule MololineWeb.ParcelDeliveryBookingController do
     render(conn, "index.html", parceldeliverybooking: parceldeliverybooking)
   end
 
-  def new(conn, _params) do
+  def new(conn, booking_params) do
+    IO.puts "booking params in new parcel deliv is "
+    IO.inspect booking_params
     changeset = ParcelBookings.change_parcel_delivery_booking(%ParcelDeliveryBooking{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", [changeset: changeset, booking_params: booking_params])
   end
 
   def create(conn, %{"parcel_delivery_booking" => parcel_delivery_booking_params}) do

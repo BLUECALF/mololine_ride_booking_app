@@ -11,6 +11,9 @@
     <li>
         Vehicle Plate: <%= @travelnotice.plate%>
     </li>
+    <li>
+       Route : <%= @travelnotice.from%> To <%= @travelnotice.to%>
+    </li>
      </strong>
  </ul>
 <table>
@@ -68,13 +71,13 @@ end %>
 <% # if we have custom pickup point, add phone and email , else dont add details%>
 <%= if @custom_pickuppoint do%>
 <label> Enter Your Phone Number</label>
-<input type ="text" name ="pickuppoint_phone">
+<input type ="number" name ="pickuppoint_phone" value={@user.phone} required>
 
 <label> Enter Pick Up Location</label>
-<input type ="text" name ="pickuppoint_location">
+<input type ="text" name ="pickuppoint_location" required>
 
 <label> Enter Your Email Address </label>
-<input type ="text" name ="pickuppoint_email">
+<input type ="email" name ="pickuppoint_email" value={@user.email} required>
 <% end %>
 
 <label>Drop Point</label>
@@ -88,13 +91,13 @@ end %>
 <% # if we have custom Drop point, add phone and email , else don't add details%>
 <%= if @custom_droppoint do%>
 <label> Enter Your Phone Number</label>
-<input type ="text" name ="droppoint_phone">
+<input type ="number" name ="droppoint_phone" required>
 
-<label> Enter Pick Up Location</label>
-<input type ="text" name ="droppoint_location">
+<label> Enter Drop Point Location</label>
+<input type ="text" name ="droppoint_location" required>
 
 <label> Enter Your Email Address </label>
-<input type ="text" name ="droppoint_email">
+<input type ="email" name ="droppoint_email" required>
 <% end %>
 <br>
 <br>
