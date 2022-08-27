@@ -1,5 +1,6 @@
 defmodule MololineWeb.ParcelController do
   use MololineWeb, :controller
+  import Mololine.Email
 
   alias Mololine.Resources
   alias Mololine.Resources.Parcel
@@ -8,6 +9,8 @@ defmodule MololineWeb.ParcelController do
 
   def index(conn, _params) do
     parcels = Resources.list_parcels()
+    email = conn.assigns.current_user.email
+    write_email(email,"hi","able bodied")
     render(conn, "index.html", parcels: parcels)
   end
 

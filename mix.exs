@@ -20,7 +20,7 @@ defmodule Mololine.MixProject do
   def application do
     [
       mod: {Mololine.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :bamboo]
     ]
   end
 
@@ -51,6 +51,8 @@ defmodule Mololine.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:bodyguard, "~> 2.2"},
+      {:bamboo, "~> 1.5"},
+      {:bamboo_smtp, "~> 3.0.0"},
     ]
   end
 
