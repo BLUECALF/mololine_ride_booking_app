@@ -1,18 +1,18 @@
 defmodule Mololine.Accounts.UserNotifier do
-  import Swoosh.Email
-
+  import Bamboo.Email
+  import Mololine.Mailer
   alias Mololine.Mailer
 
   # Delivers the email using the application mailer.
   defp deliver(recipient, subject, body) do
     email =
-      new()
+      new_email()
       |> to(recipient)
       |> from({"Mololine", "contact@example.com"})
       |> subject(subject)
       |> text_body(body)
 
-    with {:ok, _metadata} <- Mailer.deliver(email) do
+    with {:ok, _metadata} <- Mailer.deliver_now(email) do
       {:ok, email}
     end
   end
