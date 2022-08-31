@@ -7,27 +7,19 @@
   <article class="column">
     <h2>Resources</h2>
     <ul>
-      <li>
-        <a href="https://hexdocs.pm/phoenix/overview.html">Guides &amp; Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix/blob/v1.6/CHANGELOG.md">v1.6 Changelog</a>
-      </li>
-    </ul>
-  </article>
-  <article class="column">
-    <h2>Resources</h2>
-    <ul>
-      <li><a href="http://localhost:4000/parcels">Parcels</a></li>
-      <li><a href="http://localhost:4000/seatplans">Seatplans</a></li>
-      <li><a href="http://localhost:4000/vehicles">vehicles</a></li>
-      <li><a href="http://localhost:4000/travelnotices">Travel Notices</a></li>
-      <li><a href="http://localhost:4000/towns">Towns</a></li>
-      <li><a href="http://localhost:4000/bookings">Bookings</a></li>
-      <li><a href="http://localhost:4000/parceldeliverybooking">Parcel Delivery Bookings</a></li>
+    <% @conn.host%>
+    <% @conn.port%>
+    <% host = @conn.host%>
+    <% port = @conn.port%>
+    <% base_url = "http://#{host}:#{port}"%>
+    <label> <%=base_url%></label>
+      <li><a href= {base_url <> "/parcels"}>Parcels</a></li>
+      <li><a href={base_url <> "/seatplans"}>Seatplans</a></li>
+      <li><a href={base_url <> "/vehicles"}>vehicles</a></li>
+      <li><a href={base_url <> "/travelnotices"}>Travel Notices</a></li>
+      <li><a href={base_url <> "/towns"}>Towns</a></li>
+      <li><a href={base_url <> "/bookings"}>Bookings</a></li>
+      <li><a href={base_url <> "/parceldeliverybooking"}>Parcel Delivery Bookings</a></li>
     </ul>
   </article>
 </section>

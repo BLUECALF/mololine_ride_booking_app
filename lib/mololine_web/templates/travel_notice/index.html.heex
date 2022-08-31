@@ -24,11 +24,11 @@
       <td><%= travel_notice.time %></td>
 
       <td>
-        <span><%= link("Book live", to: URI.parse("http://localhost:4000/bookinglive/#{travel_notice.id}")) %></span>
+        <span><%= link("Book live", to: URI.parse("http://#{@conn.host}:#{@conn.port}/bookinglive/#{travel_notice.id}")) %></span>
         <% # Have to get User ID  %>
         <% user_id = @current_user.id %>
 
-        <span><%= link("Book Parcel Delivery live", to: URI.parse("http://localhost:4000/parceldeliverybookinglive/#{travel_notice.id}/#{user_id}")) %></span>
+        <span><%= link("Book Parcel Delivery live", to: URI.parse("http://#{@conn.host}:#{@conn.port}/parceldeliverybookinglive/#{travel_notice.id}/#{user_id}")) %></span>
         <span><%= link "Edit", to: Routes.travel_notice_path(@conn, :edit, travel_notice) %></span>
         <span><%= link "Delete", to: Routes.travel_notice_path(@conn, :delete, travel_notice), method: :delete, data: [confirm: "Are you sure?"] %></span>
       </td>
