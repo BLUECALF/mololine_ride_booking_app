@@ -90,7 +90,7 @@ defmodule Mololine.Resources do
 
   """
   def delete_parcel(%Parcel{} = parcel, %User{} = user) do
-    with :ok <- Bodyguard.permit(Mololine.Resources, :delete_parcel, user, parcel) do
+    with :ok <- Bodyguard.permit(Mololine.Authorization.Policy, :delete_parcel, user, parcel) do
       Repo.delete(parcel)
     end
   end
