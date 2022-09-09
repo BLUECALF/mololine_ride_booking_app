@@ -16,9 +16,7 @@ defmodule MololineWeb.PageController do
     "manager" -> render(conn,"manager_page.html")
     "hr" -> render(conn,"hr_page.html")
     "accountant" -> render(conn,"accountant_page.html")
+    _ -> render(conn, "index.html")
     end
-
-
-    render(conn, "customer_page.html")
   end
 end
