@@ -78,6 +78,7 @@ defmodule MololineWeb.Router do
   scope "/", MololineWeb do
     pipe_through [:browser, :require_authenticated_user]
 
+    get "/home", PageController, :home
     resources "/parcels", ParcelController
     resources "/parceldeliverybooking", ParcelDeliveryBookingController
     resources "/travelnotices", TravelNoticeController
