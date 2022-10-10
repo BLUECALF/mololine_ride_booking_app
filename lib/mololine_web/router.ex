@@ -20,7 +20,7 @@ defmodule MololineWeb.Router do
   scope "/", MololineWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+
     resources "/seatplans", SeatplanController
     resources "/towns", TownController
     resources "/vehicles", VehicleController
@@ -76,7 +76,7 @@ defmodule MololineWeb.Router do
 
   scope "/", MololineWeb do
     pipe_through [:browser, :require_authenticated_user]
-
+    get "/", PageController, :index
     resources "/parcels", ParcelController
     resources "/parceldeliverybooking", ParcelDeliveryBookingController
     resources "/travelnotices", TravelNoticeController
