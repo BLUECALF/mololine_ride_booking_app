@@ -1,0 +1,36 @@
+<h1>Listing Travelnotices For Drivers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Vehicle Plate</th>
+      <th>From</th>
+      <th>To</th>
+      <th>Price</th>
+      <th>Date</th>
+      <th>Departure Time</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for travel_notice <- @travelnotices do %>
+    <tr>
+      <td><%= travel_notice.plate %></td>
+      <td><%= travel_notice.from %></td>
+      <td><%= travel_notice.to %></td>
+      <td><%= travel_notice.price %></td>
+      <td><%= travel_notice.date %></td>
+      <td><%= travel_notice.time %></td>
+
+      <td>
+        <span><%= link("Conductor Live", to: URI.parse("http://#{@conn.host}:#{@conn.port}/conductorlive/#{travel_notice.id}")) %></span>
+        <span><%= link "Edit", to: Routes.travel_notice_path(@conn, :edit, travel_notice) %></span>
+        <span><%= link "Delete", to: Routes.travel_notice_path(@conn, :delete, travel_notice), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Travel notice", to: Routes.travel_notice_path(@conn, :new) %></span>

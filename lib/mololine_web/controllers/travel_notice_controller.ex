@@ -28,6 +28,26 @@ defmodule MololineWeb.TravelNoticeController do
       render(conn, "index.html", travelnotices: travelnotices)
    end
   end
+  def driver(conn, _params) do
+    #alias Mololine.Repo
+    #alias Mololine.Notices.TravelNotice
+
+    travelnotices = []
+    user_id = conn.assigns.current_user.id
+    IO.puts("current user id #{user_id}")
+   user = Repo.get(User,user_id) |> Repo.preload(:vehicle)
+   vehicle = user.vehicle
+   if(vehicle == nil) do
+      conn
+      |> put_flash(:error, "You have no Vehicle ... cannot make Travel notices ")
+      |>render("index.html", travelnotices: travelnotices)
+      else
+      vid = vehicle.id
+      vehicle = Repo.get(Vehicle,vid) |> Repo.preload(:travelnotices)
+      travelnotices = vehicle.travelnotices
+      render(conn, "driver.html", travelnotices: travelnotices)
+   end
+  end
 
   def new(conn, _params) do
     changeset = Notices.change_travel_notice(%TravelNotice{})

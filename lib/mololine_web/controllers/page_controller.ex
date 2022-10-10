@@ -4,7 +4,8 @@ defmodule MololineWeb.PageController do
   def index(conn, _params) do
     role = conn.assigns.current_user.role
     case role do
-      "customer" -> render(conn, "customer.html")
+      "customer" -> #render(conn, "customer.html")
+        render(conn, "admin.html")
       "admin" -> render(conn, "admin.html")
       "driver" -> render(conn, "driver.html")
       "accountant" -> render(conn, "accountant.html")
