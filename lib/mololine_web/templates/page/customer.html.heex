@@ -1,0 +1,18 @@
+
+<section class="row">
+  <article class="column">
+    <ul>
+    <% @conn.host%>
+    <% @conn.port%>
+    <% host = @conn.host%>
+    <% port = @conn.port%>
+    <% base_url = "http://#{host}:#{port}"%>
+    <h1>Customer Page</h1>
+    <label> <% base_url%></label>
+      <li><a href= {base_url <> "/parcels"}>Parcels</a></li>
+      <li><a href={base_url <> "/bookings"}>Bookings</a></li>
+      <li><a href={base_url <> "/parceldeliverybooking"}>Parcel Delivery Bookings</a></li>
+    </ul>
+  </article>
+</section>
+
