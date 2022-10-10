@@ -1,0 +1,14 @@
+<section class="row">
+  <article class="column">
+    <h1>Driver Page</h1>
+    <ul>
+    <% @conn.host%>
+    <% @conn.port%>
+    <% host = @conn.host%>
+    <% port = @conn.port%>
+    <% base_url = "http://#{host}:#{port}"%>
+    <label> <% base_url%></label>
+      <li><a href={base_url <> "/travelnotices"}>Travel Notices</a></li>
+    </ul>
+  </article>
+</section>
