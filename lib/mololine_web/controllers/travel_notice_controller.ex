@@ -6,10 +6,27 @@ defmodule MololineWeb.TravelNoticeController do
   alias Mololine.Notices.TravelNotice
   alias Mololine.Towns.Town
   alias Mololine.Vehicles.Vehicle
+  alias Mololine.Accounts.User
 
   def index(conn, _params) do
-    travelnotices = Notices.list_travelnotices()
-    render(conn, "index.html", travelnotices: travelnotices)
+    #alias Mololine.Repo
+    #alias Mololine.Notices.TravelNotice
+
+    travelnotices = []
+    user_id = conn.assigns.current_user.id
+    IO.puts("current user id #{user_id}")
+   user = Repo.get(User,user_id) |> Repo.preload(:vehicle)
+   vehicle = user.vehicle
+   if(vehicle == nil) do
+      conn
+      |> put_flash(:error, "You have no Vehicle ... cannot make Travel notices ")
+      |>render("index.html", travelnotices: travelnotices)
+      else
+      vid = vehicle.id
+      vehicle = Repo.get(Vehicle,vid) |> Repo.preload(:travelnotices)
+      travelnotices = vehicle.travelnotices
+      render(conn, "index.html", travelnotices: travelnotices)
+   end
   end
 
   def new(conn, _params) do
@@ -17,7 +34,13 @@ defmodule MololineWeb.TravelNoticeController do
     towns = Repo.all(Town)
     user = conn.assigns.current_user
     vehicle = Repo.get_by(Vehicle,driveremail: user.email) |>Repo.preload(:driver)
+    if(vehicle == nil) do
+      conn
+      |> put_flash(:error, "You have no Vehicle ... cannot make Travel notices ")
+      |>render("index.html", travelnotices: [])
+      else
     render(conn, "new.html", [changeset: changeset, towns: towns,vehicle: vehicle])
+    end
   end
 
   def create(conn, %{"travel_notice" => travel_notice_params}) do

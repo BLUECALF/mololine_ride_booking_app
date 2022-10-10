@@ -43,7 +43,6 @@ defmodule MololineWeb.Router do
 
     scope "/" do
       pipe_through :browser
-
       live_dashboard "/dashboard", metrics: MololineWeb.Telemetry
     end
   end
@@ -84,6 +83,7 @@ defmodule MololineWeb.Router do
     resources "/bookings", BookingController
     live "/bookinglive/:travelnotice_id", BookingLive
     live "/parceldeliverybookinglive/:travelnotice_id/:user_id", ParcelDeliveryBookingLive
+    live "/hrlive", HrLive
 
 
     get "/users/settings", UserSettingsController, :edit

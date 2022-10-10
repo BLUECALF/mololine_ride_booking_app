@@ -47,6 +47,11 @@ defmodule Mololine.Accounts.User do
     |> validate_email()
     |> validate_password(opts)
   end
+  def update_user_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:firstname,:lastname,:phone,:gender,:email,:role])
+    |> validate_email()
+  end
 
   defp validate_email(changeset) do
     changeset
@@ -150,4 +155,5 @@ defmodule Mololine.Accounts.User do
       add_error(changeset, :current_password, "is not valid")
     end
   end
+
 end
