@@ -1,2 +1,69 @@
 
-<label> I am conductor Live</label>
+<section class="row">
+  <article class="column">
+    <h1>Booked Person</h1>
+    <ul>
+<%=for booking <- @bookings do%>
+<%=if booking.checked_in == false do%>
+<label> <%=booking.user.firstname%><%=booking.total_price %></label>
+<%end%>
+ <%end%>
+
+
+    </ul>
+  </article>
+
+    <article class="column">
+      <h1>Checked in Person</h1>
+      <ul>
+
+ <%=for booking <- @bookings do%>
+ <%=if booking.checked_in == true do%>
+ <label> <%=booking.user.firstname%> <%=booking.user.lastname%> Ksh <%=booking.total_price %></label>
+ <%end%>
+  <%end%>
+
+      </ul>
+    </article>
+
+</section>
+<form phx-submit="submit_booking" >
+<label> Enter Booking Id</label>
+    <input type ="number" name ="booking_id" required>
+    <button type="submit" > Check in</button>
+    </form>
+
+
+<section class="row">
+  <article class="column">
+    <h1>Booked Parcel</h1>
+    <ul>
+<%=for parcel <- @parcels do%>
+<%=if parcel.checked_in == false do%>
+<label> <%=parcel.parcel_unique_id%></label>
+<%end%>
+ <%end%>
+
+
+    </ul>
+  </article>
+
+    <article class="column">
+      <h1>Checked in Parcel</h1>
+      <ul>
+
+ <%=for parcel <- @parcels do%>
+ <%=if parcel.checked_in == true do%>
+ <label> <%=parcel.parcel_unique_id%> </label>
+ <%end%>
+  <%end%>
+
+      </ul>
+    </article>
+
+</section>
+<form phx-submit="submit" >
+<label> Enter Booking Id</label>
+    <input type ="number" name ="booking_id" required>
+    <button type="submit" > Check in</button>
+    </form>

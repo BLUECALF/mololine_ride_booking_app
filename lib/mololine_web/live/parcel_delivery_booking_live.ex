@@ -50,7 +50,8 @@ defmodule MololineWeb.ParcelDeliveryBookingLive do
   def handle_event("submit", payload,socket) do
     IO.puts "The  liveview Form was submitted "
     IO.inspect payload
-    {:noreply,push_redirect(socket, to: Routes.parcel_delivery_booking_path(socket, :new, payload))}
+    parcel_booking_params= Map.put(payload,"travelnotice_id", socket.assigns.travelnotice.id)
+    {:noreply,push_redirect(socket, to: Routes.parcel_delivery_booking_path(socket, :new, parcel_booking_params))}
   end
   def handle_event("select_pickuppoint", payload,socket) do
     IO.puts "THE PAYLOAD in pickup point is"

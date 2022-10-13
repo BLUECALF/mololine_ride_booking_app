@@ -2,6 +2,7 @@ defmodule MololineWeb.ParcelDeliveryBookingController do
   use MololineWeb, :controller
 
   alias Mololine.ParcelBookings
+  alias Mololine.Resources.Parcel
   alias Mololine.ParcelBookings.ParcelDeliveryBooking
 
   def index(conn, _params) do
@@ -9,15 +10,20 @@ defmodule MololineWeb.ParcelDeliveryBookingController do
     render(conn, "index.html", parceldeliverybooking: parceldeliverybooking)
   end
 
-  def new(conn, booking_params) do
+  def new(conn, parcel_booking_params) do
     IO.puts "booking params in new parcel deliv is "
-    IO.inspect booking_params
+    IO.inspect parcel_booking_params
     changeset = ParcelBookings.change_parcel_delivery_booking(%ParcelDeliveryBooking{})
-    render(conn, "new.html", [changeset: changeset, booking_params: booking_params])
+    render(conn, "new.html", [changeset: changeset, parcel_booking_params: parcel_booking_params])
   end
 
   def create(conn, %{"parcel_delivery_booking" => parcel_delivery_booking_params}) do
-    case ParcelBookings.create_parcel_delivery_booking(parcel_delivery_booking_params) do
+    IO.inspect parcel_delivery_booking_params
+    travelnotice_id = parcel_delivery_booking_params["travelnotice_id"]
+    travelnotice = Mololine.Notices.get_travel_notice!(travelnotice_id)
+    parcel_unique_id = parcel_delivery_booking_params["parcel_unique_id"]
+    parcel = Mololine.Resources.get_parcel!(parcel_unique_id)
+    case ParcelBookings.create_parcel_delivery_booking(parcel_delivery_booking_params,parcel,travelnotice) do
       {:ok, parcel_delivery_booking} ->
         conn
         |> put_flash(:info, "Parcel delivery booking created successfully.")
