@@ -3,6 +3,7 @@ defmodule MololineWeb.ParcelDeliveryBookingController do
 
   alias Mololine.ParcelBookings
   alias Mololine.Resources.Parcel
+  alias Mololine.Repo
   alias Mololine.ParcelBookings.ParcelDeliveryBooking
 
   def index(conn, _params) do
@@ -18,11 +19,14 @@ defmodule MololineWeb.ParcelDeliveryBookingController do
   end
 
   def create(conn, %{"parcel_delivery_booking" => parcel_delivery_booking_params}) do
-    IO.inspect parcel_delivery_booking_params
+
     travelnotice_id = parcel_delivery_booking_params["travelnotice_id"]
     travelnotice = Mololine.Notices.get_travel_notice!(travelnotice_id)
     parcel_unique_id = parcel_delivery_booking_params["parcel_unique_id"]
     parcel = Mololine.Resources.get_parcel!(parcel_unique_id)
+    {booking_id} = make_random_booking_id1()
+    parcel_delivery_booking_params = Map.put(parcel_delivery_booking_params, "booking_id",booking_id)
+    IO.inspect parcel_delivery_booking_params
     case ParcelBookings.create_parcel_delivery_booking(parcel_delivery_booking_params,parcel,travelnotice) do
       {:ok, parcel_delivery_booking} ->
         conn
@@ -66,5 +70,21 @@ defmodule MololineWeb.ParcelDeliveryBookingController do
     conn
     |> put_flash(:info, "Parcel delivery booking deleted successfully.")
     |> redirect(to: Routes.parcel_delivery_booking_path(conn, :index))
+  end
+  defp make_random_booking_id1() do
+    random_number = :rand.uniform(999999999)
+    # find booking with this no
+    booking_with_no = Repo.get_by(ParcelDeliveryBooking, booking_id: random_number)
+    if(booking_with_no != nil) do
+      {
+        # call itself
+        make_random_booking_id1()
+      }
+    else
+      {
+        random_number
+      }
+    end
+    ## we need to make random booking ids for the bookings that will be used in checkins and ticket validations
   end
 end

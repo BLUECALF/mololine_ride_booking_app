@@ -6,12 +6,14 @@ defmodule MololineWeb.ConductorLive do
   alias Mololine.Notices
   alias Mololine.Notices.TravelNotice
   alias Mololine.Bookings
+  alias Mololine.ParcelBookings
   alias Mololine.Bookings.Booking
   alias Mololine.ParcelBookings.ParcelDeliveryBooking
+  alias Mololine.Resources.Parcel
 
   def mount((%{"travelnotice_id" => travelnotice_id}),session,socket) do
     bookings = Repo.all(Booking,travelnotice_id: travelnotice_id) |> Repo.preload(:user)
-    parcels = Repo.all(ParcelDeliveryBooking,travelnotice_id: travelnotice_id) |>Repo.preload(:travelnotice)
+    parcels = Repo.all(ParcelDeliveryBooking,travelnotice_id: travelnotice_id) |>Repo.preload(:parcel)
     #changeset = Bookings.change_booking(%Booking{})
     #socket = assign(socket,:changeset,changeset)
     socket = assign(socket,:bookings,bookings)
@@ -33,7 +35,7 @@ defmodule MololineWeb.ConductorLive do
 
     if(booking == nil) do
       IO.puts("nil booking")
-      {:noreply, put_flash(socket, :error, "Booking with that booking id not found")}
+      {:noreply, put_flash(socket, :error, "seat Booking with that booking id not found")}
       else
       IO.puts("in else")
       #booking.checked_in=true
@@ -42,33 +44,120 @@ defmodule MololineWeb.ConductorLive do
       result = (Bookings.update_booking_checkin(booking,%{"checked_in" => true})
                 |> Repo.update!())
       IO.inspect result
-      socket =  socket |> put_flash(:info, "Updated Booking details Successfully")
+      socket =  socket |> put_flash(:info, "Checked into seat Successfully")
       {:noreply,socket}
-
     end
-    {:noreply, socket}
   end
 
-  def handle_event("submit_parcel_booking", payload,socket) do
+  def handle_event("submit_parcel_road_booking", payload,socket) do
     IO.inspect payload["booking_id"]
-    booking = Repo.get_by(Booking,booking_id: payload["booking_id"])
-    socket = assign(socket,:booking,booking)
+    pRBooking = Repo.get_by(ParcelDeliveryBooking,booking_id: payload["booking_id"])
+    socket = assign(socket,:pRBooking,pRBooking)
 
-    if(booking == nil) do
+    if(pRBooking == nil) do
       IO.puts("nil booking")
-      {:noreply, put_flash(socket, :error, "Booking with that booking id not found")}
+      {:noreply, put_flash(socket, :error, "Parcel delivery booking with that booking id not found")}
     else
       IO.puts("in else")
       #booking.checked_in=true
       IO.inspect payload
-      booking = socket.assigns.booking
-      result = (Bookings.update_booking_checkin(booking,%{"checked_in" => true})
+      pRBooking = socket.assigns.pRBooking
+      result = (ParcelBookings.update_parcel_delivery_booking(pRBooking,%{"checked_in" => true})
+                |> Repo.update!())
+      IO.inspect result
+      socket =  socket |> put_flash(:info, "Checked in parcel Successfully")
+      {:noreply,socket}
+    end
+  end
+
+  def handle_event("submit_parcel_office_booking", payload,socket) do
+    IO.inspect payload["booking_id"]
+    pOBooking = Repo.get_by(ParcelDeliveryBooking,booking_id: payload["booking_id"])
+    socket = assign(socket,:pOBooking,pOBooking)
+
+    if(pOBooking == nil) do
+      IO.puts("nil booking")
+      {:noreply, put_flash(socket, :error, "parcel delivery booking with that booking id not found")}
+    else
+      IO.puts("in else")
+      #booking.checked_in=true
+      IO.inspect payload
+      pOBooking = socket.assigns.pOBooking
+      result = (ParcelBookings.update_parcel_delivery_booking(pOBooking,%{"checked_in" => true})
                 |> Repo.update!())
       IO.inspect result
       socket =  socket |> put_flash(:info, "Updated Booking details Successfully")
       {:noreply,socket}
-
     end
-    {:noreply, socket}
+  end
+
+  def handle_event("submit_road_parcel_checkout", payload,socket) do
+    IO.puts "The payload in parcel submit to road is \n\n"
+    IO.inspect payload
+    #pina=parcel.pin
+    parcel=Repo.get_by(Parcel,id: payload["parcel_id"])
+    #IO.inspect parcel.pin
+    if (parcel==nil) do
+      IO.puts("parcel with that id does not exist")
+      {:noreply, put_flash(socket, :error, "parcel with that id does not exist")}
+    else
+      if(parcel.pin==payload["pin"]) do
+        pOBookingR = Repo.get_by(ParcelDeliveryBooking,parcel_id: parcel.id)
+        socket = assign(socket,:pOBookingR,pOBookingR)
+        if(pOBookingR == nil) do
+          IO.puts("nil parcel checkout")
+          {:noreply, put_flash(socket, :error, "parcel checkout with that parcel id not found")}
+        else
+          IO.puts("in else")
+          #booking.checked_in=true
+          IO.inspect payload
+          pOBookingR = socket.assigns.pOBookingR
+          result = (ParcelBookings.update_parcel_delivery_booking(pOBookingR,%{"checked_out" => true})
+                    |> Repo.update!())
+          IO.inspect result
+          socket =  socket |> put_flash(:info, "Updated parcel details Successfully")
+          {:noreply,socket}
+        end
+      else
+        IO.puts("Parcel details do not match")
+        socket =  socket |> put_flash(:info, "Parcel details do not match, contact the parcel sender for pin")
+        {:noreply,socket}
+      end
+    end
+  end
+
+  def handle_event("submit_office_parcel_checkout", payload,socket) do
+    IO.puts "The payload in parcel submit to office is \n\n"
+    IO.inspect payload
+    #pina=parcel.pin
+    parcel=Repo.get_by(Parcel,id: payload["parcel_id"])
+    #IO.inspect parcel.pin
+    if (parcel==nil) do
+      IO.puts("parcel with that id does not exist")
+      {:noreply, put_flash(socket, :error, "parcel with that id does not exist")}
+      else
+      if(parcel.pin==payload["pin"]) do
+        pOBookingO = Repo.get_by(ParcelDeliveryBooking,parcel_id: parcel.id)
+        socket = assign(socket,:pOBookingO,pOBookingO)
+        if(pOBookingO == nil) do
+          IO.puts("nil parcel checkout")
+          {:noreply, put_flash(socket, :error, "parcel checkout with that parcel id not found")}
+        else
+          IO.puts("in else")
+          #booking.checked_in=true
+          IO.inspect payload
+          pOBookingO = socket.assigns.pOBookingO
+          result = (ParcelBookings.update_parcel_delivery_booking(pOBookingO,%{"checked_out" => true})
+                    |> Repo.update!())
+          IO.inspect result
+          socket =  socket |> put_flash(:info, "Updated parcel details Successfully")
+          {:noreply,socket}
+        end
+      else
+        IO.puts("Parcel details do not match")
+        socket =  socket |> put_flash(:error, "Parcel details do not match, contact the parcel sender for pin")
+        {:noreply,socket}
+      end
+    end
   end
 end
