@@ -1,0 +1,30 @@
+<h1>Listing Items</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Parcel</th>
+      <th>Town</th>
+      <th>Parcel booking</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for item <- @items do %>
+    <tr>
+      <td><%= item.parcel_id %></td>
+      <td><%= item.town %></td>
+      <td><%= item.parcel_booking_id %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.item_path(@conn, :show, item) %></span>
+        <span><%= link "Edit", to: Routes.item_path(@conn, :edit, item) %></span>
+        <span><%= link "Delete", to: Routes.item_path(@conn, :delete, item), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Item", to: Routes.item_path(@conn, :new) %></span>
