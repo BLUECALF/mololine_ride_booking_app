@@ -77,6 +77,7 @@ defmodule MololineWeb.ConductorLive do
     IO.puts " the Payload is \n"
     IO.inspect payload
     accountantemail = payload["accountantemail"]
+    parcelList = payload["parcelList"]
     case connected?(socket) do
       true ->
         #subscribe to the channel
@@ -87,6 +88,8 @@ defmodule MololineWeb.ConductorLive do
         IO.puts("socket is not connected.")
      end
 
+     # broadcast to ask for the parcels.
+     broadcast("accountantlive#{accountantemail}",:conductor_requested_parcel,parcelList)
       socket =  socket |> put_flash(:info, "System has asked Accountant For the Parcels")
       {:noreply,socket}
   end
@@ -170,5 +173,9 @@ defmodule MololineWeb.ConductorLive do
     socket = assign(socket,:bookings,bookings)
     socket = assign(socket,:parcels,parcels)
     socket
+  end
+
+  defp broadcast(topic,event,payload) do
+    Phoenix.PubSub.broadcast(Mololine.PubSub,topic,{event, payload})
   end
 end

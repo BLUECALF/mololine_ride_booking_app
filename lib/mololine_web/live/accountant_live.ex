@@ -34,14 +34,13 @@ defmodule MololineWeb.AccountantLive do
       {:noreply,socket}
     end
   end
-  def handle_event("update", payload,socket) do
-    IO.puts("Payload in update")
+  def handle_info({:conductor_requested_parcel, payload},socket) do
+    IO.puts "conductor requested parcels"
     IO.inspect payload
-    user = socket.assigns.user
-    result = (User.update_user_changeset(user,payload)
-              |> Repo.update!())
-     socket =  socket |> put_flash(:info, "Updated User details Successfully")
-      {:noreply,socket}
-
+    socket = assign(socket,:parcels,payload)
+    {:noreply,socket}
+  end
+  defp broadcast(topic,event,payload) do
+    Phoenix.PubSub.broadcast(Mololine.PubSub,topic,{event, payload})
   end
 end

@@ -1,5 +1,4 @@
-
-<h1> Accountant Live</h1>
+<h1 xmlns="http://www.w3.org/1999/html"> Accountant Live</h1>
 <main class="container">
   <p class="alert alert-info" role="alert"
      phx-click="lv:clear-flash"
@@ -34,5 +33,14 @@
 
   <article class="column">
     <h3>Give Parcels to Conductor</h3>
+
+    <%= if @parcels != nil  do%>
+    <form phx-submit = "give_conductor_parcels">
+     <%= for parcel <- @parcels do%>
+       <input type="checkbox" value={parcel} name="checkedinparcels[]"> <%=parcel %>
+     <% end%>
+      <button type="submit">Give Parcels</button>
+    </form>
+    <% end%>
   </article>
 </section>
