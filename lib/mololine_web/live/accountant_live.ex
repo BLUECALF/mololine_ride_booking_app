@@ -1,37 +1,27 @@
 defmodule MololineWeb.AccountantLive do
   use Phoenix.LiveView
   alias Mololine.Repo
+  alias Mololine.Inventory.Item
+  alias Mololine.Inventory
   alias Mololine.Accounts.User
   alias Mololine.Accounts
 
   def mount(params,session,socket) do
-    role = ""
     first_form_passed = false
-    changeset = Accounts.change_user_registration(%User{})
-    socket = assign(socket,:role,role)
     socket = assign(socket,:first_form_passed,first_form_passed)
-    socket = assign(socket,:changeset,changeset)
-    #socket = assign(socket,:user,user)
     {:ok, socket}
   end
 
 
   def handle_event("submit", payload,socket) do
-    IO.puts("submit from hr")
-    IO.inspect payload["email"]
-    user = Repo.get_by(User,email: payload["email"])
-    IO.puts("unknown user")
-    IO.inspect user
-    if(user===nil) do
-      IO.puts("nil user")
-      {:noreply, put_flash(socket, :error, "User with that email not found")}
-      #socket =
-       # socket
-        #|> put_flash(:error, "no user found with that email")
-      #{:noreply,socket}
+    IO.inspect payload["parcel_id"]
+    item = Repo.get_by(Item,parcel_id: payload["parcel_id"])
+
+    if(item===nil) do
+      {:noreply, put_flash(socket, :error, "Item With that parcel ID not found")}
       else
-      socket = assign(socket,:user,user)
-      socket = assign(socket,:first_form_passed,true)
+      socket = assign(socket,:item,item)
+      socket = assign(socket,:first_form_passed,!socket.assigns.first_form_passed)
       {:noreply,socket}
     end
   end

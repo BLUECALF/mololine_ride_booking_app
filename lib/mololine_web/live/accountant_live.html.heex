@@ -1,50 +1,38 @@
 
 <h1> Accountant Live</h1>
-
-<form phx-submit="submit" >
-
-<label> Enter Your Email Address </label>
-<input type ="email" name ="email" required>
-
-
-
-   <button type="submit" >Search User</button>
-</form>
 <main class="container">
   <p class="alert alert-info" role="alert"
-    phx-click="lv:clear-flash"
-    phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+     phx-click="lv:clear-flash"
+     phx-value-key="info"><%= live_flash(@flash, :info) %></p>
 
   <p class="alert alert-danger" role="alert"
-    phx-click="lv:clear-flash"
-    phx-value-key="error"><%= live_flash(@flash, :error) %></p>
-
+     phx-click="lv:clear-flash"
+     phx-value-key="error"><%= live_flash(@flash, :error) %></p>
 
 </main>
 
-<%= if(@first_form_passed) do %>
-<h1>Details</h1>
+<section class="row">
 
-<form phx-submit = "update">
-  <label><%=@user.firstname%></label>
-  <label><%=@user.lastname%></label>
-  <label><%=@user.phone%></label>
-  <label><%=@user.gender%></label>
-  <label><%=@user.role%></label>
-   <select id="role" name="role">
-     <option value="admin">admin</option>
-     <option value="customer">customer</option>
-   </select>
-  <label><%=@user.email%></label>
-  <label><%=@user.confirmed_at%></label>
-
-  <% # hidden attributes %>
-  <input type="hidden" name="firstname" value={@user.firstname}>
-  <input type="hidden" name="lastname" value={@user.lastname}>
-  <input type="hidden" name="phone" value={@user.phone}>
-  <input type="hidden" name="gender" value={@user.gender}>
-  <input type="hidden" name="email" value={@user.email}>
-
-<button type = "submit">update</button>
+  <article class="column">
+<form phx-submit="submit" >
+  <h3>Search Parcel in Inventory</h3>
+<label> Enter Parcel ID </label>
+<input type ="number" name ="parcel_id" required style="width:150px;">
+   <button type="submit" >Search</button>
 </form>
+<%= if(@first_form_passed) do %>
+<h4>Item</h4>
+  <label><%=@item.parcel_id%></label>
+  <label><%=@item.town%></label>
+  <label><%=@item.parcel_booking_id%></label>
 <% end %>
+  </article>
+
+  <article class="column">
+    <h3>Receive Parcels from Conductor</h3>
+  </article>
+
+  <article class="column">
+    <h3>Give Parcels to Conductor</h3>
+  </article>
+</section>
