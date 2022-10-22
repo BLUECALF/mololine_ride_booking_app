@@ -56,9 +56,9 @@ defmodule MololineWeb.ConductorLive do
     pRBooking = Repo.get_by(ParcelDeliveryBooking,booking_id: payload["booking_id"])
     socket = assign(socket,:pRBooking,pRBooking)
 
-    if(pRBooking == nil) do
+    if(pRBooking == nil or pRBooking.pickuppoint != "Custom Location") do
       IO.puts("nil booking")
-      {:noreply, put_flash(socket, :error, "Parcel delivery booking with that booking id not found")}
+      {:noreply, put_flash(socket, :error, "Parcel delivery booking with that booking id not found or was to be picked at office")}
     else
       IO.puts("in else")
       #booking.checked_in=true
