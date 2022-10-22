@@ -18,6 +18,7 @@ defmodule MololineWeb.ConductorLive do
     #socket = assign(socket,:changeset,changeset)
     socket = assign(socket,:bookings,bookings)
     socket = assign(socket,:parcels,parcels)
+    socket = assign(socket,:travelnotice_id,travelnotice_id)
    # IO.inspect bookings.user.firstname
 #user=bookings.firstname
     IO.inspect bookings
@@ -45,6 +46,7 @@ defmodule MololineWeb.ConductorLive do
                 |> Repo.update!())
       IO.inspect result
       socket =  socket |> put_flash(:info, "Checked into seat Successfully")
+      socket = updatePage(socket)
       {:noreply,socket}
     end
   end
@@ -66,6 +68,7 @@ defmodule MololineWeb.ConductorLive do
                 |> Repo.update!())
       IO.inspect result
       socket =  socket |> put_flash(:info, "Checked in parcel Successfully")
+      socket = updatePage(socket)
       {:noreply,socket}
     end
   end
@@ -103,6 +106,7 @@ defmodule MololineWeb.ConductorLive do
                     |> Repo.update!())
           IO.inspect result
           socket =  socket |> put_flash(:info, "Updated parcel details Successfully")
+          socket = updatePage(socket)
           {:noreply,socket}
         end
       else
@@ -138,6 +142,7 @@ defmodule MololineWeb.ConductorLive do
                     |> Repo.update!())
           IO.inspect result
           socket =  socket |> put_flash(:info, "Updated parcel details Successfully")
+          socket = updatePage(socket)
           {:noreply,socket}
         end
       else
@@ -146,5 +151,14 @@ defmodule MololineWeb.ConductorLive do
         {:noreply,socket}
       end
     end
+  end
+
+  defp updatePage(socket) do
+    travelnotice_id = socket.assigns.travelnotice_id
+    bookings = Repo.all(Booking,travelnotice_id: travelnotice_id) |> Repo.preload(:user)
+    parcels = Repo.all(ParcelDeliveryBooking,travelnotice_id: travelnotice_id) |>Repo.preload(:parcel)
+    socket = assign(socket,:bookings,bookings)
+    socket = assign(socket,:parcels,parcels)
+    socket
   end
 end
