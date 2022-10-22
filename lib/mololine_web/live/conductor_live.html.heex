@@ -14,7 +14,7 @@
         <ul>
             <%=for booking <- @bookings do%>
             <%=if booking.checked_in == false do%>
-            <label> <%=booking.user.firstname%><%=booking.total_price %></label>
+             <b>Name::</b> <%=booking.user.firstname%> <b>Seat::</b> <%=booking.seat %><br>
             <%end%>
             <%end%>
 
@@ -33,7 +33,7 @@
 
             <%=for booking <- @bookings do%>
             <%=if booking.checked_in == true do%>
-            <label> <%=booking.user.firstname%> <%=booking.user.lastname%> Ksh <%=booking.total_price %></label>
+             <b>Name::</b> <%=booking.user.firstname%> <b>Seat::</b> <%=booking.seat %><br>
             <%end%>
             <%end%>
 
