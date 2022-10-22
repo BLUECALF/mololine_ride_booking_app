@@ -6,9 +6,18 @@ defmodule MololineWeb.AccountantLive do
   alias Mololine.Accounts.User
   alias Mololine.Accounts
 
-  def mount(params,session,socket) do
+  def mount((%{"accountantemail" => accountantemail}),session,socket) do
     first_form_passed = false
     socket = assign(socket,:first_form_passed,first_form_passed)
+    case connected?(socket) do
+      true ->
+        #subscribe to the channel
+        Phoenix.PubSub.subscribe(Mololine.PubSub,"accountantlive#{accountantemail}")
+        IO.puts("accountant subscribed to :: accountantlive#{accountantemail}")
+      false ->
+        # Only subscribes when Live View is connected via socket
+        IO.puts("socket is not connected.")
+    end
     {:ok, socket}
   end
 

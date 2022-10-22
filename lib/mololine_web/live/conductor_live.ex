@@ -76,6 +76,16 @@ defmodule MololineWeb.ConductorLive do
   def handle_event("submit_parcel_office_checkin", payload,socket) do
     IO.puts " the Payload is \n"
     IO.inspect payload
+    accountantemail = payload["accountantemail"]
+    case connected?(socket) do
+      true ->
+        #subscribe to the channel
+        Phoenix.PubSub.subscribe(Mololine.PubSub,"accountantlive#{accountantemail}")
+        IO.puts("conductor/driver subscribed to :: accountantlive#{accountantemail}")
+      false ->
+        # Only subscribes when Live View is connected via socket
+        IO.puts("socket is not connected.")
+     end
 
       socket =  socket |> put_flash(:info, "System has asked Accountant For the Parcels")
       {:noreply,socket}

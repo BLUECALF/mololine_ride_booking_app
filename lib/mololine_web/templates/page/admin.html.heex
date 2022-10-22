@@ -19,7 +19,7 @@
       <label>Human Resource  Page</label>
       <li><a href={base_url <> "/hrlive"}>hr</a></li>
       <label>Accountant Page</label>
-      <li><a href={base_url <> "/accountantlive"}>Accountant Live</a></li>
+      <li><a href={base_url <> "/accountantlive/"<>@conn.assigns.current_user.email}>Accountant Live</a></li>
       <li><a href={base_url <> "/items"}>Items stored in inventory -- for accountants</a></li>
       <label>Manager Page</label>
       <li><a href={base_url <> "/seatplans"}>Seatplans</a></li>
