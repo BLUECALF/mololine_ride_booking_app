@@ -111,7 +111,7 @@ defmodule MololineWeb.ConductorLive do
         end
       else
         IO.puts("Parcel details do not match")
-        socket =  socket |> put_flash(:info, "Parcel details do not match, contact the parcel sender for pin")
+        socket =  socket |> put_flash(:error, "Parcel details do not match, contact the parcel sender for pin")
         {:noreply,socket}
       end
     end
