@@ -67,7 +67,7 @@ defmodule MololineWeb.ConductorLive do
       result = (ParcelBookings.update_parcel_delivery_booking(pRBooking,%{"checked_in" => true})
                 |> Repo.update!())
       IO.inspect result
-      socket =  socket |> put_flash(:info, "Checked in parcel Successfully")
+      socket =  socket |> put_flash(:info, "Checked in parcel Successfully on Road ")
       socket = updatePage(socket)
       {:noreply,socket}
     end
@@ -105,7 +105,7 @@ defmodule MololineWeb.ConductorLive do
           result = (ParcelBookings.update_parcel_delivery_booking(pOBookingR,%{"checked_out" => true})
                     |> Repo.update!())
           IO.inspect result
-          socket =  socket |> put_flash(:info, "Updated parcel details Successfully")
+          socket =  socket |> put_flash(:info, "Checked out parcel Successfully on Road ")
           socket = updatePage(socket)
           {:noreply,socket}
         end
