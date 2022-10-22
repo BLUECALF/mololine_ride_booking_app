@@ -86,6 +86,7 @@ defmodule MololineWeb.Router do
     live "/bookinglive/:travelnotice_id", BookingLive
     live "/parceldeliverybookinglive/:travelnotice_id/:user_id", ParcelDeliveryBookingLive
     live "/hrlive", HrLive
+    live "/accountantlive", AccountantLive
     live "/conductorlive/:travelnotice_id", ConductorLive
 
 
