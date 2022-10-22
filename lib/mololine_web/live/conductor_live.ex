@@ -49,7 +49,7 @@ defmodule MololineWeb.ConductorLive do
     end
   end
 
-  def handle_event("submit_parcel_road_booking", payload,socket) do
+  def handle_event("submit_parcel_road_checkin", payload,socket) do
     IO.inspect payload["booking_id"]
     pRBooking = Repo.get_by(ParcelDeliveryBooking,booking_id: payload["booking_id"])
     socket = assign(socket,:pRBooking,pRBooking)
@@ -70,25 +70,12 @@ defmodule MololineWeb.ConductorLive do
     end
   end
 
-  def handle_event("submit_parcel_office_booking", payload,socket) do
-    IO.inspect payload["booking_id"]
-    pOBooking = Repo.get_by(ParcelDeliveryBooking,booking_id: payload["booking_id"])
-    socket = assign(socket,:pOBooking,pOBooking)
+  def handle_event("submit_parcel_office_checkin", payload,socket) do
+    IO.puts " the Payload is \n"
+    IO.inspect payload
 
-    if(pOBooking == nil) do
-      IO.puts("nil booking")
-      {:noreply, put_flash(socket, :error, "parcel delivery booking with that booking id not found")}
-    else
-      IO.puts("in else")
-      #booking.checked_in=true
-      IO.inspect payload
-      pOBooking = socket.assigns.pOBooking
-      result = (ParcelBookings.update_parcel_delivery_booking(pOBooking,%{"checked_in" => true})
-                |> Repo.update!())
-      IO.inspect result
-      socket =  socket |> put_flash(:info, "Updated Booking details Successfully")
+      socket =  socket |> put_flash(:info, "System has asked Accountant For the Parcels")
       {:noreply,socket}
-    end
   end
 
   def handle_event("submit_road_parcel_checkout", payload,socket) do

@@ -56,7 +56,7 @@
 
 
         </ul>
-        <form phx-submit="submit_parcel_road_booking">
+        <form phx-submit="submit_parcel_road_checkin">
             <label> Enter Booking Id</label>
             <input type="number" name="booking_id" required>
             <button type="submit"> Check in</button>
@@ -65,19 +65,15 @@
 
     <article class="column">
         <h2>Booked Parcels Expected In Office</h2>
-        <ul>
+        <form phx-submit="submit_parcel_office_checkin">
+            <label>Select Parcels</label>
             <%=for parceli <- @parcels do%>
             <%=if parceli.checked_in == false and parceli.pickuppoint != "Custom Location" do%>
-            <label>ID: <%=parceli.parcel.id%> Recipient: <%=parceli.parcel.recipient_name%></label>
+                <input type="checkbox" name="parcelList[]" value= {parceli.parcel.id} >
+                <b>ID:</b> <%=parceli.parcel.id%>  <b>Recipient:</b><%=parceli.parcel.recipient_name%><br>
             <%end%>
             <%end%>
-
-
-        </ul>
-        <form phx-submit="submit_parcel_office_booking">
-            <label> Enter Booking Id</label>
-            <input type="number" name="booking_id" required>
-            <button type="submit"> Check in</button>
+            <button type="submit">Ask For Parcels</button>
         </form>
     </article>
 
