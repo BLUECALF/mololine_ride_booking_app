@@ -36,6 +36,15 @@ defmodule MololineWeb.AccountantLive do
       {:noreply,socket}
     end
   end
+
+  def handle_event("give_conductor_parcels", payload,socket) do
+    IO.puts "I gave conductor parcels"
+    IO.inspect payload
+
+    # checkin each of the parcels
+
+    {:noreply,socket}
+  end
   def handle_info({:conductor_requested_parcel, payload},socket) do
     IO.puts "conductor requested parcels"
     IO.inspect payload
