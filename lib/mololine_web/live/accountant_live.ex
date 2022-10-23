@@ -1,6 +1,7 @@
 defmodule MololineWeb.AccountantLive do
   use Phoenix.LiveView
   alias Mololine.Repo
+  alias Mololine.Resources.Parcel
   alias Mololine.Inventory.Item
   alias Mololine.Inventory
   alias Mololine.Accounts.User
@@ -9,6 +10,7 @@ defmodule MololineWeb.AccountantLive do
   def mount((%{"accountantemail" => accountantemail}),session,socket) do
     first_form_passed = false
     socket = assign(socket,:first_form_passed,first_form_passed)
+    socket = assign(socket,:parcels,nil)
     case connected?(socket) do
       true ->
         #subscribe to the channel
@@ -37,7 +39,11 @@ defmodule MololineWeb.AccountantLive do
   def handle_info({:conductor_requested_parcel, payload},socket) do
     IO.puts "conductor requested parcels"
     IO.inspect payload
-    socket = assign(socket,:parcels,payload)
+    parcelList = for parcelid <- payload do
+      #change parcel id   to integer
+      Repo.get(Parcel, String.to_integer(parcelid))
+    end
+    socket = assign(socket,:parcels,parcelList)
     {:noreply,socket}
   end
   defp broadcast(topic,event,payload) do

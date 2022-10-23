@@ -37,7 +37,7 @@
     <%= if @parcels != nil  do%>
     <form phx-submit = "give_conductor_parcels">
      <%= for parcel <- @parcels do%>
-       <input type="checkbox" value={parcel} name="checkedinparcels[]"> <%=parcel %>
+      <input type="checkbox" value={parcel.id} name="checkedinparcels[]"> <b>ID</b> <%=parcel.id%> <b> Receiver: </b> <%=parcel.recipient_name%> <b> phone :</b> <%=parcel.recipient_phone%>
      <% end%>
       <button type="submit">Give Parcels</button>
     </form>
