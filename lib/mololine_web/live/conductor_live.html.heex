@@ -69,7 +69,7 @@
             <label>Select Parcels</label>
             <%=for parceli <- @parcels do%>
             <%=if parceli.checked_in == false and parceli.pickuppoint != "Custom Location" do%>
-                <input type="checkbox" name="parcelList[]" value= {parceli.parcel.id} >
+                <input type="checkbox" name="parcelList[]" value= {parceli.parcel.id} checked>
                 <b>ID:</b> <%=parceli.parcel.id%>  <b>Recipient:</b><%=parceli.parcel.recipient_name%><br>
             <%end%>
             <%end%>
