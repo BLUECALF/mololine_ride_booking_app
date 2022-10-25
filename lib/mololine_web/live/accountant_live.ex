@@ -2,6 +2,8 @@ defmodule MololineWeb.AccountantLive do
   use Phoenix.LiveView
   alias Mololine.Repo
   alias Mololine.Resources.Parcel
+  alias Mololine.ParcelBookings.ParcelDeliveryBooking
+  alias Mololine.ParcelBookings
   alias Mololine.Inventory.Item
   alias Mololine.Inventory
   alias Mololine.Accounts.User
@@ -11,6 +13,8 @@ defmodule MololineWeb.AccountantLive do
     first_form_passed = false
     socket = assign(socket,:first_form_passed,first_form_passed)
     socket = assign(socket,:parcels,nil)
+    socket = assign(socket,:accountantemail,accountantemail)
+    socket = assign(socket,:transportableparcels,nil)
     case connected?(socket) do
       true ->
         #subscribe to the channel
@@ -38,11 +42,24 @@ defmodule MololineWeb.AccountantLive do
   end
 
   def handle_event("give_conductor_parcels", payload,socket) do
-    IO.puts "I gave conductor parcels"
-    IO.inspect payload
 
-    # checkin each of the parcels
+    checkedoutparcels = payload["checkedoutparcels"]
+    # checkout the given out parcels.
+     for parcelid <- checkedoutparcels do
+      #change parcel id   to integer
 
+      item = Repo.get_by(Item, parcel_id: String.to_integer(parcelid))
+      #delete item of that parcel id
+      Repo.delete!(item)
+      #update the parcel delivery booking
+      pDBooking = Repo.get_by(ParcelDeliveryBooking,booking_id: item.parcel_booking_id)
+      {:ok,_} = (ParcelBookings.update_parcel_delivery_booking(pDBooking,%{"checked_in" => true})
+       |> Repo.update!())
+    end
+
+    # provide the parcel signal to conductor
+    broadcast("accountantlive#{socket.assigns.accountantemail}",:conductor_given_parcel,[])
+    socket =  socket |> put_flash(:info, "System has asked Accountant For the Parcels")
     {:noreply,socket}
   end
   def handle_info({:conductor_requested_parcel, payload},socket) do
@@ -52,10 +69,42 @@ defmodule MololineWeb.AccountantLive do
       #change parcel id   to integer
       Repo.get(Parcel, String.to_integer(parcelid))
     end
+
+    # check if they can be checked  into the vehicle.
+    transportableparcelList = for parcelid <- payload do
+      #change parcel id   to integer
+
+      item = Repo.get_by(Item, parcel_id: String.to_integer(parcelid))
+      if(item == nil) do
+
+        else
+        IO.inspect item
+        booking_id = item.parcel_booking_id
+        booking_id = removeNil(booking_id)
+        pDBooking = Repo.get_by(ParcelDeliveryBooking,booking_id: booking_id)
+        if(pDBooking == nil) do
+        else
+          pDBooking
+          Repo.get(Parcel,pDBooking.parcel_unique_id)
+        end
+      end
+
+    end
+    # wait for conductor to acknowledge.
     socket = assign(socket,:parcels,parcelList)
+    socket = assign(socket,:transportableparcels,transportableparcelList)
     {:noreply,socket}
   end
   defp broadcast(topic,event,payload) do
     Phoenix.PubSub.broadcast(Mololine.PubSub,topic,{event, payload})
   end
+
+
+  def removeNil(booking_id) do
+    if(booking_id == nil) do
+      0
+      else
+      booking_id
+    end
+    end
 end

@@ -32,12 +32,25 @@
   </article>
 
   <article class="column">
-    <h3>Give Parcels to Conductor</h3>
+    <h3>Parcels Asked by Conductor</h3>
 
     <%= if @parcels != nil  do%>
-    <form phx-submit = "give_conductor_parcels">
+    <form>
      <%= for parcel <- @parcels do%>
+        <%=if parcel != nil do%>
       <input type="checkbox" value={parcel.id} name="checkedinparcels[]"> <b>ID</b> <%=parcel.id%> <b> Receiver: </b> <%=parcel.recipient_name%> <b> phone :</b> <%=parcel.recipient_phone%><br>
+         <% end%>
+     <% end%>
+    </form>
+    <% end%>
+      <h3>Parcels That have Paid </h3>
+
+    <%= if @transportableparcels != nil  do%>
+    <form phx-submit = "give_conductor_parcels">
+     <%= for parcel <- @transportableparcels do%>
+        <%=if parcel != nil do%>
+      <input type="checkbox" value={parcel.id} name="checkedoutparcels[]"> <b>ID</b> <%=parcel.id%> <b> Receiver: </b> <%=parcel.recipient_name%> <b> phone :</b> <%=parcel.recipient_phone%><br>
+      <% end%>
      <% end%>
       <button type="submit">Give Parcels</button>
     </form>

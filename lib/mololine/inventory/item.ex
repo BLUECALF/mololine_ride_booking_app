@@ -14,6 +14,6 @@ defmodule Mololine.Inventory.Item do
   def changeset(item, attrs) do
     item
     |> cast(attrs, [:parcel_id, :town, :parcel_booking_id])
-    |> validate_required([:parcel_id, :town, :parcel_booking_id])
+    |> validate_required([:parcel_id, :town])
   end
 end

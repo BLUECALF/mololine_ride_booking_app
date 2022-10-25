@@ -166,6 +166,11 @@ defmodule MololineWeb.ConductorLive do
     end
   end
 
+  def handle_info({:conductor_given_parcel, payload},socket) do
+    socket = updatePage(socket)
+    {:noreply,socket}
+  end
+
   defp updatePage(socket) do
     travelnotice_id = socket.assigns.travelnotice_id
     bookings = Repo.all(Booking,travelnotice_id: travelnotice_id) |> Repo.preload(:user)
