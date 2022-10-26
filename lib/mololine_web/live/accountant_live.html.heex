@@ -29,6 +29,16 @@
 
   <article class="column">
     <h3>Receive Parcels from Conductor</h3>
+      <%= if @parcels_to_receive != nil  do%>
+      <form phx-submit = "receive_parcels_from_conductor">
+          <%= for parcel <- @parcels_to_receive do%>
+          <%=if parcel != nil do%>
+          <input type="checkbox" value={parcel.id} name="checkedinparcels[]"> <b>ID</b> <%=parcel.id%> <b> Receiver: </b> <%=parcel.recipient_name%> <b> phone :</b> <%=parcel.recipient_phone%><br>
+          <% end%>
+          <% end%>
+          <button type="submit">Receive Parcels</button>
+      </form>
+      <% end%>
   </article>
 
   <article class="column">

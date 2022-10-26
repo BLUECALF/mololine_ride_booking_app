@@ -15,6 +15,7 @@ defmodule MololineWeb.AccountantLive do
     socket = assign(socket,:parcels,nil)
     socket = assign(socket,:accountantemail,accountantemail)
     socket = assign(socket,:transportableparcels,nil)
+    socket = assign(socket,:parcels_to_receive,nil)
     case connected?(socket) do
       true ->
         #subscribe to the channel
@@ -95,6 +96,48 @@ defmodule MololineWeb.AccountantLive do
     socket = assign(socket,:transportableparcels,transportableparcelList)
     {:noreply,socket}
   end
+
+  def handle_info({:conductor_requested_to_give_parcel, payload},socket) do
+    IO.puts "conductor requested  to give parcels"
+    IO.inspect payload
+    parcelList = for parcelid <- payload do
+      #change parcel id   to integer
+      Repo.get(Parcel, String.to_integer(parcelid))
+    end
+    socket = assign(socket,:parcels_to_receive,parcelList)
+    {:noreply,socket}
+  end
+
+  def handle_event("receive_parcels_from_conductor", payload,socket) do
+
+    checkedinparcels = payload["checkedinparcels"]
+    # checkout the given out parcels.
+    for parcelid <- checkedinparcels do
+
+      parcel_id =  String.to_integer(parcelid)
+      # steps make item for that parcel
+      Inventory.create_item(%{parcel_id: parcel_id,town: "nakuru"})
+      # change =it to checked out true & delivered true.
+      import Ecto.Query, only: [from: 2]
+
+      # Create a query
+      query = from pdb in "parceldeliverybooking",
+                   where: pdb.parcel_unique_id == ^parcel_id and pdb.checked_in == true and pdb.checked_out == false,
+                   select: pdb.id
+
+      # Send the query to the repository
+      pdb_id  = List.first(Repo.all(query))
+      pDBooking  = Repo.get(ParcelBookings.ParcelDeliveryBooking,pdb_id)
+      {:ok,_} = (ParcelBookings.update_parcel_delivery_booking(pDBooking,%{"checked_out" => true,"delivered" => true,})
+                 |> Repo.update!())
+    end
+
+    # provide the parcel signal to conductor
+    broadcast("accountantlive#{socket.assigns.accountantemail}",:conductor_given_parcel,[])
+    socket =  socket |> put_flash(:info, "Parcel checked in Successfully ")
+    {:noreply,socket}
+  end
+
   defp broadcast(topic,event,payload) do
     Phoenix.PubSub.broadcast(Mololine.PubSub,topic,{event, payload})
   end

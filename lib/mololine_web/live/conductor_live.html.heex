@@ -117,19 +117,18 @@
     </article>
 
     <article class="column">
-        <h2>Booked Parcels To Be Checked Out In Office</h2>
-        <ul>
+        <h2>Booked Parcels to CheckOut at Office</h2>
+        <form phx-submit="submit_parcel_office_checkout">
+            <label>Select Parcels</label>
             <%=for parceli <- @parcels do%>
-            <%=if parceli.checked_out == false and parceli.checked_in == true and parceli. droppoint != "Custom
-            Location" do%>
-            <label>ID: <%=parceli.parcel.id%> Recipient: <%=parceli.parcel.recipient_name%> </label>
+            <%=if parceli.checked_in == true and parceli.checked_out == false and parceli.droppoint != "Custom Location" do%>
+            <input type="checkbox" name="parcelList[]" value= {parceli.parcel.id} checked>
+            <b>ID:</b> <%=parceli.parcel.id%>  <b>Recipient:</b><%=parceli.parcel.recipient_name%><br>
             <%end%>
             <%end%>
-
-
-        </ul>
-        <form phx-submit="submit_office_parcel_checkout">
-            <button type="submit"> Check out</button>
+            <b>Enter accountants email </b>
+            <input type="text" name="accountantemail">
+            <button type="submit">Give Parcels</button>
         </form>
     </article>
 

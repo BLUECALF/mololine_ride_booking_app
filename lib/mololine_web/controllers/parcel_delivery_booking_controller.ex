@@ -27,15 +27,26 @@ defmodule MololineWeb.ParcelDeliveryBookingController do
     {booking_id} = make_random_booking_id1()
     parcel_delivery_booking_params = Map.put(parcel_delivery_booking_params, "booking_id",booking_id)
     IO.inspect parcel_delivery_booking_params
-    case ParcelBookings.create_parcel_delivery_booking(parcel_delivery_booking_params,parcel,travelnotice) do
-      {:ok, parcel_delivery_booking} ->
-        conn
-        |> put_flash(:info, "Parcel delivery booking created successfully.")
-        |> redirect(to: Routes.parcel_delivery_booking_path(conn, :show, parcel_delivery_booking))
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+    # check  repetition
+    if(checkRepetition(String.to_integer(parcel_unique_id))) do
+      # there is rep ... stop
+      conn
+      |> put_flash(:error, "booking failed, There is parcel delivery booking with that parcel ID and hasn't been checked in yet")
+      |> redirect(to: Routes.parcel_delivery_booking_path(conn, :index))
+      else
+      # there is no repetition ... continue
+      case ParcelBookings.create_parcel_delivery_booking(parcel_delivery_booking_params,parcel,travelnotice) do
+        {:ok, parcel_delivery_booking} ->
+          conn
+          |> put_flash(:info, "Parcel delivery booking created successfully.")
+          |> redirect(to: Routes.parcel_delivery_booking_path(conn, :show, parcel_delivery_booking))
+
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, "new.html", changeset: changeset)
+      end
     end
+
   end
 
   def show(conn, %{"id" => id}) do
@@ -86,5 +97,25 @@ defmodule MololineWeb.ParcelDeliveryBookingController do
       }
     end
     ## we need to make random booking ids for the bookings that will be used in checkins and ticket validations
+  end
+
+  defp checkRepetition(parcel_id) do
+     # check if there is parcel booking with same parcel ID and hasnt been checked in
+     #if so deny creation of parcelboking.
+    import Ecto.Query, only: [from: 2]
+
+    # Create a query
+    query = from pdb in "parceldeliverybooking",
+                 where: pdb.parcel_unique_id == ^parcel_id and pdb.checked_in == false,
+                 select: pdb.booking_id
+
+    # Send the query to the repository
+    existing  = List.first(Repo.all(query))
+
+    if existing == nil do
+      false
+      else
+      true
+    end
   end
 end

@@ -130,40 +130,27 @@ defmodule MololineWeb.ConductorLive do
     end
   end
 
-  def handle_event("submit_office_parcel_checkout", payload,socket) do
-    IO.puts "The payload in parcel submit to office is \n\n"
+  def handle_event("submit_parcel_office_checkout", payload,socket) do
+    IO.puts " the Payload in parcel office checkout is \n"
     IO.inspect payload
-    #pina=parcel.pin
-    parcel=Repo.get_by(Parcel,id: payload["parcel_id"])
-    #IO.inspect parcel.pin
-    if (parcel==nil) do
-      IO.puts("parcel with that id does not exist")
-      {:noreply, put_flash(socket, :error, "parcel with that id does not exist")}
-      else
-      if(parcel.pin==payload["pin"]) do
-        pOBookingO = Repo.get_by(ParcelDeliveryBooking,parcel_id: parcel.id)
-        socket = assign(socket,:pOBookingO,pOBookingO)
-        if(pOBookingO == nil) do
-          IO.puts("nil parcel checkout")
-          {:noreply, put_flash(socket, :error, "parcel checkout with that parcel id not found")}
-        else
-          IO.puts("in else")
-          #booking.checked_in=true
-          IO.inspect payload
-          pOBookingO = socket.assigns.pOBookingO
-          result = (ParcelBookings.update_parcel_delivery_booking(pOBookingO,%{"checked_out" => true})
-                    |> Repo.update!())
-          IO.inspect result
-          socket =  socket |> put_flash(:info, "Updated parcel details Successfully")
-          socket = updatePage(socket)
-          {:noreply,socket}
-        end
-      else
-        IO.puts("Parcel details do not match")
-        socket =  socket |> put_flash(:error, "Parcel details do not match, contact the parcel sender for pin")
-        {:noreply,socket}
-      end
+    accountantemail = payload["accountantemail"]
+    parcelList = payload["parcelList"]
+
+    # broadcast to ask  to give parcels
+    broadcast("accountantlive#{accountantemail}",:conductor_requested_to_give_parcel,parcelList)
+
+    # subscribe to chanel
+    case connected?(socket) do
+      true ->
+        #subscribe to the channel
+        Phoenix.PubSub.subscribe(Mololine.PubSub,"accountantlive#{accountantemail}")
+        IO.puts("conductor/driver subscribed to :: accountantlive#{accountantemail}")
+      false ->
+        # Only subscribes when Live View is connected via socket
+        IO.puts("socket is not connected.")
     end
+    socket =  socket |> put_flash(:info, "System has asked Accountant to Receive")
+    {:noreply,socket}
   end
 
   def handle_info({:conductor_given_parcel, payload},socket) do
