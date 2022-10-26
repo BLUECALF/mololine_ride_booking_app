@@ -77,6 +77,7 @@ defmodule Mololine.Accounts do
   def register_user(attrs) do
     %User{}
     |> User.registration_changeset(attrs)
+    |>Ecto.Changeset.put_assoc(:town,nil)
     |> Repo.insert()
   end
 

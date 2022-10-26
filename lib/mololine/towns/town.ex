@@ -5,6 +5,9 @@ defmodule Mololine.Towns.Town do
   schema "towns" do
     field :name, :string
 
+    # has many users of role accountant
+    has_many :users, Mololine.Accounts.User
+
     timestamps()
   end
 

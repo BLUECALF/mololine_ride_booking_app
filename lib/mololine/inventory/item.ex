@@ -15,5 +15,6 @@ defmodule Mololine.Inventory.Item do
     item
     |> cast(attrs, [:parcel_id, :town, :parcel_booking_id])
     |> validate_required([:parcel_id, :town])
+    |> unsafe_validate_unique(:parcel_id, Mololine.Repo)
   end
 end

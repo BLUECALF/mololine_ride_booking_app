@@ -9,6 +9,18 @@
   <li><strong>Driver's Email:</strong>
         <%= @vehicle.driveremail %>
   </li>
+  <%= if @vehicle.driver != nil do %>
+  <li><strong>Name :</strong>
+        <%= @vehicle.driver.firstname <> " "<> @vehicle.driver.lastname %>
+  </li>
+  <li><strong>Phone :</strong>
+        <%= @vehicle.driver.phone %>
+  </li>
+  <%else%>
+  <li>
+    <strong> vehicle TO driver association not loaded</strong>
+  </li>
+  <% end %>
    <li> <strong>Seat Plan:</strong>
           <% seats = @vehicle.seatplan.seats %>
           </li>

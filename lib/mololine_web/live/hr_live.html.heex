@@ -30,16 +30,28 @@
   <label><%=@user.lastname%></label>
   <label><%=@user.phone%></label>
   <label><%=@user.gender%></label>
-  <label><%=@user.role%></label>
+  <label>Role : <%=@user.role%></label>
    <select id="role" name="role">
-     <option value="admin">admin</option>
      <option value="customer">customer</option>
+     <option value="admin">admin</option>
      <option value="driver">driver/conductor</option>
      <option value="accountant">accountant</option>
      <option value="hr">hr</option>
      <option value="manager">manager</option>
    </select>
-  <label><%=@user.email%></label>
+  <label>Email : <%=@user.email%></label>
+  <%= if(@user.town !=nil) do %>
+  <label>Town : <%=@user.town.name%></label>
+  <%else%>
+   <label>Town : No town</label>
+  <%end%>
+   <label>Change users town ?</label>
+  <select id="town" name="town">
+    <option value="" > not selected </option>
+    <%= for town <- @towns do%>
+    <option value= {town.name}> <%= town.name%> </option>
+    <%end%>
+  </select>
   <label><%=@user.confirmed_at%></label>
 
   <% # hidden attributes %>
@@ -50,5 +62,6 @@
   <input type="hidden" name="email" value={@user.email}>
 
 <button type = "submit">update</button>
+<button phx-click="delete" value={@user.id}> Delete <%=@user.firstname%></button>
 </form>
 <% end %>

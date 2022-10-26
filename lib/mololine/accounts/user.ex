@@ -20,7 +20,8 @@ defmodule Mololine.Accounts.User do
    # resources that he belong to eg
    # driver belongs to a vehicle.
    # conductor belongs to a vehicle.
-    belongs_to :vehicle, Mololine.Vehicles.Vehicle # this was added
+    belongs_to :vehicle, Mololine.Vehicles.Vehicle ,on_replace: :delete
+    belongs_to :town, Mololine.Towns.Town  ,on_replace: :delete
     timestamps()
   end
 

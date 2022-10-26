@@ -80,8 +80,11 @@ defmodule Mololine.Vehicles do
 
   """
   def update_vehicle(%Vehicle{} = vehicle, attrs) do
+    driveremail = attrs["driveremail"]
+    driver  = Repo.get_by(User,email: driveremail)
     vehicle
     |> Vehicle.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:driver,driver)
     |> Repo.update()
   end
 
