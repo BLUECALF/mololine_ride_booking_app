@@ -77,7 +77,7 @@ end %>
 <input type ="text" name ="pickuppoint_location" required>
 
 <label> Enter Your Email Address </label>
-<input type ="email" name ="pickuppoint_email" value={@user.email} required>
+<input type ="email" name ="pickuppoint_email" value={@user.email} minlength = "10" maxlength = "10" required>
 <% end %>
 
 <label>Drop Point</label>
@@ -91,7 +91,7 @@ end %>
 <% # if we have custom Drop point, add phone and email , else don't add details%>
 <%= if @custom_droppoint do%>
 <label> Enter Your Phone Number</label>
-<input type ="number" name ="droppoint_phone" required>
+<input type ="number" name ="droppoint_phone"  minlength = "10" maxlength = "10" required>
 
 <label> Enter Drop Point Location</label>
 <input type ="text" name ="droppoint_location" required>

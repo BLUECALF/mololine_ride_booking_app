@@ -47,10 +47,13 @@ defmodule Mololine.Accounts.User do
     |> cast(attrs, [:firstname,:lastname,:phone,:gender,:email,:role, :password])
     |> validate_email()
     |> validate_password(opts)
+    |> validate_length(:phone, max: 10,min: 10)
+
   end
   def update_user_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:firstname,:lastname,:phone,:gender,:email,:role])
+    |> validate_length(:phone, max: 10,min: 10)
     |> validate_email()
   end
 
