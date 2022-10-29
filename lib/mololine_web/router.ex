@@ -19,8 +19,6 @@ defmodule MololineWeb.Router do
 
   scope "/", MololineWeb do
     pipe_through :browser
-
-
     resources "/seatplans", SeatplanController
     resources "/towns", TownController
     resources "/vehicles", VehicleController

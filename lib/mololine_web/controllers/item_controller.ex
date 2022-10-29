@@ -2,6 +2,8 @@ defmodule MololineWeb.ItemController do
   use MololineWeb, :controller
 
   alias Mololine.Inventory
+  alias Mololine.Repo
+  alias Mololine.Accounts.User
   alias Mololine.Inventory.Item
 
   def index(conn, _params) do
@@ -15,6 +17,18 @@ defmodule MololineWeb.ItemController do
   end
 
   def create(conn, %{"item" => item_params}) do
+    user_id = conn.assigns.current_user.id;
+    user = Repo.get(User,user_id) |> Repo.preload(:town)
+    if(user.town == nil) do
+
+      conn
+    |> put_flash(:error, "You have not been assigned to a town and cannot make items to inventory")
+    |> redirect(to: Routes.item_path(conn, :index))
+
+    else
+    town = user.town.name;
+    item_params  = Map.put(item_params,"town",town)
+    IO.inspect item_params
     case Inventory.create_item(item_params) do
       {:ok, item} ->
         conn
@@ -23,6 +37,7 @@ defmodule MololineWeb.ItemController do
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
+    end
     end
   end
 
