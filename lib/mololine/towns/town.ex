@@ -16,5 +16,6 @@ defmodule Mololine.Towns.Town do
     town
     |> cast(attrs, [:name])
     |> validate_required([:name])
+    |>unsafe_validate_unique(:name,Mololine.Repo)
   end
 end
