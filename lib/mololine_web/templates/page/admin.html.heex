@@ -9,13 +9,24 @@
     <% port = @conn.port%>
     <% base_url = "http://#{host}:#{port}"%>
     <label> <%=base_url%></label>
-      <label>Driver/Conductor Page</label>
-      <li><a href={base_url <> "/travelnoticesfordriver"}>Travel Notices For Drivers</a></li>
-      <label>Customer Page</label>
+      <br>
+      <label>Resources</label>
       <li><a href= {base_url <> "/parcels"}>Parcels</a></li>
-      <li><a href={base_url <> "/travelnotices"}>Travel Notices</a></li>
       <li><a href={base_url <> "/bookings"}>Bookings</a></li>
       <li><a href={base_url <> "/parceldeliverybooking"}>Parcel Delivery Bookings</a></li>
+      <li><a href={base_url <> "/items"}>Items in inventory</a></li>
+
+      <label>Driver/Conductor Page</label>
+      <li><a href={base_url <> "/travelnoticesfordriver"}>Travel Notices For Drivers</a></li>
+
+
+      <label>Customer Page</label>
+      <li><a href= {base_url <> "/customer_parcels"}>Parcels for Customer</a></li>
+      <li><a href={base_url <> "/customer_bookings"}>Bookings for Customer</a></li>
+      <li><a href={base_url <> "/customer_parcel_delivery_bookings"}>parcel delivery booking for Customer</a></li>
+      <li><a href={base_url <> "/customer_items"}>Items for Customer</a></li>
+      <li><a href={base_url <> "/travelnotices"}>Travel Notices</a></li>
+
       <label>Human Resource  Page</label>
       <li><a href={base_url <> "/hrlive"}>hr</a></li>
       <label>Accountant Page</label>

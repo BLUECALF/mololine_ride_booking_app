@@ -9,9 +9,11 @@
     <% base_url = "http://#{host}:#{port}"%>
     <h1>Customer Page</h1>
     <label> <% base_url%></label>
-      <li><a href= {base_url <> "/parcels"}>Parcels</a></li>
-      <li><a href={base_url <> "/bookings"}>Bookings</a></li>
-      <li><a href={base_url <> "/parceldeliverybooking"}>Parcel Delivery Bookings</a></li>
+      <li><a href= {base_url <> "/customer_parcels"}>Parcels for Customer</a></li>
+      <li><a href={base_url <> "/customer_bookings"}>Bookings for Customer</a></li>
+      <li><a href={base_url <> "/customer_parcel_delivery_bookings"}>parcel delivery booking for Customer</a></li>
+      <li><a href={base_url <> "/customer_items"}>Items for Customer</a></li>
+      <li><a href={base_url <> "/travelnotices"}>Travel Notices</a></li>
     </ul>
   </article>
 </section>

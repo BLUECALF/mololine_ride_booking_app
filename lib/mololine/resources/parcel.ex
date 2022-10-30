@@ -7,7 +7,11 @@ defmodule Mololine.Resources.Parcel do
     field :recipient_phone, :string
     field :weight, :integer
     field :pin, :string
+
+    #associations
     belongs_to :user, Mololine.Accounts.User  # this was added
+     #has childresn
+    has_many :parceldeliverybookings, Mololine.ParcelBookings.ParcelDeliveryBooking
     timestamps()
   end
 

@@ -78,14 +78,24 @@ defmodule MololineWeb.Router do
     resources "/parcels", ParcelController
     resources "/parceldeliverybooking", ParcelDeliveryBookingController
     resources "/travelnotices", TravelNoticeController
-    get "/travelnoticesfordriver", TravelNoticeController,:driver
+
     resources "/items", ItemController
     resources "/bookings", BookingController
+    # customer
+    get "/customer_parcels", ParcelController,:customer_index
+    get "/customer_bookings", BookingController,:customer_index
+    get "/customer_parcel_delivery_bookings",ParcelDeliveryBookingController,:customer_index
+    get "/customer_items", ItemController,:customer_index
     live "/bookinglive/:travelnotice_id", BookingLive
     live "/parceldeliverybookinglive/:travelnotice_id/:user_id", ParcelDeliveryBookingLive
+    # hr
     live "/hrlive", HrLive
+    # accountant
+    resources "/items", ItemController
     live "/accountantlive/:accountantemail", AccountantLive
+    #conductor or driver
     live "/conductorlive/:travelnotice_id", ConductorLive
+    get "/travelnoticesfordriver", TravelNoticeController,:driver
 
 
     get "/users/settings", UserSettingsController, :edit

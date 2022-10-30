@@ -3,11 +3,23 @@ defmodule MololineWeb.ItemController do
 
   alias Mololine.Inventory
   alias Mololine.Repo
+  alias Mololine.Resources.Parcel
   alias Mololine.Accounts.User
   alias Mololine.Inventory.Item
 
   def index(conn, _params) do
     items = Inventory.list_items()
+    render(conn, "index.html", items: items)
+  end
+
+  def customer_index(conn, _params) do
+    user_id = conn.assigns.current_user.id
+    user = Repo.get(User,user_id) |> Repo.preload(:parcels)
+    parcels = user.parcels
+
+    items =  for parcel <- parcels do
+     Repo.get_by(Item,parcel_id: parcel.id)
+    end
     render(conn, "index.html", items: items)
   end
 

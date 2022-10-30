@@ -2,12 +2,22 @@ defmodule MololineWeb.ParcelController do
   use MololineWeb, :controller
 
   alias Mololine.Resources
+  alias Mololine.Repo
+  alias Mololine.Accounts.User
   alias Mololine.Resources.Parcel
 
   action_fallback MololineWeb.FallbackController
 
   def index(conn, _params) do
     parcels = Resources.list_parcels()
+    render(conn, "index.html", parcels: parcels)
+  end
+
+  def customer_index(conn, _params) do
+    user_id = conn.assigns.current_user.id
+    IO.puts "The user id is :#{user_id}"
+    user = Repo.get(User,user_id) |> Repo.preload(:parcels)
+    parcels = user.parcels
     render(conn, "index.html", parcels: parcels)
   end
 

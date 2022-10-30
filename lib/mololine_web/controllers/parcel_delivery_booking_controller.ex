@@ -4,12 +4,33 @@ defmodule MololineWeb.ParcelDeliveryBookingController do
   alias Mololine.ParcelBookings
   alias Mololine.Resources.Parcel
   alias Mololine.Repo
+  alias Mololine.Accounts.User
   alias Mololine.ParcelBookings.ParcelDeliveryBooking
 
   def index(conn, _params) do
     parceldeliverybooking = ParcelBookings.list_parceldeliverybooking()
     render(conn, "index.html", parceldeliverybooking: parceldeliverybooking)
   end
+
+  def customer_index(conn, _params) do
+    user_id = conn.assigns.current_user.id
+    IO.puts "The user id is :#{user_id}"
+    user = Repo.get(User,user_id) |> Repo.preload(:parcels)
+    parcels = user.parcels
+    parceldeliverybooking_list =  for parcel <- parcels do
+      parcel_instance = Repo.get(Parcel,parcel.id) |> Repo.preload(:parceldeliverybookings)
+      parcel_instance.parceldeliverybookings
+    end
+    IO.puts "PARCEL DELIVERY BOOKING LIST IS"
+    IO.inspect parceldeliverybooking_list
+
+
+    parceldeliverybooking = sumList(parceldeliverybooking_list)
+
+    render(conn, "index.html", parceldeliverybooking: parceldeliverybooking)
+  end
+
+
 
   def new(conn, parcel_booking_params) do
     IO.puts "booking params in new parcel deliv is "
@@ -117,5 +138,13 @@ defmodule MololineWeb.ParcelDeliveryBookingController do
       else
       true
     end
+  end
+
+  defp sumList([h,t]) do
+    h ++ sumList(t)
+  end
+
+  defp sumList([pdb]) do
+    pdb
   end
 end

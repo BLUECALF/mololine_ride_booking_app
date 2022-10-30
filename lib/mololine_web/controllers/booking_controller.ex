@@ -3,10 +3,19 @@ defmodule MololineWeb.BookingController do
 
   alias Mololine.Bookings
   alias Mololine.Repo
+  alias Mololine.Accounts.User
   alias Mololine.Bookings.Booking
 
   def index(conn, _params) do
     bookings = Repo.all(Booking) |> Repo.preload(:travelnotice)
+    render(conn, "index.html", bookings: bookings)
+  end
+
+  def customer_index(conn, _params) do
+    user_id = conn.assigns.current_user.id
+    IO.puts "The user id is :#{user_id}"
+    user = Repo.get(User,user_id) |> Repo.preload(:bookings)
+    bookings = user.bookings
     render(conn, "index.html", bookings: bookings)
   end
 
