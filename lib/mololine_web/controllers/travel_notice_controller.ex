@@ -66,14 +66,20 @@ defmodule MololineWeb.TravelNoticeController do
   def create(conn, %{"travel_notice" => travel_notice_params}) do
     user = conn.assigns.current_user
     vehicle = Repo.get_by(Vehicle,driveremail: user.email)
-    case Notices.create_travel_notice(travel_notice_params,vehicle) do
-      {:ok, travel_notice} ->
+    if(travel_notice_params["from"] == travel_notice_params["to"]) do
         conn
-        |> put_flash(:info, "Travel notice created successfully.")
-        |> redirect(to: Routes.travel_notice_path(conn, :show, travel_notice))
+        |> put_flash(:error, "From location and To location cannot be same")
+        |> redirect(to: Routes.travel_notice_path(conn, :new,[]))
+      else
+      case Notices.create_travel_notice(travel_notice_params,vehicle) do
+        {:ok, travel_notice} ->
+          conn
+          |> put_flash(:info, "Travel notice created successfully.")
+          |> redirect(to: Routes.travel_notice_path(conn, :show, travel_notice))
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        {:error, %Ecto.Changeset{} = changeset} ->
+          render(conn, "new.html", changeset: changeset)
+      end
     end
   end
 
