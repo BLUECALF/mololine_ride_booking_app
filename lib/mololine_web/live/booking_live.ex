@@ -20,6 +20,8 @@ defmodule MololineWeb.BookingLive do
       true ->
       #subscribe to the channel
         Phoenix.PubSub.subscribe(Mololine.PubSub,"bookinglive#{travelnotice_id}")
+        # inform existing members you joined the chanel so that they update you
+        Phoenix.PubSub.broadcast(Mololine.PubSub,"bookinglive#{travelnotice_id}",{:someone_joined, []})
       false ->
         # Only subscribes when Live View is connected via socket
         IO.puts("socket is not connected.")
@@ -40,6 +42,11 @@ defmodule MololineWeb.BookingLive do
 
   def handle_info({:select_seat, others_selected},socket) do
     socket = assign(socket,:othersselectedseats,(socket.assigns.othersselectedseats ++ others_selected))
+    {:noreply,socket}
+  end
+  def handle_info({:someone_joined, others_selected},socket) do
+    # broadcast to them your selected seats
+    Phoenix.PubSub.broadcast(Mololine.PubSub,"bookinglive#{socket.assigns.travelnotice.id}",{:select_seat, socket.assigns.selectedseats})
     {:noreply,socket}
   end
   def handle_event("book", _payload,socket) do
