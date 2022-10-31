@@ -45,10 +45,6 @@ defmodule MololineWeb.BookingLive do
     {:noreply,socket}
   end
   def handle_info({:unselect_seat, others_selected},socket) do
-    IO.puts "value IN OTHERS SELECTED"
-    IO.inspect socket.assigns.othersselectedseats
-    IO.puts "value I clicked"
-    IO.inspect others_selected
     socket = assign(socket,:othersselectedseats,(socket.assigns.othersselectedseats -- others_selected))
     {:noreply,socket}
   end
@@ -83,9 +79,25 @@ defmodule MololineWeb.BookingLive do
       selectedseats = c ++ [seat]
       socket = assign(socket,:selectedseats,selectedseats)
       Phoenix.PubSub.broadcast(Mololine.PubSub,"bookinglive#{socket.assigns.travelnotice.id}",{:select_seat, socket.assigns.selectedseats})
+       # call to unselect seat after sometime
+      unselectAfter300Seconds(socket,seat)
       {:noreply,socket}
       end
     # get seat , add to selected seats and re render.
+  end
+
+  defp unselectAfter300Seconds(socket,seat) do
+    Task.async(fn -> unselectSeatAfterTime(socket,seat) end)
+  end
+
+  defp unselectSeatAfterTime(socket,seat) do
+    task = Task.async(fn ->:timer.sleep(300000) end)
+    Task.await(task,303000)
+    # after waiting for 4 sec unselect the seat.
+    Phoenix.PubSub.broadcast(Mololine.PubSub,"bookinglive#{socket.assigns.travelnotice.id}",{:unselect_seat, [seat]})
+    IO.puts "UNSELCT was broadcasted booooooooois "
+    task = Task.async(fn ->:timer.sleep(10000) end)
+    Task.await(task,12000)
   end
 
   defp broadcast(topic,event,payload) do
