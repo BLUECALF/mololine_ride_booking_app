@@ -20,5 +20,6 @@ defmodule Mololine.Resources.Parcel do
     parcel
     |> cast(attrs, [:recipient_name,:recipient_phone, :weight, :pin])
     |> validate_required([:recipient_name,:recipient_phone, :weight, :pin])
+    |> validate_length(:recipient_phone,max: 10,min: 10)
   end
 end

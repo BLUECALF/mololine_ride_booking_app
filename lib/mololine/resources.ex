@@ -56,7 +56,7 @@ defmodule Mololine.Resources do
     %Parcel{}
     |> Parcel.changeset(attrs)
     |> Ecto.Changeset.put_assoc(:user,user)
-    |> Repo.insert!()
+    |> Repo.insert()
   end
 
   @doc """
