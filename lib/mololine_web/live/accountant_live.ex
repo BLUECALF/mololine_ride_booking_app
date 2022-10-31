@@ -138,6 +138,26 @@ defmodule MololineWeb.AccountantLive do
     {:noreply,socket}
   end
 
+  def handle_event("remove_parcel_from_office", payload,socket) do
+    parcel=Repo.get_by(Parcel,id: payload["parcel_id"])
+    item = Repo.get_by(Item,parcel_id: payload["parcel_id"])
+    user = Repo.get_by(User,email: socket.assigns.accountantemail) |> Repo.preload(:town)
+    if (parcel==nil or item == nil or (item.town != user.town.name)) do
+      {:noreply, put_flash(socket, :error, "parcel with ID #{payload["parcel_id"]} does not exist in #{user.town.name} office")}
+    else
+      if(parcel.pin==payload["pin"]) do
+        # delete  the data
+        {:ok, _item} = Inventory.delete_item(item)
+          socket =  socket |> put_flash(:info, "Removed parcel successfully from office ")
+          {:noreply,socket}
+      else
+        IO.puts("Parcel details do not match")
+        socket =  socket |> put_flash(:error, "Parcel details do not match, contact the parcel sender for pin")
+        {:noreply,socket}
+      end
+    end
+  end
+
   defp broadcast(topic,event,payload) do
     Phoenix.PubSub.broadcast(Mololine.PubSub,topic,{event, payload})
   end

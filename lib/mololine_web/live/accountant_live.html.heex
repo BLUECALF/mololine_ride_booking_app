@@ -67,3 +67,16 @@
     <% end%>
   </article>
 </section>
+<section class ="row">
+    <article class="column" style="width:300px;">
+        <h2>Remove Parcel from Office</h2>
+        <form phx-submit="remove_parcel_from_office">
+
+            <label> Enter Parcel Id</label>
+            <input type="number" name="parcel_id" required>
+            <label> Enter Parcel Pin</label>
+            <input type="text" name="pin" required>
+            <button type="submit">Remove Parcel</button>
+        </form>
+    </article>
+</section>

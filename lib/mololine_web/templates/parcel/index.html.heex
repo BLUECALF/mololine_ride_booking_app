@@ -3,6 +3,7 @@
 <table>
   <thead>
     <tr>
+      <th>Parcel ID</th>
       <th>Recipient Name</th>
       <th>Recipient Phone</th>
       <th>Weight</th>
@@ -14,6 +15,7 @@
   <tbody>
 <%= for parcel <- @parcels do %>
     <tr>
+      <td><%= parcel.id %></td>
       <td><%= parcel.recipient_name %></td>
       <td><%= parcel.recipient_phone %></td>
       <td><%= parcel.weight %></td>
