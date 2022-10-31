@@ -32,25 +32,33 @@ defmodule MololineWeb.ItemController do
     user_id = conn.assigns.current_user.id;
     user = Repo.get(User,user_id) |> Repo.preload(:town)
     if(user.town == nil) do
-
       conn
     |> put_flash(:error, "You have not been assigned to a town and cannot make items to inventory")
     |> redirect(to: Routes.item_path(conn, :index))
 
     else
-    town = user.town.name;
-    item_params  = Map.put(item_params,"town",town)
-    IO.inspect item_params
-    case Inventory.create_item(item_params) do
-      {:ok, item} ->
+    # check if the parcel exists
+      parcel_id = item_params["parcel_id"]
+      if(Repo.get(Parcel,parcel_id) ==nil) do
         conn
-        |> put_flash(:info, "Item created successfully.")
-        |> redirect(to: Routes.item_path(conn, :show, item))
+        |> put_flash(:error, "Parcel with ID #{parcel_id} does not exist")
+        |> redirect(to: Routes.item_path(conn, :index))
+        else
+        # continue with normal stuff
+        town = user.town.name;
+        item_params  = Map.put(item_params,"town",town)
+        IO.inspect item_params
+        case Inventory.create_item(item_params) do
+          {:ok, item} ->
+            conn
+            |> put_flash(:info, "Item created successfully.")
+            |> redirect(to: Routes.item_path(conn, :show, item))
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
-    end
-    end
+          {:error, %Ecto.Changeset{} = changeset} ->
+            render(conn, "new.html", changeset: changeset)
+        end
+      end
+      end
   end
 
   def show(conn, %{"id" => id}) do
