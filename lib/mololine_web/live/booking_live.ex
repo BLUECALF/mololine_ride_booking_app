@@ -28,6 +28,7 @@ defmodule MololineWeb.BookingLive do
     socket = assign(socket,:travelnotice,travelnotice)
     socket = assign(socket,:seats,seats)
     socket = assign(socket,:selectedseats,[])
+    socket = assign(socket,:othersselectedseats,[])
     socket = assign(socket,:bookings,make_booked_list(bookings))
     {:ok, socket}
   end
@@ -37,6 +38,10 @@ defmodule MololineWeb.BookingLive do
     {:noreply,socket}
   end
 
+  def handle_info({:select_seat, others_selected},socket) do
+    socket = assign(socket,:othersselectedseats,(socket.assigns.othersselectedseats ++ others_selected))
+    {:noreply,socket}
+  end
   def handle_event("book", _payload,socket) do
     selected_seats = socket.assigns.selectedseats
     travelnotice_id = socket.assigns.travelnotice.id
@@ -56,11 +61,13 @@ defmodule MololineWeb.BookingLive do
       c= selectedseats
       selectedseats = c -- [seat]
       socket = assign(socket,:selectedseats,selectedseats)
+      Phoenix.PubSub.broadcast(Mololine.PubSub,"bookinglive#{socket.assigns.travelnotice.id}",{:select_seat, socket.assigns.selectedseats})
       {:noreply,socket}
       else
       c= selectedseats
       selectedseats = c ++ [seat]
       socket = assign(socket,:selectedseats,selectedseats)
+      Phoenix.PubSub.broadcast(Mololine.PubSub,"bookinglive#{socket.assigns.travelnotice.id}",{:select_seat, socket.assigns.selectedseats})
       {:noreply,socket}
       end
     # get seat , add to selected seats and re render.
