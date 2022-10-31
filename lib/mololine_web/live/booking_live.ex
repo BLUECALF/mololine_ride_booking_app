@@ -41,7 +41,15 @@ defmodule MololineWeb.BookingLive do
   end
 
   def handle_info({:select_seat, others_selected},socket) do
-    socket = assign(socket,:othersselectedseats,(socket.assigns.othersselectedseats ++ others_selected))
+    socket = assign(socket,:othersselectedseats, Enum.uniq(socket.assigns.othersselectedseats ++ others_selected))
+    {:noreply,socket}
+  end
+  def handle_info({:unselect_seat, others_selected},socket) do
+    IO.puts "value IN OTHERS SELECTED"
+    IO.inspect socket.assigns.othersselectedseats
+    IO.puts "value I clicked"
+    IO.inspect others_selected
+    socket = assign(socket,:othersselectedseats,(socket.assigns.othersselectedseats -- others_selected))
     {:noreply,socket}
   end
   def handle_info({:someone_joined, others_selected},socket) do
@@ -68,7 +76,7 @@ defmodule MololineWeb.BookingLive do
       c= selectedseats
       selectedseats = c -- [seat]
       socket = assign(socket,:selectedseats,selectedseats)
-      Phoenix.PubSub.broadcast(Mololine.PubSub,"bookinglive#{socket.assigns.travelnotice.id}",{:select_seat, socket.assigns.selectedseats})
+      Phoenix.PubSub.broadcast(Mololine.PubSub,"bookinglive#{socket.assigns.travelnotice.id}",{:unselect_seat, [seat]})
       {:noreply,socket}
       else
       c= selectedseats
