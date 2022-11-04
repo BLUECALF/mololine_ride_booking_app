@@ -4,6 +4,9 @@ defmodule MololineWeb.ConductorLive do
 
   alias Mololine.Repo
   alias Mololine.Notices
+  alias Mololine.Sales.Sale
+  alias Mololine.Sales
+  alias Mololine.Accounts.User
   alias Mololine.Notices.TravelNotice
   alias Mololine.Bookings
   alias Mololine.ParcelBookings
@@ -38,16 +41,34 @@ defmodule MololineWeb.ConductorLive do
       IO.puts("nil booking")
       {:noreply, put_flash(socket, :error, "seat Booking with that booking id not found")}
       else
-      IO.puts("in else")
-      #booking.checked_in=true
-      IO.inspect payload
-      booking = socket.assigns.booking
-      result = (Bookings.update_booking_checkin(booking,%{"checked_in" => true})
-                |> Repo.update!())
-      IO.inspect result
-      socket =  socket |> put_flash(:info, "Checked into seat Successfully")
-      socket = updatePage(socket)
-      {:noreply,socket}
+      if(booking.checked_in == true) do
+        # inform user that the booking has already been checked in
+        socket =  socket |> put_flash(:error, "The booking ID has already been checked in")
+        socket = updatePage(socket)
+        {:noreply,socket}
+        else
+        IO.puts("in else")
+        #booking.checked_in=true
+        IO.inspect payload
+        booking = socket.assigns.booking
+        result = (Bookings.update_booking_checkin(booking,%{"checked_in" => true})
+                  |> Repo.update!())
+        IO.inspect result
+        socket =  socket |> put_flash(:info, "Checked into seat Successfully")
+        socket = updatePage(socket)
+        # add the record to sales
+        user = Repo.get_by(User,id: booking.user_id)
+        attrs = %{
+          "from"=> user.firstname <> " "<> user.lastname,
+          "to"=>   "Mololine Services",
+          "amount"=> booking.total_price,
+          "reason"=>"Seat booking #{booking.seat}",
+          "date"=> DateTime.utc_now() ,
+        }
+        IO.inspect attrs
+        Sales.create_sale(attrs)
+        {:noreply,socket}
+      end
     end
   end
 
