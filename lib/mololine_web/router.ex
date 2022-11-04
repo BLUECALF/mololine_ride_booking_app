@@ -19,9 +19,6 @@ defmodule MololineWeb.Router do
 
   scope "/", MololineWeb do
     pipe_through :browser
-    resources "/seatplans", SeatplanController
-    resources "/towns", TownController
-    resources "/vehicles", VehicleController
   end
 
   # Other scopes may use custom stacks.
@@ -97,6 +94,11 @@ defmodule MololineWeb.Router do
     live "/conductorlive/:travelnotice_id", ConductorLive
     get "/travelnoticesfordriver", TravelNoticeController,:driver
 
+    #manager
+    resources "/sales", SaleController
+    resources "/seatplans", SeatplanController
+    resources "/towns", TownController
+    resources "/vehicles", VehicleController
 
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update
