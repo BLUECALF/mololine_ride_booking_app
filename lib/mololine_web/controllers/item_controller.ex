@@ -9,7 +9,14 @@ defmodule MololineWeb.ItemController do
 
   def index(conn, _params) do
     items = Inventory.list_items()
-    render(conn, "index.html", items: items)
+    if(conn.assigns.current_user.role != "admin" ) do
+      # redirect to parcel_customer page
+      conn
+      |> redirect(to: Routes.item_path(conn, :customer_index, []))
+    else
+      #user iz admin
+      render(conn, "index.html", items: items)
+    end
   end
 
   def customer_index(conn, _params) do

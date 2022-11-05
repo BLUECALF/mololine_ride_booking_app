@@ -8,7 +8,15 @@ defmodule MololineWeb.BookingController do
 
   def index(conn, _params) do
     bookings = Repo.all(Booking) |> Repo.preload(:travelnotice)
-    render(conn, "index.html", bookings: bookings)
+    # check user if is not admin show him aproperiate data
+    if(conn.assigns.current_user.role != "admin" ) do
+      # redirect to parcel_customer page
+      conn
+      |> redirect(to: Routes.booking_path(conn, :customer_index, []))
+    else
+      #user iz admin
+      render(conn, "index.html", bookings: bookings)
+    end
   end
 
   def customer_index(conn, _params) do

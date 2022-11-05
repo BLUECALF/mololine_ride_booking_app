@@ -10,7 +10,15 @@ defmodule MololineWeb.ParcelController do
 
   def index(conn, _params) do
     parcels = Resources.list_parcels()
-    render(conn, "index.html", parcels: parcels)
+    # check user if is not admin show him aproperiate data
+    if(conn.assigns.current_user.role != "admin" ) do
+      # redirect to parcel_customer page
+      conn
+       |> redirect(to: Routes.parcel_path(conn, :customer_index, []))
+      else
+      #user iz admin
+      render(conn, "index.html", parcels: parcels)
+    end
   end
 
   def customer_index(conn, _params) do
