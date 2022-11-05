@@ -19,7 +19,7 @@
       end %>
       <%= form_for @conn, "/travelnotices_index", fn f -> %>
 
-      <%= label f, :from_place %>
+      <%= label f, :from %>
       <%= select f, :from, towns_list,required: true %>
       <%= error_tag f, :from %>
 
