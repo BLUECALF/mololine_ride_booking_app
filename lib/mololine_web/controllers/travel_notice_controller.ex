@@ -13,8 +13,6 @@ defmodule MololineWeb.TravelNoticeController do
       render(conn, "index.html", travelnotices: travelnotices)
   end
   def driver(conn, _params) do
-    #alias Mololine.Repo
-    #alias Mololine.Notices.TravelNotice
 
     travelnotices = []
     user_id = conn.assigns.current_user.id
