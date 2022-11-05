@@ -148,14 +148,11 @@ defmodule MololineWeb.ParcelDeliveryBookingController do
     end
   end
 
-  defp sumList([h,t]) do
+  defp sumList([h|t]) do
     h ++ sumList(t)
   end
 
-  defp sumList([pdb]) do
-    pdb
-  end
-  defp sumList(pdb) do
-    pdb
+  defp sumList([]) do
+    []
   end
 end

@@ -6,7 +6,12 @@ defmodule MololineWeb.SaleController do
 
   def index(conn, _params) do
     sales = Sales.list_sales()
-    render(conn, "index.html", sales: sales)
+    price_list = for sale <- sales do
+      sale.amount
+    end
+    IO.inspect price_list
+    total = sumList(price_list)
+    render(conn, "index.html", sales: sales, total: total)
   end
 
   def new(conn, _params) do
@@ -58,5 +63,12 @@ defmodule MololineWeb.SaleController do
     conn
     |> put_flash(:info, "Sale deleted successfully.")
     |> redirect(to: Routes.sale_path(conn, :index))
+  end
+
+  defp sumList([h|t]) do
+    h + sumList(t)
+  end
+  defp sumList([]) do
+    0
   end
 end
