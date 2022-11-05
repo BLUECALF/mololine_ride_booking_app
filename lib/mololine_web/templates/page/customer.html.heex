@@ -13,6 +13,23 @@
       <li><a href={base_url <> "/customer_bookings"}>Bookings for Customer</a></li>
       <li><a href={base_url <> "/customer_parcel_delivery_bookings"}>parcel delivery booking for Customer</a></li>
       <li><a href={base_url <> "/customer_items"}>Items for Customer</a></li>
+
+      <%towns_list = for town <- @towns do
+      town.name
+      end %>
+      <%= form_for @conn, Routes.travel_notice_path(@conn, :customer_index), fn f -> %>
+
+      <%= label f, :from_place %>
+      <%= select f, :from, towns_list,required: true %>
+      <%= error_tag f, :from %>
+
+      <%= label f, :to %>
+      <%= select f, :to, towns_list,required: true %>
+      <%= error_tag f, :to %>
+
+      <%= date_input f, :date ,required: true%>
+      <%= submit "Search" %>
+      <% end %>
       <li><a href={base_url <> "/travelnotices"}>Travel Notices</a></li>
     </ul>
   </article>
