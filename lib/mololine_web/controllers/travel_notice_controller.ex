@@ -8,8 +8,31 @@ defmodule MololineWeb.TravelNoticeController do
   alias Mololine.Vehicles.Vehicle
   alias Mololine.Accounts.User
 
-  def index(conn, _params) do
-      travelnotices =  Repo.all(TravelNotice)
+  def index(conn, params) do
+    IO.puts "Data passed to travel notice finder is "
+    IO.inspect params
+
+    # query the db for details matching that.
+    import Ecto.Query, only: [from: 2]
+    from = params["from"]
+    to = params["to"]
+    date_string=params["date"]
+
+    [yyyy, mm, dd] = String.split(date_string, "-")
+    {:ok, date} = Date.from_iso8601("#{yyyy}-#{mm}-#{dd}")
+    # Create a query
+    query = from tn in "travelnotices",
+                 where: tn.from == ^from and tn.to == ^to and tn.date == ^date,
+                 select: tn.id
+
+    # Send the query to the repository
+    travelnotice_id_list  = Repo.all(query)
+    IO.inspect travelnotice_id_list
+
+    travelnotices = for tn <- travelnotice_id_list do
+       Repo.get(TravelNotice,tn)
+      end
+
       render(conn, "index.html", travelnotices: travelnotices)
   end
   def driver(conn, _params) do

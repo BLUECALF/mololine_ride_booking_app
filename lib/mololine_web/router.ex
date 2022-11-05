@@ -75,6 +75,7 @@ defmodule MololineWeb.Router do
     resources "/parcels", ParcelController
     resources "/parceldeliverybooking", ParcelDeliveryBookingController
     resources "/travelnotices", TravelNoticeController
+    post "/travelnotices_index", TravelNoticeController,:index
 
     resources "/items", ItemController
     resources "/bookings", BookingController
