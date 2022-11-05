@@ -6,12 +6,19 @@ defmodule MololineWeb.SaleController do
 
   def index(conn, _params) do
     sales = Sales.list_sales()
-    price_list = for sale <- sales do
+    total_amount = for sale <- sales do
       sale.amount
     end
-    IO.inspect price_list
-    total = sumList(price_list)
-    render(conn, "index.html", sales: sales, total: total)
+    today = DateTime.utc_now()
+    total_amount_this_month = for sale <- sales do
+      if(sale.date.month == today.month and sale.date.year == today.year) do
+      sale.amount
+      end
+    end
+
+    total = sumList(total_amount)
+    total_in_month = sumList(total_amount_this_month)
+    render(conn, "index.html", sales: sales, total: total, total_in_month: total_in_month)
   end
 
   def new(conn, _params) do
