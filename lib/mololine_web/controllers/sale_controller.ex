@@ -13,6 +13,8 @@ defmodule MololineWeb.SaleController do
     total_amount_this_month = for sale <- sales do
       if(sale.date.month == today.month and sale.date.year == today.year) do
       sale.amount
+      else
+      0
       end
     end
 
