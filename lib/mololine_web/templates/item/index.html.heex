@@ -22,12 +22,16 @@
       <td>
         <span><%= link "Show", to: Routes.item_path(@conn, :show, item) %></span>
         <span><%= link "Edit", to: Routes.item_path(@conn, :edit, item) %></span>
-        <span><%= link "Delete", to: Routes.item_path(@conn, :delete, item), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        <%= if(@conn.assigns.current_user.role == "accountant" or @conn.assigns.current_user.role == "admin") do%>
+            <span><%= link "Delete", to: Routes.item_path(@conn, :delete, item), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        <%end%>
+
       </td>
     </tr>
 <% end %>
 <% end %>
   </tbody>
 </table>
-
+<%= if(@conn.assigns.current_user.role == "accountant" or @conn.assigns.current_user.role == "admin") do%>
 <span><%= link "New Item", to: Routes.item_path(@conn, :new) %></span>
+<%end%>

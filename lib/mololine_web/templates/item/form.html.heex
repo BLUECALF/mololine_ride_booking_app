@@ -5,10 +5,15 @@
     </div>
   <% end %>
 
-  <%= label f, :parcel_id %>
-  <%= number_input f, :parcel_id %>
-  <%= error_tag f, :parcel_id %>
+  <%= if(@conn.assigns.current_user.role == "accountant" or @conn.assigns.current_user.role == "admin") do%>
+            <%= label f, :parcel_id %>
+            <%= number_input f, :parcel_id %>
+            <%= error_tag f, :parcel_id %>
+          <%else%>
+                 <%= label f, "Parcel ID #{@changeset.data.parcel_id} " %>
+        <%end%>
 
+        <%= label f, "Town  #{@changeset.data.town} " %>
 
   <%= label f, :parcel_booking_id %>
   <%= number_input f, :parcel_booking_id %>
