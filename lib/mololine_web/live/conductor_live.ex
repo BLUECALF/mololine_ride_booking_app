@@ -81,13 +81,23 @@ defmodule MololineWeb.ConductorLive do
       IO.puts("nil booking")
       {:noreply, put_flash(socket, :error, "Parcel delivery booking with that booking id not found or was to be picked at office")}
     else
-      IO.puts("in else")
       #booking.checked_in=true
-      IO.inspect payload
       pRBooking = socket.assigns.pRBooking
-      result = (ParcelBookings.update_parcel_delivery_booking(pRBooking,%{"checked_in" => true})
-                |> Repo.update!())
-      IO.inspect result
+      {:ok,result} = (ParcelBookings.update_parcel_delivery_booking(pRBooking,%{"checked_in" => true}))
+
+      # make it into a sale
+      parcel = Repo.get_by(Parcel,id: pRBooking.parcel_id)
+      user = Repo.get_by(User,id: parcel.user_id)
+      attrs = %{
+        "from"=> user.firstname <> " "<> user.lastname,
+        "to"=>   "Mololine Services",
+        "amount"=> round(((parcel.weight/1000) * Repo.get(Mololine.Notices.TravelNotice,pRBooking.travelnotice_id).price/5)),
+        "reason"=>"Parcel Delivery booking #{pRBooking.booking_id}",
+        "date"=> DateTime.utc_now() ,
+      }
+
+      Sales.create_sale(attrs)
+
       socket =  socket |> put_flash(:info, "Checked in parcel Successfully on Road ")
       socket = updatePage(socket)
       {:noreply,socket}
@@ -176,6 +186,7 @@ defmodule MololineWeb.ConductorLive do
 
   def handle_info({:conductor_given_parcel, payload},socket) do
     socket = updatePage(socket)
+    socket =  socket |> put_flash(:info, "I received the parcel Successfully")
     {:noreply,socket}
   end
 

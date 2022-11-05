@@ -1,5 +1,6 @@
 defmodule MololineWeb.AccountantLive do
   use Phoenix.LiveView
+
   alias Mololine.Repo
   alias Mololine.Resources.Parcel
   alias Mololine.ParcelBookings.ParcelDeliveryBooking
@@ -8,6 +9,7 @@ defmodule MololineWeb.AccountantLive do
   alias Mololine.Inventory
   alias Mololine.Accounts.User
   alias Mololine.Accounts
+  alias Mololine.Sales
 
   def mount((%{"accountantemail" => accountantemail}),session,socket) do
     first_form_passed = false
@@ -54,15 +56,33 @@ defmodule MololineWeb.AccountantLive do
       Repo.delete!(item)
       #update the parcel delivery booking
       pDBooking = Repo.get_by(ParcelDeliveryBooking,booking_id: item.parcel_booking_id)
-      {:ok,_} = (ParcelBookings.update_parcel_delivery_booking(pDBooking,%{"checked_in" => true})
-       |> Repo.update!())
+      {:ok,_pdb}=(ParcelBookings.update_parcel_delivery_booking(pDBooking,%{"checked_in" => true}))
+
+      parcel = Repo.get_by(Parcel,id: pDBooking.parcel_id)
+      user = Repo.get_by(User,id: parcel.user_id)
+      attrs = %{
+        "from"=> user.firstname <> " "<> user.lastname,
+        "to"=>   "Mololine Services",
+        "amount"=> round(((parcel.weight/1000) * Repo.get(Mololine.Notices.TravelNotice,pDBooking.travelnotice_id).price/5)),
+        "reason"=>"Parcel Delivery booking #{pDBooking.booking_id}",
+        "date"=> DateTime.utc_now() ,
+      }
+      IO.inspect attrs
+      Sales.create_sale(attrs)
     end
 
     # provide the parcel signal to conductor
     broadcast("accountantlive#{socket.assigns.accountantemail}",:conductor_given_parcel,[])
-    socket =  socket |> put_flash(:info, "System has asked Accountant For the Parcels")
+
     {:noreply,socket}
   end
+
+  # functions to remove errors
+  def handle_info({:conductor_given_parcel, payload},socket) do
+    socket =  socket |> put_flash(:info, "Given Conductor parcels Successfully")
+    {:noreply,socket}
+  end
+
   def handle_info({:conductor_requested_parcel, payload},socket) do
     IO.puts "conductor requested parcels"
     IO.inspect payload
@@ -128,8 +148,7 @@ defmodule MololineWeb.AccountantLive do
       # Send the query to the repository
       pdb_id  = List.first(Repo.all(query))
       pDBooking  = Repo.get(ParcelBookings.ParcelDeliveryBooking,pdb_id)
-      {:ok,_} = (ParcelBookings.update_parcel_delivery_booking(pDBooking,%{"checked_out" => true,"delivered" => true,})
-                 |> Repo.update!())
+      {:ok,_} = (ParcelBookings.update_parcel_delivery_booking(pDBooking,%{"checked_out" => true,"delivered" => true,}))
     end
 
     # provide the parcel signal to conductor
@@ -157,6 +176,7 @@ defmodule MololineWeb.AccountantLive do
       end
     end
   end
+
 
   defp broadcast(topic,event,payload) do
     Phoenix.PubSub.broadcast(Mololine.PubSub,topic,{event, payload})
