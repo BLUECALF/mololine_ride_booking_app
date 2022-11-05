@@ -103,7 +103,8 @@ defmodule MololineWeb.AccountantLive do
         booking_id = item.parcel_booking_id
         booking_id = removeNil(booking_id)
         pDBooking = Repo.get_by(ParcelDeliveryBooking,booking_id: booking_id)
-        if(pDBooking == nil) do
+        accountant = Repo.get_by(User,email: socket.assigns.accountantemail) |> Repo.preload(:town)
+        if(pDBooking == nil and item.town == accountant.town) do
         else
           pDBooking
           Repo.get(Parcel,pDBooking.parcel_unique_id)
