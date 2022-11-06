@@ -1,0 +1,82 @@
+<h1 xmlns="http://www.w3.org/1999/html"> Accountant Live</h1>
+<main class="container">
+  <p class="alert alert-info" role="alert"
+     phx-click="lv:clear-flash"
+     phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+
+  <p class="alert alert-danger" role="alert"
+     phx-click="lv:clear-flash"
+     phx-value-key="error"><%= live_flash(@flash, :error) %></p>
+
+</main>
+
+<section class="row">
+
+  <article class="column">
+<form phx-submit="submit" >
+  <h3>Search Parcel in Inventory</h3>
+<label> Enter Parcel ID </label>
+<input type ="number" name ="parcel_id" required style="width:150px;">
+   <button type="submit" >Search</button>
+</form>
+<%= if(@first_form_passed) do %>
+<h4>Item</h4>
+  <label><%=@item.parcel_id%></label>
+  <label><%=@item.town%></label>
+  <label><%=@item.parcel_booking_id%></label>
+<% end %>
+  </article>
+
+  <article class="column">
+    <h3>Receive Parcels from Conductor</h3>
+      <%= if @parcels_to_receive != nil  do%>
+      <form phx-submit = "receive_parcels_from_conductor">
+          <%= for parcel <- @parcels_to_receive do%>
+          <%=if parcel != nil do%>
+          <input type="checkbox" value={parcel.id} name="checkedinparcels[]"> <b>ID</b> <%=parcel.id%> <b> Receiver: </b> <%=parcel.recipient_name%> <b> phone :</b> <%=parcel.recipient_phone%><br>
+          <% end%>
+          <% end%>
+          <button type="submit">Receive Parcels</button>
+      </form>
+      <% end%>
+  </article>
+
+  <article class="column">
+    <h3>Parcels Asked by Conductor</h3>
+
+    <%= if @parcels != nil  do%>
+    <form>
+     <%= for parcel <- @parcels do%>
+        <%=if parcel != nil do%>
+      <input type="checkbox" value={parcel.id} name="checkedinparcels[]"> <b>ID</b> <%=parcel.id%> <b> Receiver: </b> <%=parcel.recipient_name%> <b> phone :</b> <%=parcel.recipient_phone%><br>
+         <% end%>
+     <% end%>
+    </form>
+    <% end%>
+      <h3>Parcels That have Paid in this Office </h3>
+
+    <%= if @transportableparcels != nil  do%>
+    <form phx-submit = "give_conductor_parcels">
+     <%= for parcel <- @transportableparcels do%>
+        <%=if parcel != nil do%>
+      <input type="checkbox" value={parcel.id} name="checkedoutparcels[]"> <b>ID</b> <%=parcel.id%> <b> Receiver: </b> <%=parcel.recipient_name%> <b> phone :</b> <%=parcel.recipient_phone%><br>
+      <% end%>
+     <% end%>
+      <button type="submit">Give Parcels</button>
+    </form>
+    <% end%>
+  </article>
+</section>
+<section class ="row">
+    <article class="column" style="width:300px;">
+        <h2>Remove Parcel from Office</h2>
+        <form phx-submit="remove_parcel_from_office">
+
+            <label> Enter Parcel Id</label>
+            <input type="number" name="parcel_id" required>
+            <label> Enter Parcel Pin</label>
+            <input type="text" name="pin" required>
+            <button type="submit">Remove Parcel</button>
+        </form>
+    </article>
+</section>

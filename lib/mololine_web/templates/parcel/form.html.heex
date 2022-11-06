@@ -10,7 +10,7 @@
   <%= error_tag f, :recipient_name %>
 
    <%= label f, :recipient_phone %>
-  <%= number_input f, :recipient_phone %>
+  <%= number_input f, :recipient_phone, maxlength: 10,minlength: 10 %>
   <%= error_tag f, :recipient_phone %>
 
   <%= label f, :"Weight in Grams" %>

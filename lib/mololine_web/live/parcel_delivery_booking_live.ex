@@ -50,20 +50,35 @@ defmodule MololineWeb.ParcelDeliveryBookingLive do
   def handle_event("submit", payload,socket) do
     IO.puts "The  liveview Form was submitted "
     IO.inspect payload
-    {:noreply,push_redirect(socket, to: Routes.parcel_delivery_booking_path(socket, :new, payload))}
+    parcel_booking_params= Map.put(payload,"travelnotice_id", socket.assigns.travelnotice.id)
+    {:noreply,push_redirect(socket, to: Routes.parcel_delivery_booking_path(socket, :new, parcel_booking_params))}
   end
   def handle_event("select_pickuppoint", payload,socket) do
     IO.puts "THE PAYLOAD in pickup point is"
     IO.inspect payload
     socket = assign(socket,:pickuppoint,payload["value"])
-    # if i have selected custom_pickup point make , it true in assigns
-    if(payload["value"] == "Custom Location") do
-      socket = assign(socket,:custom_pickuppoint,true)
+    # check if that pickup point has that parcel.
+    pickuppoint = payload["value"]
+    if (checkIfLocationHasParcel(pickuppoint,String.to_integer(socket.assigns.parcel_unique_id)) and pickuppoint != "Custom Location") do
+      # if the parcel is contained in that location.
+      socket = assign(socket,:custom_pickuppoint,false)
+      socket =  socket |> put_flash(:info, "#{payload["value"]} office has a parcel ID #{socket.assigns.parcel_unique_id}")
       {:noreply,socket}
       else
-      socket = assign(socket,:custom_pickuppoint,false)
-      {:noreply,socket}
+      # if i have selected custom_pickup point make , it true in assigns
+      if(payload["value"] == "Custom Location") do
+        socket = assign(socket,:custom_pickuppoint,true)
+        {:noreply,socket}
+      else
+       # not custom location and doesnt have the parcel .... error
+        socket = assign(socket,:custom_pickuppoint,false)
+        socket =  socket |> put_flash(:error, "#{payload["value"]} office doesn't  have parcel ID #{socket.assigns.parcel_unique_id}")
+        {:noreply,socket}
+      end
     end
+
+
+
   end
 
 
@@ -85,4 +100,23 @@ defmodule MololineWeb.ParcelDeliveryBookingLive do
     Phoenix.PubSub.broadcast(Mololine.PubSub,topic,{event, payload})
   end
 
+  defp checkIfLocationHasParcel(location,parcel_id) do
+    # check if that location has tha parcel
+    #if so deny creation of parcelboking.
+    import Ecto.Query, only: [from: 2]
+
+    # Create a query
+    query = from item in "items",
+                 where: item.parcel_id == ^parcel_id and item.town == ^location,
+                 select: item.parcel_id
+
+    # Send the query to the repository
+    existing  = List.first(Repo.all(query))
+
+    if existing == nil do
+      false
+    else
+      true
+    end
+  end
 end

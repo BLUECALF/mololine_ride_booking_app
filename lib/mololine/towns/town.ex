@@ -5,6 +5,9 @@ defmodule Mololine.Towns.Town do
   schema "towns" do
     field :name, :string
 
+    # has many users of role accountant
+    has_many :users, Mololine.Accounts.User
+
     timestamps()
   end
 
@@ -13,5 +16,6 @@ defmodule Mololine.Towns.Town do
     town
     |> cast(attrs, [:name])
     |> validate_required([:name])
+    |>unsafe_validate_unique(:name,Mololine.Repo)
   end
 end

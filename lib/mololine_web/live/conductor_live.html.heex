@@ -1,0 +1,149 @@
+<h1>Conductor Live Page</h1>
+<main class="container">
+    <p class="alert alert-info" role="alert"
+       phx-click="lv:clear-flash"
+       phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+
+    <p class="alert alert-danger" role="alert"
+       phx-click="lv:clear-flash"
+       phx-value-key="error"><%= live_flash(@flash, :error) %></p>
+</main>
+<section class="row">
+    <article class="column">
+        <h1>Booked People</h1>
+        <ul>
+            <%=for booking <- @bookings do%>
+            <%=if booking.checked_in == false do%>
+             <b>Name::</b> <%=booking.user.firstname%> <b>Seat::</b> <%=booking.seat %><br>
+            <%end%>
+            <%end%>
+
+
+        </ul>
+        <form phx-submit="submit_booking">
+            <label> Enter Booking Id</label>
+            <input type="number" name="booking_id" required>
+            <button type="submit"> Check in</button>
+        </form>
+    </article>
+
+    <article class="column">
+        <h1>Checked in People</h1>
+        <ul>
+
+            <%=for booking <- @bookings do%>
+            <%=if booking.checked_in == true do%>
+             <b>Name::</b> <%=booking.user.firstname%> <b>Seat::</b> <%=booking.seat %><br>
+            <%end%>
+            <%end%>
+
+        </ul>
+
+    </article>
+
+</section>
+
+
+<section class="row">
+    <article class="column">
+        <h2>Booked Parcels Expected On Road</h2>
+        <ul>
+            <%=for parceli <- @parcels do%>
+            <%=if parceli.checked_in == false and parceli.pickuppoint == "Custom Location" do%>
+            <label>ID: <%=parceli.parcel.id%> Recipient: <%=parceli.parcel.recipient_name%></label>
+            <%end%>
+            <%end%>
+
+
+        </ul>
+        <form phx-submit="submit_parcel_road_checkin">
+            <label> Enter Booking Id</label>
+            <input type="number" name="booking_id" required>
+            <button type="submit"> Check in</button>
+        </form>
+    </article>
+
+    <article class="column">
+        <h2>Booked Parcels Expected In Office</h2>
+        <form phx-submit="submit_parcel_office_checkin">
+            <label>Select Parcels</label>
+            <%=for parceli <- @parcels do%>
+            <%=if parceli.checked_in == false and parceli.pickuppoint != "Custom Location" do%>
+                <input type="checkbox" name="parcelList[]" value= {parceli.parcel.id} checked>
+                <b>ID:</b> <%=parceli.parcel.id%>  <b>Recipient:</b><%=parceli.parcel.recipient_name%><br>
+            <%end%>
+            <%end%>
+            <b>Enter accountants email </b>
+            <input type="text" name="accountantemail">
+            <button type="submit">Ask For Parcels</button>
+        </form>
+    </article>
+
+    <article class="column">
+        <h2>Checked in Parcels</h2>
+        <ul>
+            <%=for parceli <- @parcels do%>
+            <%=if parceli.checked_in == true do%>
+            <label>ID: <%=parceli.parcel.id%> Recipient: <%=parceli.parcel.recipient_name%></label>
+            <%end%>
+            <%end%>
+
+        </ul>
+
+    </article>
+
+</section>
+
+<section class="row">
+    <article class="column">
+        <h2>Booked Parcels Checked Out On Road</h2>
+        <ul>
+            <%=for parceli <- @parcels do%>
+            <%=if parceli.checked_out == false and parceli.checked_in == true and parceli. droppoint == "Custom
+            Location" do%>
+            <label>ID: <%=parceli.parcel.id%> Recipient: <%=parceli.parcel.recipient_name%></label>
+            <%end%>
+            <%end%>
+
+        </ul>
+        <form phx-submit="submit_road_parcel_checkout">
+
+            <label> Enter Parcel Id</label>
+            <input type="number" name="parcel_id" required>
+            <label> Enter Parcel Pin</label>
+            <input type="text" name="pin" required>
+            <button type="submit"> Check out</button>
+        </form>
+    </article>
+
+    <article class="column">
+        <h2>Booked Parcels to CheckOut at Office</h2>
+        <form phx-submit="submit_parcel_office_checkout">
+            <label>Select Parcels</label>
+            <%=for parceli <- @parcels do%>
+            <%=if parceli.checked_in == true and parceli.checked_out == false and parceli.droppoint != "Custom Location" do%>
+            <input type="checkbox" name="parcelList[]" value= {parceli.parcel.id} checked>
+            <b>ID:</b> <%=parceli.parcel.id%>  <b>Recipient:</b><%=parceli.parcel.recipient_name%><br>
+            <%end%>
+            <%end%>
+            <b>Enter accountants email </b>
+            <input type="text" name="accountantemail">
+            <button type="submit">Give Parcels</button>
+        </form>
+    </article>
+
+    <article class="column">
+        <h2>Checked Out Parcels</h2>
+        <ul>
+
+            <%=for parceli <- @parcels do%>
+            <%=if parceli.checked_out == true and parceli.checked_in == true do%>
+            <label>ID: <%=parceli.parcel.id%> Recipient: <%=parceli.parcel.recipient_name%></label>
+            <%end%>
+            <%end%>
+
+        </ul>
+
+    </article>
+
+</section>

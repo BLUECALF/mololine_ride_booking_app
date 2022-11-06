@@ -15,6 +15,7 @@ defmodule Mololine.ParcelBookings.ParcelDeliveryBooking do
     field :pickuppoint_email, :string
     field :pickuppoint_location, :string
     field :pickuppoint_phone, :string
+    field :booking_id, :integer
 
     #assosiations
     belongs_to :travelnotice, Mololine.Notices.TravelNotice # this was added
@@ -36,7 +37,8 @@ defmodule Mololine.ParcelBookings.ParcelDeliveryBooking do
       :droppoint_phone,
       :checked_in,
       :checked_out,
-      :delivered])
+      :delivered,
+      :booking_id])
     |> validate_required([:parcel_unique_id, :pickuppoint, :droppoint])
   end
 end

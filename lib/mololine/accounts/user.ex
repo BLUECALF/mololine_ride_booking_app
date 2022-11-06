@@ -20,7 +20,8 @@ defmodule Mololine.Accounts.User do
    # resources that he belong to eg
    # driver belongs to a vehicle.
    # conductor belongs to a vehicle.
-    belongs_to :vehicle, Mololine.Vehicles.Vehicle # this was added
+    belongs_to :vehicle, Mololine.Vehicles.Vehicle ,on_replace: :delete
+    belongs_to :town, Mololine.Towns.Town  ,on_replace: :delete
     timestamps()
   end
 
@@ -46,6 +47,14 @@ defmodule Mololine.Accounts.User do
     |> cast(attrs, [:firstname,:lastname,:phone,:gender,:email,:role, :password])
     |> validate_email()
     |> validate_password(opts)
+    |> validate_length(:phone, max: 10,min: 10)
+
+  end
+  def update_user_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:firstname,:lastname,:phone,:gender,:email,:role])
+    |> validate_length(:phone, max: 10,min: 10)
+    |> validate_email()
   end
 
   defp validate_email(changeset) do
@@ -150,4 +159,5 @@ defmodule Mololine.Accounts.User do
       add_error(changeset, :current_password, "is not valid")
     end
   end
+
 end

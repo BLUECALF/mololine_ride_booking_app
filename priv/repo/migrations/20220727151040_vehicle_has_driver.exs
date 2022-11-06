@@ -4,6 +4,7 @@ defmodule Mololine.Repo.Migrations.VehicleHasDriver do
   def change do
     alter table(:users) do
       add :vehicle_id, references(:vehicles)
+      add :town_id, references(:towns)
     end
   end
 end

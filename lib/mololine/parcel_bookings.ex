@@ -49,9 +49,11 @@ defmodule Mololine.ParcelBookings do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_parcel_delivery_booking(attrs \\ %{}) do
+  def create_parcel_delivery_booking(attrs \\ %{},parcel,travelnotice) do
     %ParcelDeliveryBooking{}
     |> ParcelDeliveryBooking.changeset(attrs)
+    |>Ecto.Changeset.put_assoc(:travelnotice,travelnotice)
+    |>Ecto.Changeset.put_assoc(:parcel,parcel)
     |> Repo.insert()
   end
 
