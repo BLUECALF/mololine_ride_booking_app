@@ -14,7 +14,7 @@
       <section class="container">
         <nav>
           <ul>
-            <span><%= link("Go Home", to: URI.parse("http://#{@conn.host}:#{@conn.port}/home")) %></span>
+            <span><%= link("Go Home", to: URI.parse("http://#{@conn.host}:#{@conn.port}")) %></span>
             <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
               <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
             <% end %>
