@@ -23,7 +23,10 @@ defmodule MololineWeb.BookingController do
     user_id = conn.assigns.current_user.id
     IO.puts "The user id is :#{user_id}"
     user = Repo.get(User,user_id) |> Repo.preload(:bookings)
-    bookings = user.bookings
+    bookings_list = user.bookings
+    bookings = for booking <- bookings_list do
+      Repo.get(Booking,booking.id) |> Repo.preload(:travelnotice)
+      end
     render(conn, "index.html", bookings: bookings)
   end
 
