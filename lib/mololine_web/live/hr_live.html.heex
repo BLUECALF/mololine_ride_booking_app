@@ -26,11 +26,12 @@
 <h1>Details</h1>
 
 <form phx-submit = "update">
-  <label><%=@user.firstname%></label>
-  <label><%=@user.lastname%></label>
-  <label><%=@user.phone%></label>
-  <label><%=@user.gender%></label>
+  <label>First Name : <%=@user.firstname%></label>
+  <label>Last Name : <%=@user.lastname%></label>
+  <label>Phone : <%=@user.phone%></label>
+  <label>Gender : <%=@user.gender%></label>
   <label>Role : <%=@user.role%></label>
+  <label>Change Role ? Choose below</label>
    <select id="role" name="role">
      <option value="customer">customer</option>
      <option value="admin">admin</option>
@@ -45,7 +46,7 @@
   <%else%>
    <label>Town : No town</label>
   <%end%>
-   <label>Change users town ?</label>
+   <label>Change users town ? Choose below</label>
   <select id="town" name="town">
     <option value="" > not selected </option>
     <%= for town <- @towns do%>
@@ -62,6 +63,6 @@
   <input type="hidden" name="email" value={@user.email}>
 
 <button type = "submit">update</button>
-<button phx-click="delete" value={@user.id}> Delete <%=@user.firstname%></button>
+<button phx-click="delete" value={@user.id} > Delete <%=@user.firstname%></button>
 </form>
 <% end %>

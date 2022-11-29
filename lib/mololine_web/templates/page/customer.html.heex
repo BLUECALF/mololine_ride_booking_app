@@ -17,6 +17,7 @@
       <%towns_list = for town <- @towns do
       town.name
       end %>
+      <h1>Search Travel Notices</h1>
       <%= form_for @conn, "/travelnotices_index", fn f -> %>
 
       <%= label f, :from %>

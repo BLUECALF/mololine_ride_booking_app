@@ -50,7 +50,7 @@
         <ul>
             <%=for parceli <- @parcels do%>
             <%=if parceli.checked_in == false and parceli.pickuppoint == "Custom Location" do%>
-            <label>ID: <%=parceli.parcel.id%> Recipient: <%=parceli.parcel.recipient_name%></label>
+            <b>ID:</b> <%=parceli.parcel.id%> <b> Recipient:</b><%=parceli.parcel.recipient_name%> <b>Location:</b> <%=parceli.pickuppoint_location%><br>
             <%end%>
             <%end%>
 
@@ -70,7 +70,7 @@
             <%=for parceli <- @parcels do%>
             <%=if parceli.checked_in == false and parceli.pickuppoint != "Custom Location" do%>
                 <input type="checkbox" name="parcelList[]" value= {parceli.parcel.id} checked>
-                <b>ID:</b> <%=parceli.parcel.id%>  <b>Recipient:</b><%=parceli.parcel.recipient_name%><br>
+                <b>ID:</b> <%=parceli.parcel.id%>  <b>Recipient:</b><%=parceli.parcel.recipient_name%> <b>Office: </b> <%=parceli.pickuppoint%><br>
             <%end%>
             <%end%>
             <b>Enter accountants email </b>
@@ -101,7 +101,7 @@
             <%=for parceli <- @parcels do%>
             <%=if parceli.checked_out == false and parceli.checked_in == true and parceli. droppoint == "Custom
             Location" do%>
-            <label>ID: <%=parceli.parcel.id%> Recipient: <%=parceli.parcel.recipient_name%></label>
+            <b>ID:</b> <%=parceli.parcel.id%> <b> Recipient:</b><%=parceli.parcel.recipient_name%> <b>Drop Location:</b> <%=parceli.droppoint_location%><br>
             <%end%>
             <%end%>
 
@@ -123,7 +123,7 @@
             <%=for parceli <- @parcels do%>
             <%=if parceli.checked_in == true and parceli.checked_out == false and parceli.droppoint != "Custom Location" do%>
             <input type="checkbox" name="parcelList[]" value= {parceli.parcel.id} checked>
-            <b>ID:</b> <%=parceli.parcel.id%>  <b>Recipient:</b><%=parceli.parcel.recipient_name%><br>
+            <b>ID:</b> <%=parceli.parcel.id%>  <b>Recipient:</b><%=parceli.parcel.recipient_name%> <b>Office: </b> <%=parceli.droppoint%><br>
             <%end%>
             <%end%>
             <b>Enter accountants email </b>
