@@ -64,6 +64,7 @@ end %>
 <% # inputs for the parcel booking %>
 <label>Parcel ID </label>
 <select name="parcel_unique_id">
+    <option>Select Parcel ID</option>
 <%= for parcel <- @parcel_list do %>
 <option value = {parcel.id} phx-click = "select_parcel">
 <%=parcel.id %> </option>
