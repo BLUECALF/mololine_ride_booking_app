@@ -10,6 +10,9 @@
     <SOURCES>
       <root url="file://$PROJECT_DIR$/deps/ecto_sql/lib" />
       <root url="file://$PROJECT_DIR$/deps/ecto_sql/lib" />
+      <root url="file://$PROJECT_DIR$/deps/ecto_sql/lib" />
+      <root url="file://$PROJECT_DIR$/deps/ecto_sql/lib" />
+      <root url="file://$PROJECT_DIR$/deps/ecto_sql/lib" />
     </SOURCES>
   </library>
 </component>

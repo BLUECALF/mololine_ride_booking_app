@@ -10,6 +10,9 @@
     <SOURCES>
       <root url="file://$PROJECT_DIR$/deps/phoenix_live_dashboard/lib" />
       <root url="file://$PROJECT_DIR$/deps/phoenix_live_dashboard/lib" />
+      <root url="file://$PROJECT_DIR$/deps/phoenix_live_dashboard/lib" />
+      <root url="file://$PROJECT_DIR$/deps/phoenix_live_dashboard/lib" />
+      <root url="file://$PROJECT_DIR$/deps/phoenix_live_dashboard/lib" />
     </SOURCES>
   </library>
 </component>

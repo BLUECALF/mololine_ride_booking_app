@@ -10,6 +10,9 @@
     <SOURCES>
       <root url="file://$PROJECT_DIR$/deps/plug_cowboy/lib" />
       <root url="file://$PROJECT_DIR$/deps/plug_cowboy/lib" />
+      <root url="file://$PROJECT_DIR$/deps/plug_cowboy/lib" />
+      <root url="file://$PROJECT_DIR$/deps/plug_cowboy/lib" />
+      <root url="file://$PROJECT_DIR$/deps/plug_cowboy/lib" />
     </SOURCES>
   </library>
 </component>
