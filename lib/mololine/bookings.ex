@@ -2,6 +2,7 @@ defmodule Mololine.Bookings do
   @moduledoc """
   The Bookings context.
   """
+  import Ecto.Changeset
 
   import Ecto.Query, warn: false
   alias Mololine.Repo
@@ -73,6 +74,13 @@ defmodule Mololine.Bookings do
     booking
     |> Booking.changeset(attrs)
     |> Repo.update()
+  end
+
+  def update_booking_checkin(%Booking{} = booking, attrs,opts \\ []) do
+    booking
+    |> cast(attrs, [:checked_in])
+    |> Booking.changeset(attrs)
+    #|> Repo.update()
   end
 
   @doc """

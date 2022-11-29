@@ -47,6 +47,16 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# In your config/config.exs file
+config :mololine, Mololine.Mailer,
+       adapter: Bamboo.SMTPAdapter,
+       server: "smtp.gmail.com",
+       port: 587,
+       username: "kiptalaleonard@gmail.com" ,#SYSTEM.get_env("SMTP_USERNAME"),
+       password: "tmxsaxgzlhtedvor" ,#SYSTEM.get_env("SMTP_PASSWORD"),
+       tls: :if_available, # can be `:always` or `:never`
+       ssl: false, # can be `true`
+       retries: 3
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

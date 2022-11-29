@@ -5,40 +5,43 @@
     </div>
   <% end %>
 
+   <%= label f, "Travel Notice Id"%>
+   <%= select f, :travelnotice_id, [@parcel_booking_params["travelnotice_id"]],required: true %>
+
   <%= label f, :parcel_unique_id %>
-  <%= number_input f, :parcel_unique_id, value: @booking_params["parcel_unique_id"]%>
+  <%= number_input f, :parcel_unique_id, value: @parcel_booking_params["parcel_unique_id"]%>
   <%= error_tag f, :parcel_unique_id %>
 
   <%= label f, :"Pickup Point" %>
-  <%= text_input f, :pickuppoint , value: @booking_params["pickuppoint"]%>
+  <%= text_input f, :pickuppoint , value: @parcel_booking_params["pickuppoint"]%>
   <%= error_tag f, :pickuppoint %>
 
   <%= label f, :"Pickup Point Location" %>
-  <%= text_input f, :pickuppoint_location , value: @booking_params["pickuppoint_location"]%>
+  <%= text_input f, :pickuppoint_location , value: @parcel_booking_params["pickuppoint_location"]%>
   <%= error_tag f, :pickuppoint_location %>
 
   <%= label f, :"Pickup Point Email" %>
-  <%= email_input f, :pickuppoint_email ,value: @booking_params["pickuppoint_email"]%>
+  <%= email_input f, :pickuppoint_email ,value: @parcel_booking_params["pickuppoint_email"]%>
   <%= error_tag f, :pickuppoint_email %>
 
   <%= label f, :"Pickup Point Phone " %>
-  <%= number_input f, :pickuppoint_phone ,value: @booking_params["pickuppoint_phone"]%>
+  <%= number_input f, :pickuppoint_phone ,value: @parcel_booking_params["pickuppoint_phone"]%>
   <%= error_tag f, :pickuppoint_phone %>
 
   <%= label f, :"Drop Point" %>
-  <%= text_input f, :droppoint , value: @booking_params["droppoint"]%>
+  <%= text_input f, :droppoint , value: @parcel_booking_params["droppoint"]%>
   <%= error_tag f, :droppoint %>
 
   <%= label f, :"Drop Point Location" %>
-  <%= text_input f, :droppoint_location ,value: @booking_params["droppoint_location"]%>
+  <%= text_input f, :droppoint_location ,value: @parcel_booking_params["droppoint_location"]%>
   <%= error_tag f, :droppoint_location %>
 
   <%= label f, :"Drop Point Email"%>
-  <%= email_input f, :droppoint_email ,value: @booking_params["droppoint_email"]%>
+  <%= email_input f, :droppoint_email ,value: @parcel_booking_params["droppoint_email"]%>
   <%= error_tag f, :droppoint_email %>
 
   <%= label f, :"Drop Point Phone" %>
-  <%= number_input f, :droppoint_phone ,value: @booking_params["droppoint_phone"]%>
+  <%= number_input f, :droppoint_phone ,value: @parcel_booking_params["droppoint_phone"]%>
   <%= error_tag f, :droppoint_phone %>
 
   <div>

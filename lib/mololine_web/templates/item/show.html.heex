@@ -1,0 +1,23 @@
+<h1>Show Item</h1>
+
+<ul>
+
+  <li>
+    <strong>Parcel:</strong>
+    <%= @item.parcel_id %>
+  </li>
+
+  <li>
+    <strong>Town:</strong>
+    <%= @item.town %>
+  </li>
+
+  <li>
+    <strong>Parcel booking:</strong>
+    <%= @item.parcel_booking_id %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.item_path(@conn, :edit, @item) %></span> |
+<span><%= link "Back", to: Routes.item_path(@conn, :index) %></span>

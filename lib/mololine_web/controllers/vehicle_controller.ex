@@ -31,7 +31,7 @@ defmodule MololineWeb.VehicleController do
   end
 
   def show(conn, %{"id" => id}) do
-    vehicle = Vehicles.get_vehicle!(id) |> Repo.preload(:seatplan)
+    vehicle = Vehicles.get_vehicle!(id) |> Repo.preload(:seatplan)|> Repo.preload(:driver)
     render(conn, "show.html", vehicle: vehicle)
   end
 
@@ -43,7 +43,7 @@ defmodule MololineWeb.VehicleController do
   end
 
   def update(conn, %{"id" => id, "vehicle" => vehicle_params}) do
-    vehicle = Vehicles.get_vehicle!(id)
+    vehicle = Repo.get(Vehicle,id) |> Repo.preload(:seatplan) |> Repo.preload(:driver)
 
     case Vehicles.update_vehicle(vehicle, vehicle_params) do
       {:ok, vehicle} ->

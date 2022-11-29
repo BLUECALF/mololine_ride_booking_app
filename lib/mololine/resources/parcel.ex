@@ -7,7 +7,11 @@ defmodule Mololine.Resources.Parcel do
     field :recipient_phone, :string
     field :weight, :integer
     field :pin, :string
+
+    #associations
     belongs_to :user, Mololine.Accounts.User  # this was added
+     #has childresn
+    has_many :parceldeliverybookings, Mololine.ParcelBookings.ParcelDeliveryBooking
     timestamps()
   end
 
@@ -16,5 +20,6 @@ defmodule Mololine.Resources.Parcel do
     parcel
     |> cast(attrs, [:recipient_name,:recipient_phone, :weight, :pin])
     |> validate_required([:recipient_name,:recipient_phone, :weight, :pin])
+    |> validate_length(:recipient_phone,max: 10,min: 10)
   end
 end

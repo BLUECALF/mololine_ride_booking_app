@@ -19,11 +19,6 @@ defmodule MololineWeb.Router do
 
   scope "/", MololineWeb do
     pipe_through :browser
-
-    get "/", PageController, :index
-    resources "/seatplans", SeatplanController
-    resources "/towns", TownController
-    resources "/vehicles", VehicleController
   end
 
   # Other scopes may use custom stacks.
@@ -43,7 +38,6 @@ defmodule MololineWeb.Router do
 
     scope "/" do
       pipe_through :browser
-
       live_dashboard "/dashboard", metrics: MololineWeb.Telemetry
     end
   end
@@ -77,14 +71,35 @@ defmodule MololineWeb.Router do
 
   scope "/", MololineWeb do
     pipe_through [:browser, :require_authenticated_user]
-
+    get "/", PageController, :index
     resources "/parcels", ParcelController
     resources "/parceldeliverybooking", ParcelDeliveryBookingController
     resources "/travelnotices", TravelNoticeController
+    post "/travelnotices_index", TravelNoticeController,:index
+
+    resources "/items", ItemController
     resources "/bookings", BookingController
+    # customer
+    get "/customer_parcels", ParcelController,:customer_index
+    get "/customer_bookings", BookingController,:customer_index
+    get "/customer_parcel_delivery_bookings",ParcelDeliveryBookingController,:customer_index
+    get "/customer_items", ItemController,:customer_index
     live "/bookinglive/:travelnotice_id", BookingLive
     live "/parceldeliverybookinglive/:travelnotice_id/:user_id", ParcelDeliveryBookingLive
+    # hr
+    live "/hrlive", HrLive
+    # accountant
+    resources "/items", ItemController
+    live "/accountantlive/:accountantemail", AccountantLive
+    #conductor or driver
+    live "/conductorlive/:travelnotice_id", ConductorLive
+    get "/travelnoticesfordriver", TravelNoticeController,:driver
 
+    #manager
+    resources "/sales", SaleController
+    resources "/seatplans", SeatplanController
+    resources "/towns", TownController
+    resources "/vehicles", VehicleController
 
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings", UserSettingsController, :update

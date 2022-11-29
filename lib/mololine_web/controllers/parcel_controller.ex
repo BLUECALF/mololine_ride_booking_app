@@ -2,12 +2,30 @@ defmodule MololineWeb.ParcelController do
   use MololineWeb, :controller
 
   alias Mololine.Resources
+  alias Mololine.Repo
+  alias Mololine.Accounts.User
   alias Mololine.Resources.Parcel
 
   action_fallback MololineWeb.FallbackController
 
   def index(conn, _params) do
     parcels = Resources.list_parcels()
+    # check user if is not admin show him aproperiate data
+    if(conn.assigns.current_user.role != "admin" ) do
+      # redirect to parcel_customer page
+      conn
+       |> redirect(to: Routes.parcel_path(conn, :customer_index, []))
+      else
+      #user iz admin
+      render(conn, "index.html", parcels: parcels)
+    end
+  end
+
+  def customer_index(conn, _params) do
+    user_id = conn.assigns.current_user.id
+    IO.puts "The user id is :#{user_id}"
+    user = Repo.get(User,user_id) |> Repo.preload(:parcels)
+    parcels = user.parcels
     render(conn, "index.html", parcels: parcels)
   end
 
@@ -21,7 +39,7 @@ defmodule MololineWeb.ParcelController do
     case Resources.create_parcel(parcel_params,user) do
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
-      parcel ->
+      {:ok,parcel} ->
         conn
         |> put_flash(:info, "Parcel created successfully.")
         |> redirect(to: Routes.parcel_path(conn, :show, parcel))

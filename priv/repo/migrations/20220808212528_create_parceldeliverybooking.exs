@@ -12,6 +12,7 @@ defmodule Mololine.Repo.Migrations.CreateParceldeliverybooking do
       add :droppoint_email, :string
       add :droppoint_location, :string
       add :droppoint_phone, :string
+      add :booking_id, :integer
       add :checked_in, :boolean, default: false, null: false
       add :checked_out, :boolean, default: false, null: false
       add :delivered, :boolean, default: false, null: false

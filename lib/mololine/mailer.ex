@@ -1,3 +1,3 @@
 defmodule Mololine.Mailer do
-  use Swoosh.Mailer, otp_app: :mololine
+  use Bamboo.Mailer, otp_app: :mololine
 end

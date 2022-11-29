@@ -1,0 +1,37 @@
+
+<section class="row">
+  <article class="column">
+    <ul>
+    <% @conn.host%>
+    <% @conn.port%>
+    <% host = @conn.host%>
+    <% port = @conn.port%>
+    <% base_url = "http://#{host}:#{port}"%>
+    <h1>Customer Page</h1>
+    <label> <% base_url%></label>
+      <li><a href= {base_url <> "/customer_parcels"}>Parcels for Customer</a></li>
+      <li><a href={base_url <> "/customer_bookings"}>Bookings for Customer</a></li>
+      <li><a href={base_url <> "/customer_parcel_delivery_bookings"}>parcel delivery booking for Customer</a></li>
+      <li><a href={base_url <> "/customer_items"}>Items for Customer</a></li>
+
+      <%towns_list = for town <- @towns do
+      town.name
+      end %>
+      <h1>Search Travel Notices</h1>
+      <%= form_for @conn, "/travelnotices_index", fn f -> %>
+
+      <%= label f, :from %>
+      <%= select f, :from, towns_list,required: true %>
+      <%= error_tag f, :from %>
+
+      <%= label f, :to %>
+      <%= select f, :to, towns_list,required: true %>
+      <%= error_tag f, :to %>
+
+      <%= date_input f, :date ,required: true%>
+      <%= submit "Search" %>
+      <% end %>
+    </ul>
+  </article>
+</section>
+

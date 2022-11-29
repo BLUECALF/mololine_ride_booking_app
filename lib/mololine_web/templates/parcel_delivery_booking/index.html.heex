@@ -12,6 +12,7 @@
       <th>Droppoint Email</th>
       <th>Droppoint Location</th>
       <th>Droppoint Phone</th>
+      <th>Booking ID</th>
       <th>Checked in</th>
       <th>Checked out</th>
       <th>Delivered</th>
@@ -31,6 +32,7 @@
       <td><%= parcel_delivery_booking.droppoint_email %></td>
       <td><%= parcel_delivery_booking.droppoint_location %></td>
       <td><%= parcel_delivery_booking.droppoint_phone %></td>
+      <td><%= parcel_delivery_booking.booking_id %></td>
       <td><%= parcel_delivery_booking.checked_in %></td>
       <td><%= parcel_delivery_booking.checked_out %></td>
       <td><%= parcel_delivery_booking.delivered %></td>
@@ -45,4 +47,4 @@
   </tbody>
 </table>
 
-<span><%= link "New Parcel delivery booking", to: Routes.parcel_delivery_booking_path(@conn, :new) %></span>
+

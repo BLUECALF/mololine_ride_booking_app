@@ -1,0 +1,33 @@
+<h1>Show Sale</h1>
+
+<ul>
+
+  <li>
+    <strong>From:</strong>
+    <%= @sale.from %>
+  </li>
+
+  <li>
+    <strong>To:</strong>
+    <%= @sale.to %>
+  </li>
+
+  <li>
+    <strong>Amount:</strong>
+    <%= @sale.amount %>
+  </li>
+
+  <li>
+    <strong>Reason:</strong>
+    <%= @sale.reason %>
+  </li>
+
+  <li>
+    <strong>Date:</strong>
+    <%= @sale.date %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.sale_path(@conn, :edit, @sale) %></span> |
+<span><%= link "Back", to: Routes.sale_path(@conn, :index) %></span>
