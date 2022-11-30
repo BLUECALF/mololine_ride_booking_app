@@ -104,7 +104,7 @@ defmodule MololineWeb.AccountantLive do
         booking_id = removeNil(booking_id)
         pDBooking = Repo.get_by(ParcelDeliveryBooking,booking_id: booking_id)
         accountant = Repo.get_by(User,email: socket.assigns.accountantemail) |> Repo.preload(:town)
-        if(pDBooking == nil and item.town == accountant.town) do
+        if(pDBooking == nil or (pDBooking == nil and item.town == accountant.town)) do
         else
           pDBooking
           Repo.get(Parcel,pDBooking.parcel_unique_id)
@@ -137,7 +137,9 @@ defmodule MololineWeb.AccountantLive do
 
       parcel_id =  String.to_integer(parcelid)
       # steps make item for that parcel
-      Inventory.create_item(%{parcel_id: parcel_id,town: "nakuru"})
+      accountant_email = socket.assigns.accountantemail
+      user = Repo.get_by(User,email: accountant_email) |> Repo.preload(:town)
+      Inventory.create_item(%{parcel_id: parcel_id,town: user.town.name})
       # change =it to checked out true & delivered true.
       import Ecto.Query, only: [from: 2]
 

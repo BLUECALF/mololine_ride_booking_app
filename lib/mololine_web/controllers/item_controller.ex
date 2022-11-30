@@ -22,10 +22,33 @@ defmodule MololineWeb.ItemController do
   def customer_index(conn, _params) do
     user_id = conn.assigns.current_user.id
     user = Repo.get(User,user_id) |> Repo.preload(:parcels)
-    parcels = user.parcels
+    if( user.role == "accountant") do
+      # redirect to accountant_index page
+      conn
+      |> redirect(to: Routes.item_path(conn, :accountant_index, []))
+      else
+      parcels = user.parcels
+      items =  for parcel <- parcels do
+        Repo.get_by(Item,parcel_id: parcel.id)
+      end
+      render(conn, "index.html", items: items)
+    end
+  end
+  def accountant_index(conn, _params) do
+    user_id = conn.assigns.current_user.id
+    user = Repo.get(User,user_id) |> Repo.preload(:town)
+    town_name = user.town.name
 
-    items =  for parcel <- parcels do
-     Repo.get_by(Item,parcel_id: parcel.id)
+    import Ecto.Query, only: [from: 2]
+
+    query = from item in "items",
+                 where: item.town == ^town_name,
+                 select: item.id
+
+    # Send the query to the repository
+    item_list  = Repo.all(query)
+    items =  for id <- item_list do
+      Repo.get_by(Item,id: id)
     end
     render(conn, "index.html", items: items)
   end

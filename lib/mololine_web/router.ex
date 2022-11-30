@@ -90,6 +90,7 @@ defmodule MololineWeb.Router do
     live "/hrlive", HrLive
     # accountant
     resources "/items", ItemController
+    get "/accountant_items", ItemController,:accountant_index
     live "/accountantlive/:accountantemail", AccountantLive
     #conductor or driver
     live "/conductorlive/:travelnotice_id", ConductorLive
